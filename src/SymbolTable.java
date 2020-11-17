@@ -68,4 +68,9 @@ public class SymbolTable implements ISymbolTable{
     public Iterator iterator() {
         return symbolTable.keySet().iterator();
     }
+    
+    public Comparable lookupNode(Node n)
+    {
+    	return true;
+    }
 }

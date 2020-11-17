@@ -1,2 +1,4 @@
-public interface IOpcode {
+public interface IOpcode
+{
+	public int getBinary();
 }

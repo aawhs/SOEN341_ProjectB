@@ -32,6 +32,8 @@ public class Reader {
                 System.out.print(charactersList[i][j]);
            }
         }
+        
+        fileReader.close();
     }
 
     public void scanCharacters(){
@@ -41,11 +43,37 @@ public class Reader {
     public char getCharacter(){
         return ch;
     }
-
-
-
-
-
+    
+    public void parseLineStmt() // Parses all line statement from charactersList
+    {
+    	for (int i = 0; i < lineStatements.length; i++)
+    	{
+    		String lineStatement = "";
+    		
+    		for (int j = 0; j < charactersList[i].length; j++)
+    		{
+    			lineStatement += charactersList[i][j].charValue();
+    		}
+    		
+    		lineStatements[i] = lineStatement;
+    	}
+    }
+    
+    public void parseInstruction() // Parses all instructions from lineStatements
+    {
+    	for (int i = 0; i < lineStatements.length; i++)
+    	{
+    		String[] tokens = lineStatements[i].split("\\s");
+    		
+    		for (int j = 0; j < tokens.length; j++)
+    		{
+    			if (Opcode.isOpcode(tokens[j]))
+    			{
+    				instructions[i] = tokens[j];
+    			}
+    		}
+    	}
+    }
 
     private ISourceFile srcFile;
     private int ch_num = 0;
@@ -54,6 +82,6 @@ public class Reader {
     private int rowPos=0;
     private int size = 0;
     private Character [][] charactersList = new Character[50][500];
-
-
+    private String[] lineStatements = new String[50];
+    private String[] instructions = new String[50];
 }
