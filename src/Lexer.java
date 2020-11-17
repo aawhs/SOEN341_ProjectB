@@ -1,5 +1,6 @@
-public class Lexer {
-    /** Create a lexer that scans the given character stream. */
+
+//public class Lexer {
+    /** Create a lexer that scans the given character stream. *//*
     
         public Lexer(IReader reader, ISymbolTable keywordTable) {
             // your code...
@@ -16,7 +17,7 @@ public class Lexer {
         }
     
 
-    /* Read the next character. */
+    /* Read the next character. *//*
     
         private int read() {
             colPos++;
@@ -42,7 +43,7 @@ public class Lexer {
         /*
          * Scan the next token. Mark position on entry in case of error.
          * @return   the token.
-         */
+         *//*
     
         public int getToken() {
             // skip whitespaces
@@ -75,7 +76,7 @@ public class Lexer {
                     return scanIdentifier();
     
                 case '.':  */
-    /* dot for directives as a first character */
+    /* dot for directives as a first character *//*
     
                     return scanDirective();
     
@@ -101,3 +102,4 @@ public class Lexer {
         }
     }
 }
+*/
