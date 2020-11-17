@@ -2,7 +2,8 @@
  * Parser_Skeleton.java - A parser gets tokens from the lexical analyser.
  *
  * @author  Michel de Champlain
- */
+ *//*
+
 
 public interface IParser {
      Link parse();
@@ -92,3 +93,4 @@ public class Parser implements IParser {
     private ISymbolTable  table;
     private ISymbolTable  keywordTable;
 }
+*/
