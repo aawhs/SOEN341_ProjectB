@@ -9,7 +9,7 @@ public interface ISymbolTable <Key extends Comparable<Key>, Value>{
     //Helper Functions
     int size();
     boolean isEmpty();
-    boolean isValid();
+    boolean isValid(Comparable key);
     Iterable<Key> keys();
     Iterator<Key> iterator();
 }
