@@ -1,3 +1,3 @@
-public interface IOpcode {
+public interface IOpcode <Key extends Comparable<key>, value>{
 
 }

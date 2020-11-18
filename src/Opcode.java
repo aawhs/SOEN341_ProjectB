@@ -1,3 +1,4 @@
+
 public class Opcode implements IOpcode {
 	
 	SymbolTable op = new SymbolTable();
