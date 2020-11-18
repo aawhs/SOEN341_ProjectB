@@ -3,10 +3,13 @@
  *                       characters from a source file (.asm) for the parser.
  *
  * @author  Michel de Champlain
- */
+ *//*
+
 
 public class Lexer extends Opcode implements ILexer {
-    /** Create a lexer that scans the given character stream. */
+    */
+/** Create a lexer that scans the given character stream. *//*
+
     public Lexer(IReader reader, ISymbolTable keywordTable) {
         // your code...
 
@@ -20,7 +23,9 @@ public class Lexer extends Opcode implements ILexer {
         read(); // prime
     }
 
-    /* Read the next character. */
+    */
+/* Read the next character. *//*
+
     private int read() {
         colPos++;
         return ch = reader.read();
@@ -42,10 +47,12 @@ public class Lexer extends Opcode implements ILexer {
     private int scanString() {
         // your code...
     }
-    /**
+    */
+/**
      * Scan the next token. Mark position on entry in case of error.
      * @return   the token.
-     */
+     *//*
+
     public int getToken() {
         // skip whitespaces
         // "\n", "\r\n", "\n", or line comments are considered as EOL
@@ -76,7 +83,9 @@ public class Lexer extends Opcode implements ILexer {
             case 'Z':
                 return scanIdentifier();
 
-            case '.':  /* dot for directives as a first character */
+            case '.':  */
+/* dot for directives as a first character *//*
+
                 return scanDirective();
 
 
@@ -100,3 +109,4 @@ public class Lexer extends Opcode implements ILexer {
         }
     }
 }
+*/

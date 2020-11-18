@@ -62,4 +62,5 @@ public interface Opcode implements IOpcode{
        "neg",   "inc",    "dec",  "add",   "sub",   "mul",   "div",     "rem",
        "shl",   "shr",    "teq",  "tne",   "tlt",   "tgt",   "tle",     "tge"
     };
+
 }
