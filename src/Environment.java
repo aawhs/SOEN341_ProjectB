@@ -1,48 +1,70 @@
 public class Environment {
-    ILexer lexer;
-    SourceFile sourceFile;
-    IReportable errorReporter;
-    SymbolTable symbolTable;
+    //Constructors
+    public Environment(ILexer lexer, ISourceFile sourceFile, IReportable errorReporter
+            , ISymbolTable table, ISymbolTable keywordTable) {
+        this.lexer = lexer;
+        this.sourceFile = sourceFile;
+        this.errorReporter = errorReporter;
+        this.table = table;
+        this.keywordTable = keywordTable;
+    }
 
-    public Environment(){
-        lexer = null;
-        sourceFile = new SourceFile(sourceFile.getFileName());
-        errorReporter = new ErrorReporter();
-        symbolTable = new SymbolTable();
+    public Environment() {
+        this.lexer = null;
+        this.sourceFile = null;
+        this.errorReporter = null;
+        this.table = null;
+        this.keywordTable = null;
+
     }
-    public Environment(ILexer lexer, SourceFile src, IReportable er, SymbolTable st){
-        this.lexer = lexer;
-        sourceFile = src;
-        errorReporter = er;
-        symbolTable = st;
-    }
-    
+
     //Set functions
-    public void setLexer(ILexer lexer){
+    public void setLexer(ILexer lexer) {
         this.lexer = lexer;
     }
-    public void setSourceFile(SourceFile src){
-        sourceFile = src;
+
+    public void setSourceFile(ISourceFile sourceFile) {
+        this.sourceFile = sourceFile;
     }
-    public void setErrorReporter(ErrorReporter er){
-        errorReporter = er;
+
+    public void setErrorReporter(IReportable errorReporter) {
+        this.errorReporter = errorReporter;
     }
-    public void setSymbolTable(SymbolTable st){
-        symbolTable = st;
+
+    public void setTable(ISymbolTable table) {
+        this.table = table;
+    }
+
+    public void setKeywordTable(ISymbolTable keywordTable) {
+        this.keywordTable = keywordTable;
     }
 
     //Get functions
-    public ILexer getLexer(){
+    public ILexer getLexer() {
         return lexer;
     }
-    public SourceFile getSourceFile(){
+
+    public ISourceFile getSourceFile() {
         return sourceFile;
     }
-    public IReportable getErrorReporter(){
+
+    public IReportable getErrorReporter() {
         return errorReporter;
     }
-    public SymbolTable getSymbolTable(){
-        return symbolTable;
+
+    public ISymbolTable getTable() {
+        return table;
     }
+
+    public ISymbolTable getKeywordTable() {
+        return keywordTable;
+    }
+
+
+    private ILexer        lexer;
+    private ISourceFile   sourceFile;
+    private IReportable   errorReporter;
+    private ISymbolTable  table;
+    private ISymbolTable  keywordTable;
     
 }

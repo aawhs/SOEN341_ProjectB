@@ -3,6 +3,10 @@ import java.util.TreeMap;
 
 public class SymbolTable implements ISymbolTable{
 
+    public TreeMap<Comparable, Object> getSymbolTable() {
+        return symbolTable;
+    }
+
     private TreeMap<Comparable, Object> symbolTable;
 
     public SymbolTable() {
