@@ -7,4 +7,7 @@ public class Instruction {
         this.mnemonic = opcde;
         this.operand = oprnd;
     }
+
+    public Instruction(){
+    }
 }

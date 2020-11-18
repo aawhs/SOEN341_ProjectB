@@ -26,5 +26,4 @@ public class LineStmt {
     private boolean isEmpty(){
         return (label == null) && (instruction == null) && (comment == null);
     }
-
 }
