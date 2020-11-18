@@ -10,7 +10,7 @@ public interface IReader {
     public void readFile() throws IOException;
     public void scanCharacters();
     public char getCharacter();
-    public void parseLineStmt();
+   /* public void parseLineStmt();
     public void parseInstruction(); // Parses all instructions from lineStatements
-
+*/
 }

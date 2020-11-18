@@ -43,7 +43,7 @@ public class Reader implements IReader {
     public char getCharacter(){
         return ch;
     }
-    
+    /*
     public void parseLineStmt() // Parses all line statement from charactersList
     {
     	for (int i = 0; i < lineStatements.length; i++)
@@ -74,7 +74,7 @@ public class Reader implements IReader {
     		}
     	}
     }
-
+*/
     private ISourceFile srcFile;
     private int ch_num = 0;
     private char ch;

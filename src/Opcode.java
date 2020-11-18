@@ -2,7 +2,7 @@
 //
 // Reserved For Future Use (RFUx)
 
-public interface Opcode implements IOpcode{
+public interface Opcode {
     public static final int
     FIRST          = 0, // First opcode
 
