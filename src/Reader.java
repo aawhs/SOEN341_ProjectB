@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Reader {
+public class Reader implements IReader {
     public Reader(String filepath) throws FileNotFoundException, URISyntaxException {
         srcFile = new SourceFile(filepath);
         openFile();

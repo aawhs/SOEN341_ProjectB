@@ -1,2 +1,2 @@
-public class ErrorReporter {
+public class ErrorReporter implements IReportable{
 }

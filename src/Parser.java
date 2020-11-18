@@ -2,10 +2,11 @@
  * Parser_Skeleton.java - A parser gets tokens from the lexical analyser.
  *
  * @author  Michel de Champlain
- *//*
-public interface IParser {
-     Link parse();
-}
+ */
+
+
+
+
 public class Parser implements IParser {
     public Parser(Environment env) {
         this.lexer = env.getLexer();
@@ -13,7 +14,7 @@ public class Parser implements IParser {
         this.errorReporter = env.getErrorReporter();
         this.table = env.getSymbolTable();
         nextToken(); // prime
-        address = 0;
+        //address = 0;
     }
     // Record the error: <t> expected, found <token> at <token>.position
     protected void expect(int t) {
@@ -29,7 +30,9 @@ public class Parser implements IParser {
     protected void error(String t) {
         errorReporter.record( _Error.create(t, Lexer.getPosition()) );
     }
+
     private class SyntaxError extends Exception {}
+
     // -------------------------------------------------------------------
     // An assembly unit is zero or more line statement(s).
     //
@@ -37,7 +40,9 @@ public class Parser implements IParser {
     // -------------------------------------------------------------------
     public Link parse() {
         System.out.println("Parsing a AssemblyUnit...");
+
         LineStmtSeq seq = new LineStmtSeq();
+
         while ( token != Lexer.EOF ) {
             seq.add( parseLineStmt() );
         }
@@ -67,13 +72,18 @@ public class Parser implements IParser {
         Label        label = null;
         Instruction  inst = null;
         Comment      comment = null;
+
         System.out.println("Parsing a Line Statement...");
+
         // your code...
+
         return new LineStmt(label, inst, comment);
     }
+
     protected void nextToken() {
         token = lexer.getToken();
     }
+
     private int           token;
     private ILexer        lexer;
     private ISourceFile   sourceFile;
@@ -81,4 +91,4 @@ public class Parser implements IParser {
     private ISymbolTable  table;
     private ISymbolTable  keywordTable;
 }
-*/
+
