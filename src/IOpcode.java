@@ -1,4 +1,3 @@
-public interface IOpcode
-{
-	public int getBinary();
+public interface IOpcode <Key extends Comparable<key>, value>{
+	
 }
