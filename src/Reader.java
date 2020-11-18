@@ -58,13 +58,13 @@ public class Reader implements IReader {
     		lineStatements[i] = lineStatement;
     	}
     }
-    
+
     public void parseInstruction() // Parses all instructions from lineStatements
     {
     	for (int i = 0; i < lineStatements.length; i++)
     	{
     		String[] tokens = lineStatements[i].split("\\s");
-    		
+
     		for (int j = 0; j < tokens.length; j++)
     		{
     			if (Opcode.isOpcode(tokens[j]))
