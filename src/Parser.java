@@ -12,15 +12,17 @@ public class Parser implements IParser {
         this.lexer = env.getLexer();
         this.sourceFile = env.getSourceFile();
         this.errorReporter = env.getErrorReporter();
-        this.table = env.getSymbolTable();
+        this.table = env.getTable();
+        this.keywordTable = env.getKeywordTable();
         nextToken(); // prime
         //address = 0;
     }
+    /*
     // Record the error: <t> expected, found <token> at <token>.position
     protected void expect(int t) {
         if (t != token) {
-            String expected = Lexer.getTokenName(t);
-            errorReporter.record( _Error.create( expected+" expected", Lexer.getPosition()) );
+            String expected = lexer.getTokenName(t);
+            errorReporter.record( _Error.create( expected+" expected", lexer.getPosition()) );
         }
         nextToken();
     }
@@ -32,6 +34,8 @@ public class Parser implements IParser {
     }
 
     private class SyntaxError extends Exception {}
+    */
+
 
     // -------------------------------------------------------------------
     // An assembly unit is zero or more line statement(s).
@@ -43,7 +47,7 @@ public class Parser implements IParser {
 
         LineStmtSeq seq = new LineStmtSeq();
 
-        while ( token != Lexer.EOF ) {
+        while ( token != lexer.EOF ) {
             seq.add( parseLineStmt() );
         }
         return new TranslationUnit(seq);
@@ -51,14 +55,17 @@ public class Parser implements IParser {
     //---------------------------------------------------------------------------------
     private Instruction parseInherent() {
         // your code...
+        return new Instruction();
     }
     //---------------------------------------------------------------------------------
     private Instruction parseImmediate() {
         // your code...
+        return new Instruction();
     }
     //---------------------------------------------------------------------------------
     private Instruction parseRelative() {
         // your code...
+        return new Instruction();
     }
     // -------------------------------------------------------------------
     // A line statement:
