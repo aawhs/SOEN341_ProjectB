@@ -6,10 +6,10 @@ public interface IReader {
 	int colPos = 0;
 	int curlinePos = 0;
 	int curcolPos = 0;
-	public void openFile() throws FileNotFoundException, URISyntaxException;
-    public void readFile() throws IOException;
-    public void scanCharacters();
-    public char getCharacter();
+	void openFile() throws FileNotFoundException, URISyntaxException;
+    void readFile() throws IOException;
+    void scanCharacters();
+    char read();
    /* public void parseLineStmt();
     public void parseInstruction(); // Parses all instructions from lineStatements
 */
