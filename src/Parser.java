@@ -5,8 +5,6 @@
  */
 
 
-
-
 public class Parser implements IParser {
     public Parser(Environment env) {
         this.lexer = env.getLexer();

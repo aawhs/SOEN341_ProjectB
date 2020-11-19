@@ -16,7 +16,7 @@ public class Reader implements IReader {
 
     public void readFile() throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(srcFile.getFile().getPath()));
-        while((ch_num = fileReader.read())!= -1) {
+        while((ch_num = fileReader.read()) != -1) {
             ch = (char) ch_num;
             charactersList[rowPos][colPos] = ch;
             if(ch != '\n'){
@@ -40,41 +40,10 @@ public class Reader implements IReader {
 
     }
 
-    public char getCharacter(){
+    public char read(){
         return ch;
     }
-    /*
-    public void parseLineStmt() // Parses all line statement from charactersList
-    {
-    	for (int i = 0; i < lineStatements.length; i++)
-    	{
-    		String lineStatement = "";
-    		
-    		for (int j = 0; j < charactersList[i].length; j++)
-    		{
-    			lineStatement += charactersList[i][j].charValue();
-    		}
-    		
-    		lineStatements[i] = lineStatement;
-    	}
-    }
 
-    public void parseInstruction() // Parses all instructions from lineStatements
-    {
-    	for (int i = 0; i < lineStatements.length; i++)
-    	{
-    		String[] tokens = lineStatements[i].split("\\s");
-
-    		for (int j = 0; j < tokens.length; j++)
-    		{
-    			if (Opcode.isOpcode(tokens[j]))
-    			{
-    				instructions[i] = tokens[j];
-    			}
-    		}
-    	}
-    }
-*/
     private ISourceFile srcFile;
     private int ch_num = 0;
     private char ch;

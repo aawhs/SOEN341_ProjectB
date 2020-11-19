@@ -15,7 +15,7 @@ public class LineStmt {
         return this.label;
     }
 
-    private Instruction getInstruction(){
+    public Instruction getInstruction(){
         return this.instruction;
     }
 
@@ -24,6 +24,9 @@ public class LineStmt {
     }
 
     private boolean isEmpty(){
-        return (label == null) && (instruction == null) && (comment == null);
+
+        return (label == null) &&
+                (instruction == null) &&
+                (comment == null);
     }
 }
