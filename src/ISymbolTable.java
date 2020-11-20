@@ -1,7 +1,9 @@
 import java.util.Iterator;
-public interface ISymbolTable <Key extends Comparable<Key>, Value>{
+
+public interface ISymbolTable <Key extends Comparable<Key>, Value>
+{
     //Symbol Table Main Function
-    Value get(Key key);
+    Node get(Key key);
     void put(Key key, Value val);
     void remove(Key key);
     boolean contains(Key key);

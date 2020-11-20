@@ -1,13 +1,12 @@
 import java.util.Iterator;
 import java.util.TreeMap;
 
-public class SymbolTable implements ISymbolTable{
+public class SymbolTable implements ISymbolTable {
+	private TreeMap<Comparable, Node> symbolTable;
 
-    public TreeMap<Comparable, Object> getSymbolTable() {
+    public TreeMap<Comparable, Node> getSymbolTable() {
         return symbolTable;
     }
-
-    private TreeMap<Comparable, Object> symbolTable;
 
     public SymbolTable() {
         symbolTable = new TreeMap<>();
@@ -15,7 +14,7 @@ public class SymbolTable implements ISymbolTable{
 
     //Insert Key-Value Pair
     @Override
-    public void put(Comparable key, Object val) {
+    public void put(Comparable key, Node val) {
         if(!isValid(key)) throw new IllegalArgumentException("cannot put null key");
         if(val == null) symbolTable.remove(key);
         else symbolTable.put(key,val);
@@ -23,7 +22,7 @@ public class SymbolTable implements ISymbolTable{
 
     //Get Value paired with key
     @Override
-    public Object get(Comparable key) {
+    public Node get(Comparable key) {
         if(!isValid(key)) throw new IllegalArgumentException("cannot get null key");
         return symbolTable.get(key);
     }
