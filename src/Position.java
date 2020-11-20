@@ -12,6 +12,9 @@ public class Position {
     public int getColPos() {
         return colPos;
     }
+    public String toString(){
+        return "(" + colPos + "," + linePos + ")";
+    }
 
 
     private int colPos;
