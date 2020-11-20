@@ -122,6 +122,15 @@ public class Lexer implements ILexer, Opcode {
     private int colPos = 0;
     private int curlinePos = linePos;
     private int curcolPos = colPos;
+    public boolean spellError(String line){
+        for(int i = 0; i<inherentMnemonics.length; i++){
+            if(inherentMnemonics[i].contains(line)){
+                this.error("Spelling error");
+                return true;
+            }
+        }
+        return false;
+    }
 
     private final Integer   MINUS = 101,
                             COMMA= 102 ,

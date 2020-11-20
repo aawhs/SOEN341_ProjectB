@@ -19,7 +19,7 @@ public class _Error {
 
     static void printErrors(){
         for(int i = 0; i < list_of_errors.size(); i++){
-            System.out.println(list_of_errors.get(i).text + " ");
+            System.out.println(list_of_errors.get(i).text + " " + list_of_errors.get(i).pos.toString());
         }
     }
     
