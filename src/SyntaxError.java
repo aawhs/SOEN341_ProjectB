@@ -2,7 +2,7 @@ public class SyntaxError extends Exception{
     private String msg;
     private Throwable cause;
     public SyntaxError(){
-        msg = null;
+        msg = "Syntax error";
     }
     public SyntaxError(String msg){
         this.msg = msg;
