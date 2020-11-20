@@ -16,8 +16,6 @@ public class Lexer implements ILexer, Opcode {
         this.keywordTable = keywordTable;
         errorReporter = new ErrorReporter();
 
-
-
         // Enter all mnemonics as keywords in the symbol table...
         linePos = 1;
         colPos = 0;
@@ -35,7 +33,7 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private void error(String t) {
-        errorReporter.record( _Error.create(t, getPosition()) );
+        errorReporter.record(_Error.create(t, getPosition()));
     }
 
     private void scanNumber() {
@@ -125,7 +123,7 @@ public class Lexer implements ILexer, Opcode {
     private int curlinePos = linePos;
     private int curcolPos = colPos;
 
-    private final Integer MINUS = 101,
+    private final Integer   MINUS = 101,
                             COMMA= 102 ,
                             ILLEGAL_CHAR = 103,
                             NUMBER= 104;

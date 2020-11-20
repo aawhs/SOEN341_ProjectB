@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class _Error {
     _Error(String t, Position pos){
         this.text = t;
@@ -5,7 +7,20 @@ public class _Error {
     }
     static _Error create(String t, Position position){
         _Error e = new _Error(t, position);
+        addError(e);
         return e;
+    }
+
+    static ArrayList<_Error> list_of_errors = new ArrayList<>();
+
+    static void addError(_Error error){
+        list_of_errors.add(error);
+    }
+
+    static void printErrors(){
+        for(int i = 0; i < list_of_errors.size(); i++){
+            System.out.println(list_of_errors.get(i).text + " ");
+        }
     }
     
     private String text;
