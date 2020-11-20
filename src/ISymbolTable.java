@@ -4,7 +4,7 @@ public interface ISymbolTable <Key extends Comparable<Key>, Value>
 {
     //Symbol Table Main Function
     Node get(Key key);
-    void put(Key key, Value val);
+    void put(Key key, Node val);
     void remove(Key key);
     boolean contains(Key key);
 
