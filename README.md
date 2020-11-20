@@ -9,4 +9,4 @@ AUnit testing:
   2. java FileName > FileName.txt
   3. java aunit FileName.txt
   
-  
+  If output is " . OK", it worked.
