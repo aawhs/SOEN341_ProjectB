@@ -1,2 +1,23 @@
 public class SyntaxError extends Exception{
+    private String msg;
+    private Throwable cause;
+    public SyntaxError(){
+        msg = null;
+    }
+    public SyntaxError(String msg){
+        this.msg = msg;
+    }
+    public SyntaxError(String msg, Throwable cause){
+        this.msg = msg;
+        this.cause = cause;
+    }
+    public String getMessage(){
+        return msg;
+    }
+    public Throwable getThrowable(){
+        return cause;
+    }
+    public void setMessage(String msg){
+        this.msg = msg;
+    }
 }
