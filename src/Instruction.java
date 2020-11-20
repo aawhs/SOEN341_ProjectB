@@ -33,5 +33,11 @@ public class Instruction implements Opcode {
     public void printInstruction(){
         System.out.print(String.format("\n0x%02X",opCode) + " " + mnemonic);
     }
+
+    /**
+     * Used in AUnit testing
+     * @return mnemonic
+     */
+    public String getMnemonic() {return mnemonic;}
 }
 
