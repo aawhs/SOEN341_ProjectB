@@ -30,10 +30,6 @@ public class SymbolTable implements ISymbolTable {
         return symbolTable.get(key);
     }
 
-    @Override
-    public Iterator<Map.Entry<Comparable, Object>> poll(){
-            return symbolTable.entrySet().iterator();
-    }
 
     //remove key-value pair
     @Override

@@ -46,7 +46,7 @@ public class Lexer implements ILexer, Opcode {
 
     private void error(String t) {
 
-        errorReporter.record(_Error.create(t, getPosition()));
+        //errorReporter.record(_Error.create(t, getPosition()));
     }
 
     private void scanNumber() {
@@ -155,10 +155,6 @@ public class Lexer implements ILexer, Opcode {
         return opCodes;
     }
 
-    private int linePos = 1;
-    private int colPos = 0;
-    private int curlinePos = linePos;
-    private int curcolPos = colPos;
     public boolean spellError(String line){
         for(int i = 0; i<inherentMnemonics.length; i++){
             if(inherentMnemonics[i].contains(line)){

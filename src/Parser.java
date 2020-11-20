@@ -51,27 +51,26 @@ public class Parser implements IParser {
     //
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
-    @Override
     public Link parse() throws IOException {
         System.out.println("Parsing a AssemblyUnit...");
 
         seq = new LineStmtSeq();
         LineStmt lineStmt;
         int count = 0;
-        //FileWriter fileWriter = new FileWriter();
+        FileWriter fileWriter = new FileWriter("/Users/ahmed/Desktop/Concordia/Courses/Fall\\ 2020/SOEN\\ 341/Project\\ B/SOEN341_ProjectB/src/S1Test1.lst");
 
 
         while (token != lexer.EOF) {
-          if (lexer.spellError(line))
-                continue;
             String s = keywordTable.poll().toString();
+            if (lexer.spellError(s))
+                continue;
             lineStmt = parseLineStmt(s);
             seq.add(lineStmt);
             //System.out.println(seq.pop().getInstruction().printInstruction());
             fileWriter.write(seq.pop().getInstruction().printInstruction());
             count++;
             nextToken();
-
+        }
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------
