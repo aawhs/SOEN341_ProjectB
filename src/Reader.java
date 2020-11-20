@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Reader implements IReader {
-    public Reader(String filepath) throws FileNotFoundException, URISyntaxException {
-        srcFile = new SourceFile(filepath);
+    public Reader(ISourceFile srcFile) throws FileNotFoundException, URISyntaxException {
+        this.srcFile = srcFile;
         openFile();
+        fileReader = new BufferedReader(new FileReader(srcFile.getFile().getPath()));
     }
     public void openFile() throws FileNotFoundException, URISyntaxException {
         srcFile.openInputStream();
@@ -15,38 +16,24 @@ public class Reader implements IReader {
     }
 
     public void readFile() throws IOException {
-        BufferedReader fileReader = new BufferedReader(new FileReader(srcFile.getFile().getPath()));
-        while((ch_num = fileReader.read()) != -1) {
-            ch = (char) ch_num;
-            charactersList[rowPos][colPos] = ch;
-            if(ch != '\n'){
-                colPos++;
-            }
-            else{
-                rowPos++;
-            }
-        }
-        for(int i = 0; i < rowPos; i++){
-           for(int j = 0; j < colPos; j++){
-               if(charactersList[i][j] != null)
-                System.out.print(charactersList[i][j]);
-           }
-        }
-        
-        fileReader.close();
+        ch_num = fileReader.read();
+        //System.out.print(ch =(char)ch_num);
     }
 
     public void scanCharacters(){
 
     }
 
-    public char read(){
-        return ch;
+    public int read() throws IOException {
+        readFile();
+        return ch_num;
     }
 
     private ISourceFile srcFile;
+    private BufferedReader fileReader;
     private int ch_num = 0;
     private char ch;
+    private String line;
     private int colPos=0;
     private int rowPos=0;
     private int size = 0;

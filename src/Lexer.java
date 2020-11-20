@@ -6,107 +6,129 @@
  */
 
 import java.io.*;
-import java.net.URISyntaxException;
-
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Lexer implements ILexer, Opcode {
     /** Create a lexer that scans the given character stream. */
-    public Lexer(IReader reader, ISymbolTable keywordTable) throws FileNotFoundException, URISyntaxException {
+    public Lexer(IReader reader, Queue keywordTable) throws IOException {
+        //Define Helpers
         this.reader = reader;
         this.keywordTable = keywordTable;
-        errorReporter = new ErrorReporter();
 
-        // Enter all mnemonics as keywords in the symbol table...
+
+        opCodes = new SymbolTable();
+
+        //Populate opcode ST
+        for(int i = 0; i <inherentOpcodes.length ; i++){
+            opCodes.put(inherentMnemonics[i],inherentOpcodes[i]);
+        }
+
+        //Instantiate Position Variables
+
         linePos = 1;
         colPos = 0;
         curlinePos = linePos;
         curcolPos = colPos;
-        position = new Position(curlinePos, curcolPos);
-        read();
 
+        tokenSwitch = true;
+        mnemonic ="";
+        read();
     }
 
     /* Read the next character. */
-    private int read() {
+    private int read() throws IOException {
         colPos++;
-        return this.ch = reader.read();
+        return (ch = reader.read());
     }
 
+
+
     private void error(String t) {
+
         errorReporter.record(_Error.create(t, getPosition()));
     }
 
     private void scanNumber() {
         // your code...
     }
-    private int scanIdentifier() {
-        // your code...
-        return 0;
+    private int scanIdentifier() throws IOException {
+        mnemonic += (char)ch;
+        while ((ch = read()) != '\n'){
+            mnemonic += (char)ch;
+        }
+        //System.out.println(mnemonic);
+        position = new Position(curlinePos,curcolPos);
+        keywordTable.add(mnemonic);
+        return 1000;
     }
     private int scanDirective() {
-        // your code...
+
         return 0;
     }
     private int scanString() {
-        // your code...
         return 0;
     }
     /**
      * Scan the next token. Mark position on entry in case of error.
      * @return   the token.
      */
-    public int getToken() {
+    public int getToken() throws IOException {
         // skip whitespaces
         // "\n", "\r\n", "\n", or line comments are considered as EOL
 
-        // your code...
-
-        // Mark position (after skipping blanks)
-        curlinePos = linePos;
-        curcolPos = colPos;
-
-        while (true) {
-            switch ( ch ) {
-
-                case -1:
-                    return EOF;
-                case 'a': case 'b': case 'c': case 'd': case 'e':
-                case 'f': case 'g': case 'h': case 'i': case 'j':
-                case 'k': case 'l': case 'm': case 'n': case 'o':
-                case 'p': case 'q': case 'r': case 's': case 't':
-                case 'u': case 'v': case 'w': case 'x': case 'y':
-                case 'z':
-                case 'A': case 'B': case 'C': case 'D': case 'E':
-                case 'F': case 'G': case 'H': case 'I': case 'J':
-                case 'K': case 'L': case 'M': case 'N': case 'O':
-                case 'P': case 'Q': case 'R': case 'S': case 'T':
-                case 'U': case 'V': case 'W': case 'X': case 'Y':
-                case '_':
-                case 'Z':
-                    return scanIdentifier();
-
-                case '.':  /* dot for directives as a first character */
-                    return scanDirective();
-
-
-                case '0': case '1': case '2': case '3': case '4':
-                case '5': case '6': case '7': case '8': case '9':
-                    scanNumber();
-                    return NUMBER;
-
-                case '-':
-                    read(); return MINUS;
-
-                case ',':
-                    read(); return COMMA;
-
-                case '"':
-                    return scanString();
-
-                default:
-                    read(); return ILLEGAL_CHAR;
+            while(ch == '\n' || ch == '\r' || ch == ' ' || ch == ';'){
+                ch = read();
+                mnemonic ="";
+                linePos++;
             }
-        }
+            curlinePos = linePos;
+            curcolPos = colPos;
+            while (tokenSwitch) {
+                switch ( ch ) {
+                    case -1:
+                        tokenSwitch = false;
+                        return EOF;
+
+                    case 'a': case 'b': case 'c': case 'd': case 'e':
+                    case 'f': case 'g': case 'h': case 'i': case 'j':
+                    case 'k': case 'l': case 'm': case 'n': case 'o':
+                    case 'p': case 'q': case 'r': case 's': case 't':
+                    case 'u': case 'v': case 'w': case 'x': case 'y':
+                    case 'z':
+                    case 'A': case 'B': case 'C': case 'D': case 'E':
+                    case 'F': case 'G': case 'H': case 'I': case 'J':
+                    case 'K': case 'L': case 'M': case 'N': case 'O':
+                    case 'P': case 'Q': case 'R': case 'S': case 'T':
+                    case 'U': case 'V': case 'W': case 'X': case 'Y':
+                    case '_':
+                    case 'Z':
+                        return scanIdentifier();
+
+                    case '.':  /* dot for directives as a first character */
+                        return scanDirective();
+
+
+                    case '0': case '1': case '2': case '3': case '4':
+                    case '5': case '6': case '7': case '8': case '9':
+                        scanNumber();
+                        return NUMBER;
+
+                    case '-':
+                        read(); return MINUS;
+
+                    case ',':
+                        read(); return COMMA;
+
+                    case '"':
+                        return scanString();
+
+                    default:
+                        read(); return ILLEGAL_CHAR;
+                }
+            }
+            return 0;
+
     }
 
     @Override
@@ -114,8 +136,23 @@ public class Lexer implements ILexer, Opcode {
         return null;
     }
 
-    private Position getPosition(){
-        return position;
+    private int linePos;
+    private int colPos;
+    private int curlinePos;
+    private int curcolPos;
+    private int ch;
+    private String mnemonic;
+    private IReader reader;
+
+    public Queue getKeywordTable() {
+        return keywordTable;
+    }
+
+
+    private Queue keywordTable;
+
+    public ISymbolTable getOpCodes() {
+        return opCodes;
     }
 
     private int linePos = 1;
@@ -137,10 +174,10 @@ public class Lexer implements ILexer, Opcode {
                             ILLEGAL_CHAR = 103,
                             NUMBER= 104;
 
-    private int ch;
-    private IReader reader;
+
+    private ISymbolTable opCodes;
     private IReportable errorReporter;
-    private ISymbolTable keywordTable;
     private Position position;
+    private boolean tokenSwitch;
 
 }

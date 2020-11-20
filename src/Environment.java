@@ -1,12 +1,17 @@
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Environment {
     //Constructors
-    public Environment(ILexer lexer, ISourceFile sourceFile, IReportable errorReporter
-            , ISymbolTable table, ISymbolTable keywordTable) {
-        this.lexer = lexer;
-        this.sourceFile = sourceFile;
-        this.errorReporter = errorReporter;
-        this.table = table;
-        this.keywordTable = keywordTable;
+    public Environment(String filePath) throws IOException, URISyntaxException {
+        this.sourceFile = new SourceFile(filePath);
+        this.reader = new Reader(sourceFile);
+        this.keywordTable = new LinkedList();
+        this.lexer = new Lexer(reader, keywordTable);
+        this.errorReporter = new ErrorReporter();
+        this.table = new SymbolTable();
     }
 
     public Environment() {
@@ -35,7 +40,7 @@ public class Environment {
         this.table = table;
     }
 
-    public void setKeywordTable(ISymbolTable keywordTable) {
+    public void setKeywordTable(Queue keywordTable) {
         this.keywordTable = keywordTable;
     }
 
@@ -56,7 +61,7 @@ public class Environment {
         return table;
     }
 
-    public ISymbolTable getKeywordTable() {
+    public Queue getKeywordTable() {
         return keywordTable;
     }
 
@@ -64,7 +69,18 @@ public class Environment {
     private ILexer        lexer;
     private ISourceFile   sourceFile;
     private IReportable   errorReporter;
-    private ISymbolTable  table;
-    private ISymbolTable  keywordTable;
+    private ISymbolTable table;
+    private Queue keywordTable;
+    private IReader       reader;
+
+    public LineStmtSeq getSeq() {
+        return seq;
+    }
+
+    public void setSeq(LineStmtSeq seq) {
+        this.seq = seq;
+    }
+
+    private LineStmtSeq seq;
     
 }

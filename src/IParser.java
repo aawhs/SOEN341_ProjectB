@@ -1,5 +1,7 @@
+import java.io.IOException;
+
 public interface IParser
 {
-    Link parse();
+    Link parse() throws IOException;
 
 }

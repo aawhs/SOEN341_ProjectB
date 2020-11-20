@@ -1,13 +1,15 @@
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 
-public class SymbolTable implements ISymbolTable{
+public class SymbolTable implements ISymbolTable {
 
     public TreeMap<Comparable, Object> getSymbolTable() {
         return symbolTable;
     }
 
     private TreeMap<Comparable, Object> symbolTable;
+
 
     public SymbolTable() {
         symbolTable = new TreeMap<>();
@@ -26,6 +28,11 @@ public class SymbolTable implements ISymbolTable{
     public Object get(Comparable key) {
         if(!isValid(key)) throw new IllegalArgumentException("cannot get null key");
         return symbolTable.get(key);
+    }
+
+    @Override
+    public Iterator<Map.Entry<Comparable, Object>> poll(){
+            return symbolTable.entrySet().iterator();
     }
 
     //remove key-value pair

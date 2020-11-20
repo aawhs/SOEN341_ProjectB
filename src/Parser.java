@@ -5,16 +5,27 @@
  */
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Queue;
+
 public class Parser implements IParser {
-    public Parser(Environment env) {
+    public Parser(Environment env) throws IOException {
         this.lexer = env.getLexer();
         this.sourceFile = env.getSourceFile();
         this.errorReporter = env.getErrorReporter();
         this.table = env.getTable();
         this.keywordTable = env.getKeywordTable();
+        this.opCodes = lexer.getOpCodes();
         nextToken(); // prime
-        //address = 0;
+        if(token == 1000) {
+            parse();
+        }
+
+        address = 0;
     }
+
     /*
     // Record the error: <t> expected, found <token> at <token>.position
     protected void expect(int t) {
@@ -40,16 +51,27 @@ public class Parser implements IParser {
     //
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
-    public Link parse(String line) {
+    @Override
+    public Link parse() throws IOException {
         System.out.println("Parsing a AssemblyUnit...");
 
-        LineStmtSeq seq = new LineStmtSeq();
+        seq = new LineStmtSeq();
+        LineStmt lineStmt;
+        int count = 0;
+        //FileWriter fileWriter = new FileWriter();
 
-        while ( token != lexer.EOF ) {
-            if (lexer.spellError(line))
+
+        while (token != lexer.EOF) {
+          if (lexer.spellError(line))
                 continue;
-            seq.add( parseLineStmt(line) );
-        }
+            String s = keywordTable.poll().toString();
+            lineStmt = parseLineStmt(s);
+            seq.add(lineStmt);
+            //System.out.println(seq.pop().getInstruction().printInstruction());
+            fileWriter.write(seq.pop().getInstruction().printInstruction());
+            count++;
+            nextToken();
+
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------
@@ -99,20 +121,24 @@ public class Parser implements IParser {
         return new LineStmt(label, inst, comment);
     }
 
-    protected void nextToken() {
+    protected void nextToken() throws IOException {
         token = lexer.getToken();
     }
 
     private int           token;
+    private int           address;
     private ILexer        lexer;
     private ISourceFile   sourceFile;
     private IReportable   errorReporter;
-    private ISymbolTable  table;
-    private ISymbolTable  keywordTable;
+    private ISymbolTable table;
+    private Queue keywordTable;
+    private ISymbolTable opCodes;
 
-    @Override
-    public Link parse() {
-        return null;
+    public LineStmtSeq getSeq() {
+        return seq;
     }
+
+    private LineStmtSeq   seq;
+
 }
 
