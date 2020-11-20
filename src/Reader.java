@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Reader implements IReader {
-    public Reader(String filepath) throws FileNotFoundException, URISyntaxException {
-        srcFile = new SourceFile(filepath);
+    public Reader(ISourceFile srcFile) throws FileNotFoundException, URISyntaxException {
+        this.srcFile = srcFile;
         openFile();
         fileReader = new BufferedReader(new FileReader(srcFile.getFile().getPath()));
     }

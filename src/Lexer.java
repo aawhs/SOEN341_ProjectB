@@ -6,10 +6,12 @@
  */
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Lexer implements ILexer, Opcode {
     /** Create a lexer that scans the given character stream. */
-    public Lexer(IReader reader, ISymbolTable keywordTable) throws IOException {
+    public Lexer(IReader reader, Queue keywordTable) throws IOException {
         //Define Helpers
         this.reader = reader;
         this.keywordTable = keywordTable;
@@ -21,9 +23,6 @@ public class Lexer implements ILexer, Opcode {
             opCodes.put(inherentMnemonics[i],inherentOpcodes[i]);
         }
 
-        //Populate Keyword ST
-
-
         //Instantiate Position Variables
         linePos = 1;
         colPos = 0;
@@ -31,11 +30,8 @@ public class Lexer implements ILexer, Opcode {
         curcolPos = colPos;
 
         tokenSwitch = true;
-
-        while((ch = read()) != EOF){
-            getToken();
-        }
-
+        mnemonic ="";
+        read();
     }
 
     /* Read the next character. */
@@ -54,16 +50,14 @@ public class Lexer implements ILexer, Opcode {
         // your code...
     }
     private int scanIdentifier() throws IOException {
-        mnemonic +=(char)ch;
-        while ((ch = read()) != '\n' || (ch=read()) != '\r' || (ch=read()) != ' '){
+        mnemonic += (char)ch;
+        while ((ch = read()) != '\n'){
             mnemonic += (char)ch;
         }
-        System.out.println(mnemonic);
-        if(opCodes.contains(mnemonic)){
-            keywordTable.put(mnemonic,opCodes.get(mnemonic));
-            return 1000;
-        }
-        return 0;
+        //System.out.println(mnemonic);
+        position = new Position(curlinePos,curcolPos);
+        keywordTable.add(mnemonic);
+        return 1000;
     }
     private int scanDirective() {
 
@@ -83,6 +77,7 @@ public class Lexer implements ILexer, Opcode {
             while(ch == '\n' || ch == '\r' || ch == ' ' || ch == ';'){
                 ch = read();
                 mnemonic ="";
+                linePos++;
             }
             curlinePos = linePos;
             curcolPos = colPos;
@@ -146,11 +141,16 @@ public class Lexer implements ILexer, Opcode {
     private String mnemonic;
     private IReader reader;
 
-    public ISymbolTable getKeywordTable() {
+    public Queue getKeywordTable() {
         return keywordTable;
     }
 
-    private ISymbolTable keywordTable;
+    private Queue keywordTable;
+
+    public ISymbolTable getOpCodes() {
+        return opCodes;
+    }
+
     private ISymbolTable opCodes;
     private IReportable errorReporter;
     private Position position;

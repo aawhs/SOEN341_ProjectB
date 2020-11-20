@@ -5,7 +5,10 @@
  */
 
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Queue;
 
 public class Parser implements IParser {
     public Parser(Environment env) throws IOException {
@@ -14,9 +17,15 @@ public class Parser implements IParser {
         this.errorReporter = env.getErrorReporter();
         this.table = env.getTable();
         this.keywordTable = env.getKeywordTable();
+        this.opCodes = lexer.getOpCodes();
         nextToken(); // prime
-        //address = 0;
+        if(token == 1000) {
+            parse();
+        }
+
+        address = 0;
     }
+
     /*
     // Record the error: <t> expected, found <token> at <token>.position
     protected void expect(int t) {
@@ -42,14 +51,25 @@ public class Parser implements IParser {
     //
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
-    public Link parse(String line) {
+    @Override
+    public Link parse() throws IOException {
         System.out.println("Parsing a AssemblyUnit...");
 
-        LineStmtSeq seq = new LineStmtSeq();
+        seq = new LineStmtSeq();
+        LineStmt lineStmt;
+        int count = 0;
+        FileWriter fileWriter = new FileWriter("S1Test1.txt");
 
-        while ( token != lexer.EOF ) {
-            seq.add( parseLineStmt(line) );
+        while (token != lexer.EOF) {
+            String s = keywordTable.poll().toString();
+            lineStmt = parseLineStmt(s);
+            seq.add(lineStmt);
+            //System.out.println(seq.pop().getInstruction().printInstruction());
+            fileWriter.write(seq.pop().getInstruction().printInstruction());
+            count++;
+            nextToken();
         }
+
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------
@@ -104,15 +124,19 @@ public class Parser implements IParser {
     }
 
     private int           token;
+    private int           address;
     private ILexer        lexer;
     private ISourceFile   sourceFile;
     private IReportable   errorReporter;
-    private ISymbolTable  table;
-    private ISymbolTable  keywordTable;
+    private ISymbolTable table;
+    private Queue keywordTable;
+    private ISymbolTable opCodes;
 
-    @Override
-    public Link parse() {
-        return null;
+    public LineStmtSeq getSeq() {
+        return seq;
     }
+
+    private LineStmtSeq   seq;
+
 }
 
