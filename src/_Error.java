@@ -17,12 +17,12 @@ public class _Error {
         list_of_errors.add(error);
     }
 
-    static void printErrors(){
+    void printErrors(){
         for(int i = 0; i < list_of_errors.size(); i++){
-            System.out.println(list_of_errors.get(i).text + " ");
+            System.out.println(list_of_errors.get(i).text + " " + pos.getLinePos() + ", " + pos.getColPos());
         }
     }
-    
+
     private String text;
     private Position pos;
 }

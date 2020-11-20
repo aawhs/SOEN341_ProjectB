@@ -14,6 +14,6 @@ public class Position {
     }
 
 
-    private int colPos;
-    private int linePos;
+    private Integer colPos;
+    private Integer linePos;
 }
