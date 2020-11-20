@@ -19,7 +19,8 @@ public class _Error {
 
     void printErrors(){
         for(int i = 0; i < list_of_errors.size(); i++){
-            System.out.println(list_of_errors.get(i).text + " " + pos.getLinePos() + ", " + pos.getColPos());
+            System.out.println(list_of_errors.get(i).text + " " + list_of_errors.get(i).pos.toString());
+
         }
     }
 
