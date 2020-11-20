@@ -46,6 +46,9 @@ public class Parser implements IParser {
         LineStmtSeq seq = new LineStmtSeq();
 
         while ( token != lexer.EOF ) {
+            if (token == lexer.ILLEGAL_CHAR){
+                lexer.error("Error reported");
+            }
             seq.add( parseLineStmt() );
         }
         return new TranslationUnit(seq);

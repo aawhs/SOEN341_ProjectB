@@ -1,4 +1,4 @@
-public class SyntaxError extends Exception{
+public class SyntaxError extends Exception implements IReportable{
     private String msg;
     private Throwable cause;
     public SyntaxError(){
@@ -19,5 +19,11 @@ public class SyntaxError extends Exception{
     }
     public void setMessage(String msg){
         this.msg = msg;
+    }
+
+    @Override
+    public void record(_Error e) {
+        // TODO Auto-generated method stub
+
     }
 }

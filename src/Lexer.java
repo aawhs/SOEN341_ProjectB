@@ -34,8 +34,8 @@ public class Lexer implements ILexer, Opcode {
         return this.ch = reader.read();
     }
 
-    private void error(String t) {
-        errorReporter.record( _Error.create(t, getPosition()) );
+     public void error(String t) {
+        errorReporter.record(_Error.create(t, getPosition()));
     }
 
     private void scanNumber() {
