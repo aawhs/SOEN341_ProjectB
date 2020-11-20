@@ -46,9 +46,10 @@ public class Parser implements IParser {
         LineStmtSeq seq = new LineStmtSeq();
 
         while ( token != lexer.EOF ) {
-            if (token == lexer.ILLEGAL_CHAR){
-                lexer.error("Error reported");
-            }
+            if (this.illegalCharError())
+                continue;
+            if (lexer.numError())
+                continue;
             seq.add( parseLineStmt() );
         }
         return new TranslationUnit(seq);
@@ -90,6 +91,13 @@ public class Parser implements IParser {
 
     protected void nextToken() {
         token = lexer.getToken();
+    }
+    private boolean illegalCharError(){
+        if (token == lexer.ILLEGAL_CHAR){
+            lexer.error("Illegal character error.");
+            return true;
+        }
+        return false;
     }
 
     private int           token;

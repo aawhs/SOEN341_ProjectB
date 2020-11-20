@@ -89,6 +89,8 @@ public class Lexer implements ILexer, Opcode {
 
                 case '.':  /* dot for directives as a first character */
                     return scanDirective();
+                case ';'
+                    return COMMENT;
 
 
                 case '0': case '1': case '2': case '3': case '4':
@@ -119,6 +121,15 @@ public class Lexer implements ILexer, Opcode {
     private Position getPosition(){
         return position;
     }
+    public boolean numError(){
+        if ((this.getToken() == this.COMMENT))
+            return false;
+        if (this.getToken() == this.NUMBER && (this.getPosition().getColPos() >= 0) && (this.getPosition().getColPos() <= 0)){
+            this.error("Unexpected digit error.");
+            return true;
+        }
+        return false;
+    }
 
     private int linePos = 1;
     private int colPos = 0;
@@ -128,7 +139,8 @@ public class Lexer implements ILexer, Opcode {
     private final Integer MINUS = 101,
                             COMMA= 102 ,
                             ILLEGAL_CHAR = 103,
-                            NUMBER= 104;
+                            NUMBER= 104,
+                            COMMENT = 105;
 
     private int ch;
     private IReader reader;
