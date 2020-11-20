@@ -1,6 +1,6 @@
 public class Instruction implements Opcode {
 
-    public String mnemonic;
+    public String mnemonic = "";
     public int opCode;
 
     public Instruction(String inst){
@@ -23,6 +23,15 @@ public class Instruction implements Opcode {
               this.opCode = inherentOpcodes[i];
           }
       }
+    }
+
+    public void parseMnemonic(String inst){
+        String mnemonic_temp = "";
+        for (int i = 10; i < 20; i++){
+            mnemonic_temp += inst.charAt(i);
+            if(inst.charAt(i) != ' ' || inst.charAt(i) != '.'){break;}
+        }
+        getInstruction(mnemonic_temp);
     }
 
 
