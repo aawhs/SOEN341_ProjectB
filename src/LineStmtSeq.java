@@ -3,9 +3,10 @@ import java.util.Iterator;
 public class LineStmtSeq{
     private LinkedQueue sequence= new LinkedQueue();
     public void add(LineStmt item){
-        sequence.add(item);
+        Node node = new Node(item);
+        sequence.add(node);
     }
-    public LineStmt getNext(){
-        return (LineStmt) sequence.getNext();
+    public LineStmt pop(){
+        return sequence.pop().getLineStmt();
     }
 }

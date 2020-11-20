@@ -1,25 +1,30 @@
 import java.util.*;
-public class LinkedQueue<Item> implements Iterable<Item>{
-    private Queue queue;
+public class LinkedQueue implements Iterable<Node> {
 
-    public LinkedQueue(){
-        queue = new LinkedList();
+    private LinkedList<Node> queue;
+
+    public LinkedQueue() {
+        queue = new LinkedList<Node>();
     }
 
-    public void add(Item item){
-        queue.add(item);
+    public void add(Node node) {
+        queue.add(node);
     }
 
-    public Object getNext(){
+    public Node pop() {
         return queue.poll();
+        // Node first = queue.getFirst();
+        // queue.removeFirst();
+        // return first;
     }
 
-    public void remove(Item item){
-        queue.remove(item);
+
+    public void remove(Node node) {
+        queue.remove(node);
     }
 
     @Override
-    public Iterator<Item> iterator() {
+    public Iterator<Node> iterator() {
         return null;
     }
 }
