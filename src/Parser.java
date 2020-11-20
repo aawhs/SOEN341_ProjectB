@@ -58,7 +58,7 @@ public class Parser implements IParser {
         seq = new LineStmtSeq();
         LineStmt lineStmt;
         int count = 0;
-        FileWriter fileWriter = new FileWriter("S1Test1.txt");
+        //FileWriter fileWriter = new FileWriter();
 
         while (token != lexer.EOF) {
             String s = keywordTable.poll().toString();
