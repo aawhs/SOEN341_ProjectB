@@ -5,7 +5,7 @@
  ret
  not
  and
- or 
+ or
  xor
  neg
  inc
@@ -21,6 +21,6 @@
  tne
  tlt
  tgt
- tle 
- tge 
- halt       
+ tle
+ tge
+ halt

@@ -5,8 +5,10 @@
  */
 
 
+import java.io.IOException;
+
 public class Parser implements IParser {
-    public Parser(Environment env) {
+    public Parser(Environment env) throws IOException {
         this.lexer = env.getLexer();
         this.sourceFile = env.getSourceFile();
         this.errorReporter = env.getErrorReporter();
@@ -97,7 +99,7 @@ public class Parser implements IParser {
         return new LineStmt(label, inst, comment);
     }
 
-    protected void nextToken() {
+    protected void nextToken() throws IOException {
         token = lexer.getToken();
     }
 
