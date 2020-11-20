@@ -72,4 +72,13 @@ public class SymbolTable implements ISymbolTable{
     public Iterator iterator() {
         return symbolTable.keySet().iterator();
     }
+
+    /**
+     * Used in AUnit testing
+     * @param i the value of the .get value from SymbolTable.get()
+     * @return Hexadecimal formatted string for the value of the input argument
+     */
+    public String toHex(int i){
+        return String.format("0x%02X",i);
+    }
 }
