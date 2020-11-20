@@ -60,7 +60,10 @@ public class Parser implements IParser {
         int count = 0;
         //FileWriter fileWriter = new FileWriter();
 
+
         while (token != lexer.EOF) {
+          if (lexer.spellError(line))
+                continue;
             String s = keywordTable.poll().toString();
             lineStmt = parseLineStmt(s);
             seq.add(lineStmt);
@@ -68,7 +71,6 @@ public class Parser implements IParser {
             fileWriter.write(seq.pop().getInstruction().printInstruction());
             count++;
             nextToken();
-        }
 
         return new TranslationUnit(seq);
     }

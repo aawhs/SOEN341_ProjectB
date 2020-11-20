@@ -16,6 +16,7 @@ public class Lexer implements ILexer, Opcode {
         this.reader = reader;
         this.keywordTable = keywordTable;
 
+
         opCodes = new SymbolTable();
 
         //Populate opcode ST
@@ -24,6 +25,7 @@ public class Lexer implements ILexer, Opcode {
         }
 
         //Instantiate Position Variables
+
         linePos = 1;
         colPos = 0;
         curlinePos = linePos;
@@ -43,7 +45,8 @@ public class Lexer implements ILexer, Opcode {
 
 
     private void error(String t) {
-        errorReporter.record( _Error.create(t, position) );
+
+        errorReporter.record(_Error.create(t, getPosition()));
     }
 
     private void scanNumber() {
@@ -145,21 +148,36 @@ public class Lexer implements ILexer, Opcode {
         return keywordTable;
     }
 
+
     private Queue keywordTable;
 
     public ISymbolTable getOpCodes() {
         return opCodes;
     }
 
+    private int linePos = 1;
+    private int colPos = 0;
+    private int curlinePos = linePos;
+    private int curcolPos = colPos;
+    public boolean spellError(String line){
+        for(int i = 0; i<inherentMnemonics.length; i++){
+            if(inherentMnemonics[i].contains(line)){
+                this.error("Spelling error");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private final Integer   MINUS = 101,
+                            COMMA= 102 ,
+                            ILLEGAL_CHAR = 103,
+                            NUMBER= 104;
+
+
     private ISymbolTable opCodes;
     private IReportable errorReporter;
     private Position position;
     private boolean tokenSwitch;
-
-    private int NUMBER = 1001;
-    private int COMMA = 1002;
-    private int MINUS = 1003;
-    private int ILLEGAL_CHAR = 1004;
-
 
 }

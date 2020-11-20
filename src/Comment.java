@@ -12,11 +12,11 @@ public class Comment {
         boolean cmt = false;
         String str = "";
         for(int i = 0; i < c.length(); i++){
-            if(c.charAt(i) == commentStart){
-                cmt = true;
-            }
             if(cmt == true){
                 str = str + c.charAt(i);
+            }
+            if(c.charAt(i) == commentStart){
+                cmt = true;
             }
             if(c.charAt(i) == EOL){
                 return str;
@@ -24,5 +24,11 @@ public class Comment {
         }
         return str;
     }
+
+    /**
+     * Used in AUnit testing
+     * @return comment
+     */
+    public String getComment() {return comment;}
 
 }
