@@ -40,20 +40,25 @@ public class Parser implements IParser {
     //
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
-    public Link parse() {
+    public Link parse(String line) {
         System.out.println("Parsing a AssemblyUnit...");
 
         LineStmtSeq seq = new LineStmtSeq();
 
         while ( token != lexer.EOF ) {
-            seq.add( parseLineStmt() );
+            seq.add( parseLineStmt(line) );
         }
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------
-    private Instruction parseInherent() {
+    private Instruction parseInherent(Instruction inst, String line) {
         // your code...
-        return new Instruction();
+        /**
+         * Input: String
+         * Output: Saves mnemonic and opcode in inst object
+         */
+        inst.parseMnemonic(line);
+        return inst;
     }
     //---------------------------------------------------------------------------------
     private Instruction parseImmediate() {
@@ -73,14 +78,21 @@ public class Parser implements IParser {
     //
     // LineStatement = [Label] [Instruction | Directive ] [Comment] EOL .
     //
-    public LineStmt parseLineStmt() {
+    public LineStmt parseLineStmt(String line) {
         Label        label = null;
-        Instruction  inst = null;
+        Instruction  inst = new Instruction();
         Comment      comment = null;
 
         System.out.println("Parsing a Line Statement...");
 
-        // your code...
+        //parseLabel(); TODO: parse the label in a line statement - create a function to translate label
+        //parseComment(); TODO: parse the comment in a line statement - create a function to translate the comment
+
+        /**
+         * Inputs: Instruction, String
+         * Output: void, saves mnemonic and respective opcode in object variables
+         */
+        inst = parseInherent(inst, line);
 
         return new LineStmt(label, inst, comment);
     }
@@ -95,5 +107,10 @@ public class Parser implements IParser {
     private IReportable   errorReporter;
     private ISymbolTable  table;
     private ISymbolTable  keywordTable;
+
+    @Override
+    public Link parse() {
+        return null;
+    }
 }
 
