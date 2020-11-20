@@ -22,4 +22,10 @@ public class Node{
 	public Node getNext(){
 		return this.next;
 	}
+
+	/**
+	 * Used in AUnit testing
+	 * @return lineStatement
+	 */
+	public LineStmt getLineStatement(){return lineStatement;}
 }
