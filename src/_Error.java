@@ -7,7 +7,7 @@ public class _Error {
         _Error e = new _Error(t, position);
         return e;
     }
-
+    private int somechange;
     private String text;
     private Position pos;
 }
