@@ -4,7 +4,7 @@ public class Test_Instruction {
         System.out.print("Test Instruction\n");
         System.out.print(String.format("0x01 pop"));
 
-        instruction.parseMnemonic("pop");
+        instruction.parseMnemonic("pop ssss");
         instruction.printInstruction();
     }
 }
