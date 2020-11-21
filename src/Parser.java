@@ -47,7 +47,7 @@ public class Parser implements IParser {
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
     public Link parse() throws IOException {
-        System.out.println("Parsing a AssemblyUnit...");
+        System.out.println("Parsing an AssemblyUnit...");
 
         seq = new LineStmtSeq();
         LineStmt lineStmt;
@@ -58,7 +58,7 @@ public class Parser implements IParser {
         if(options.isEnabled() &&
                 options.isRequired() &&
                 options.getClass().getSimpleName() == "ListingOption"){
-            System.out.println("Listing File : " + file.getName());
+            System.out.println("Listing File : " + file.getAbsolutePath());
             String line = "Line";
             fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
                     "Line","Address","Machine Code", "Label", "Assembly Code", "Comment") + "\n");
