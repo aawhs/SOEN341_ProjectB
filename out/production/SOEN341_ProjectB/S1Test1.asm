@@ -1,5 +1,5 @@
  halt
- pop
+ pop@
  dup
  exit
  ret

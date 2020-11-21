@@ -1,7 +1,7 @@
 Line   Address   Machine Code     Label       Assembly Code             Comment
 
 01	   0X00		 0X00						  halt
-02	   0X01		 0X01						  pop 
+02	   0X01		 0X00						      
 03	   0X02		 0X02						  dup 
 04	   0X03		 0X03						  exit
 05	   0X04		 0X04						  ret 
