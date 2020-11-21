@@ -57,20 +57,24 @@ public class Parser implements IParser {
         seq = new LineStmtSeq();
         LineStmt lineStmt;
         int count = 0;
-        FileWriter fileWriter = new FileWriter("/Users/ahmed/Desktop/Concordia/Courses/Fall\\ 2020/SOEN\\ 341/Project\\ B/SOEN341_ProjectB/src/S1Test1.lst");
+        File file = new File("S1Test1.lst");
+        FileWriter fileWriter = new FileWriter(file);
 
 
         while (token != lexer.EOF) {
             String s = keywordTable.poll().toString();
-            if (lexer.spellError(s))
+            /*if (lexer.spellError(s))
                 continue;
+
+             */
             lineStmt = parseLineStmt(s);
             seq.add(lineStmt);
-            //System.out.println(seq.pop().getInstruction().printInstruction());
+            //System.out.print(seq.pop().getInstruction().printInstruction());
             fileWriter.write(seq.pop().getInstruction().printInstruction());
             count++;
             nextToken();
         }
+        fileWriter.close();
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------
@@ -106,7 +110,7 @@ public class Parser implements IParser {
         Instruction  inst = new Instruction();
         Comment      comment = null;
 
-        System.out.println("Parsing a Line Statement...");
+        //System.out.println("Parsing a Line Statement...");
 
         //parseLabel(); TODO: parse the label in a line statement - create a function to translate label
         //parseComment(); TODO: parse the comment in a line statement - create a function to translate the comment
