@@ -60,6 +60,7 @@ public class Lexer implements ILexer, Opcode {
         //System.out.println(mnemonic);
         position = new Position(curlinePos,curcolPos);
         keywordTable.add(mnemonic);
+        linePos++;
         return 1000;
     }
     private int scanDirective() {
@@ -80,7 +81,6 @@ public class Lexer implements ILexer, Opcode {
             while(ch == '\n' || ch == '\r' || ch == ' ' || ch == ';'){
                 ch = read();
                 mnemonic ="";
-                linePos++;
             }
             curlinePos = linePos;
             curcolPos = colPos;
@@ -173,6 +173,11 @@ public class Lexer implements ILexer, Opcode {
 
     private ISymbolTable opCodes;
     private IReportable errorReporter;
+
+    public Position getPosition() {
+        return position;
+    }
+
     private Position position;
     private boolean tokenSwitch;
 

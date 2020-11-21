@@ -58,8 +58,10 @@ public class Parser implements IParser {
         LineStmt lineStmt;
         int count = 0;
         File file = new File("S1Test1.lst");
-        FileWriter fileWriter = new FileWriter(file);
-
+        FileWriter fr = new FileWriter(file);
+        String line = "Line";
+        fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
+                "Line","Address","Machine Code", "Label", "Assembly Code", "Comment") + "\n");
 
         while (token != lexer.EOF) {
             String s = keywordTable.poll().toString();
@@ -69,12 +71,17 @@ public class Parser implements IParser {
              */
             lineStmt = parseLineStmt(s);
             seq.add(lineStmt);
-            //System.out.print(seq.pop().getInstruction().printInstruction());
-            fileWriter.write(seq.pop().getInstruction().printInstruction());
+
+            //%02d\t\t%#04X\t\t%4s\t\t\t\t\t  %-4s"
+            String[] inst = seq.pop().getInstruction().printInstruction();
+            fr.write(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
+                    lexer.getPosition().getLinePos(),address,inst[0],inst[1]) + "\n");
             count++;
+            address++;
             nextToken();
         }
-        fileWriter.close();
+        fr.flush();
+        fr.close();
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------

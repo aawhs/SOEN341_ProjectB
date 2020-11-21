@@ -27,8 +27,11 @@ public class Instruction implements Opcode {
     }
 
 
-    public String printInstruction(){
-        String inst = String.format("\n0x%02X",opCode) + " " + mnemonic;
+    public String[] printInstruction(){
+        String[] inst = new String[2];
+        inst[0]= String.format("%#04X",opCode);
+        inst[1]=mnemonic;
+
         return inst;
     }
 

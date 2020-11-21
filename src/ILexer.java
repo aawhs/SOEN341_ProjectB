@@ -9,5 +9,6 @@ public interface ILexer {
     Queue getKeywordTable();
     ISymbolTable getOpCodes();
     boolean spellError(String line);
+    Position getPosition();
 }
 
