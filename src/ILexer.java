@@ -8,7 +8,7 @@ public interface ILexer {
     String getTokenName(int t);
     Queue getKeywordTable();
     ISymbolTable getOpCodes();
-    boolean spellError(String line);
+    //boolean spellError(String line);
     Position getPosition();
 }
 
