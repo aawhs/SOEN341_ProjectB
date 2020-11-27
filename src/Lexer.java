@@ -147,16 +147,6 @@ public class Lexer implements ILexer, Opcode {
         return opCodes;
     }
 
-    public boolean spellError(String line){
-        for(int i = 0; i< inherentMnemonics.length; i++){
-            if(inherentMnemonics[i].contains(line)){
-                this.error("Spelling error");
-                return true;
-            }
-        }
-        return false;
-    }
-
     private final Integer   MINUS = 1001,
                             COMMA= 1002 ,
                             ILLEGAL_CHAR = 1003,

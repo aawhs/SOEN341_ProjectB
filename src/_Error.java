@@ -22,6 +22,17 @@ public class _Error {
 
         }
     }
+    /*
+    public boolean spellError(String line){
+        for(int i = 0; i< inherentMnemonics.length; i++){
+            if(inherentMnemonics[i].contains(line)){
+                this.error("Spelling error");
+                return true;
+            }
+        }
+        return false;
+    }
+    */
 
     private String text;
     private Position pos;
