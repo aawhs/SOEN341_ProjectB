@@ -3,10 +3,11 @@ import java.util.Queue;
 
 public class Lexer implements ILexer, Opcode {
     /** Create a lexer that scans the given character stream. */
-    public Lexer(IReader reader, Queue keywordTable) throws IOException {
+    public Lexer(IReader reader, Queue table) throws IOException {
         //Define Helpers
         this.reader = reader;
-        this.keywordTable = keywordTable;
+        this.table = table;
+        keywordsTable = new SymbolTable();
 
 
         opCodes = new SymbolTable();
@@ -17,12 +18,13 @@ public class Lexer implements ILexer, Opcode {
             keywordsTable.put(inherentMnemonics[i], Tokens.INHERENT);
         }
 
-        /*
+
         for(int i = 0; i < immediateOpcodes.length; i++){
+            opCodes.put(immediateMnemonics[i], immediateOpcodes[i]);
             keywordsTable.put(immediateMnemonics[i], Tokens.IMMEDIATE);
         }
 
-         */
+
 
 
         //Instantiate Position Variables
@@ -68,7 +70,7 @@ public class Lexer implements ILexer, Opcode {
       }
       String commenString = str.substring(str.indexOf(";"), str.length());
       position = new Position(curcolPos,curcolPos);
-      keywordTable.add(commenString);
+      table.add(commenString);
       linePos++;
       return 1000;
     }
@@ -82,21 +84,20 @@ public class Lexer implements ILexer, Opcode {
 
     }
     private Tokens scanIdentifier() throws IOException {
-
-
         temp += (char)ch;
-        while(((ch = read()) != '\n') && position.getColPos() == 1 ){
+        while(((ch = read()) != '\n')){
             temp += (char)ch;
         }
-        mnemonic += (char)ch;
-        while ((ch = read()) != '\n'){
-            mnemonic += (char)ch;
+        if(keywordsTable.contains(temp)){
+            position = new Position(curlinePos,curcolPos);
+            table.add(temp);
+            linePos++;
+            return (Tokens) keywordsTable.get(temp);
         }
-        //System.out.println(mnemonic);
         position = new Position(curlinePos,curcolPos);
-        keywordTable.add(mnemonic);
+        table.add(temp);
         linePos++;
-        return Tokens.INHERENT;
+        return Tokens.LABEL;
 
     }
     private Tokens scanDirective() {
@@ -183,8 +184,8 @@ public class Lexer implements ILexer, Opcode {
     private String commenString;
     private Tokens token;
 
-    public Queue getKeywordTable() {
-        return keywordTable;
+    public Queue getTable() {
+        return table;
     }
     public boolean spellError(String line){
         for(int i = 0; i<inherentMnemonics.length; i++){
@@ -196,7 +197,7 @@ public class Lexer implements ILexer, Opcode {
         return false;
     }
 
-    private Queue keywordTable;
+    private Queue table;
     private ISymbolTable keywordsTable;
 
     public ISymbolTable getOpCodes() {

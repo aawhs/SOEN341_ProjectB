@@ -21,6 +21,7 @@ public class Parser implements IParser {
 
 
     // Record the error: <t> expected, found <token> at <token>.position
+    /*
     protected void expect(int t) throws IOException {
         if (t != token) {
             String expected = "INHERENT IDENTIFIER";
@@ -30,6 +31,8 @@ public class Parser implements IParser {
             nextToken();
         }
     }
+
+     */
     protected void expect(String t) {
         errorReporter.record( _Error.create(t+" expected", lexer.getPosition()) );
     }
@@ -81,7 +84,7 @@ public class Parser implements IParser {
 
 
 
-            while (token != lexer.EOF) {
+            while (!token.equals(Tokens.EOF) ) {
                     String s = keywordTable.poll().toString();
                     lineStmt = parseLineStmt(s);
                     seq.add(lineStmt);
@@ -126,7 +129,7 @@ public class Parser implements IParser {
              * Input: String
              * Output: Saves mnemonic and opcode in inst object
              */
-            expect(1000);
+            //expect(1000);
             inst.parseMnemonic(line);
             return inst;
         }
@@ -194,7 +197,7 @@ public class Parser implements IParser {
             token = lexer.getToken();
         }
 
-        private int token;
+        private Tokens token;
         private int address;
         private ILexer lexer;
         private ISourceFile sourceFile;

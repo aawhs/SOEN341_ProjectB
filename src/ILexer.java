@@ -6,7 +6,7 @@ public interface ILexer {
     static int EOL = '\n';
     Tokens getToken() throws IOException;
     String getTokenName(int t);
-    Queue getKeywordTable();
+    Queue getTable();
     ISymbolTable getOpCodes();
     //boolean spellError(String line);
     Position getPosition();
