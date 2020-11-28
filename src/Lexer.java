@@ -34,7 +34,36 @@ public class Lexer implements ILexer, Opcode {
         return (ch = reader.read());
     }
 
+    private int scanComment(){
+        /*public String parseComment(String c){
+            boolean cmt = false;
+            String str = "";
+            for(int i = 0; i < c.length(); i++){
+                if(cmt == true){
+                    str = str + c.charAt(i);
+                }
+                if(c.charAt(i) == commentStart){
+                    cmt = true;
+                }
+                if(c.charAt(i) == EOL){
+                    return str;
+                }
+            }
+            return str;
+        }
+        */
+      String str = "";
+      str += (char)ch;
 
+      while((ch = read()) != '\n'){
+          str += (char)ch;
+      }
+      String commenString = str.substring(str.indexOf(";"), str.length());
+      position = new Position(curcolPos,curcolPos);
+      keywordTable.add(commenString);
+      linePos++;
+      return 1000;
+    }
 
     private void error(String t) {
 
@@ -135,11 +164,25 @@ public class Lexer implements ILexer, Opcode {
     private int ch;
     private String mnemonic;
     private IReader reader;
+    private String commenString;
 
     public Queue getKeywordTable() {
         return keywordTable;
     }
 
+    private int linePos = 1;
+    private int colPos = 0;
+    private int curlinePos = linePos;
+    private int curcolPos = colPos;
+    public boolean spellError(String line){
+        for(int i = 0; i<inherentMnemonics.length; i++){
+            if(inherentMnemonics[i].contains(line)){
+                this.error("Spelling error");
+                return true;
+            }
+        }
+        return false;
+    }
 
     private Queue keywordTable;
 

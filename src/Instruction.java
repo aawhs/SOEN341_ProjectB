@@ -23,7 +23,12 @@ public class Instruction implements Opcode {
     }
 
     public void parseMnemonic(String inst){
-        getInstruction(inst);
+        String mnemonic_temp = "";
+        for (int i = 0; i < inst.length(); i++){
+            if(inst.charAt(i) == ' ' || inst.charAt(i) == '.'){break;}
+            mnemonic_temp += inst.charAt(i);
+        }
+        getInstruction(mnemonic_temp);
     }
 
 

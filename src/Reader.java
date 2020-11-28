@@ -26,6 +26,11 @@ public class Reader implements IReader {
         return ch_num;
     }
 
+    public String readString() throws IOException{
+        line = fileReader.readLine();
+        return line;
+    }
+
     private ISourceFile srcFile;
     private BufferedReader fileReader;
     private int ch_num = 0;
