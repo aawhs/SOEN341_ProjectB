@@ -63,4 +63,12 @@ public interface Opcode {
        "shl",   "shr",    "teq",  "tne",   "tlt",   "tgt",   "tle",     "tge"
     };
 
+    public static final int immediateOpcodes[] = {
+      br_i5, brf_i5, enter_u5, ldc_i3, addv_u3, ldv_u3, stv_u3
+    };
+
+    public static final String immediateMnemonics[] = {
+      "br_i5", "brf_i5", "enter_u5", "ldc_i3", "addv_u3", "ldv_u3", "stv_u3"
+    };
+
 }
