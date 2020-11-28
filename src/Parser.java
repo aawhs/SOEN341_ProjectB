@@ -55,18 +55,17 @@ public class Parser implements IParser {
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
 
-        while (token != lexer.EOF) {
-            //if (lexer.spellError(line))
-            // continue;
-            //seq.add(parseLineStmt(lineStmt));
+            if(options.isEnabled())
+                options.process();
+
             if (options.isEnabled() &&
                     options.isRequired() &&
                     options.getClass().getSimpleName().equals("ListingOption")) {
                 System.out.println("Listing File : " + file.getAbsolutePath());
-                String line = "Line";
                 fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
                         "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
-            } else if (options.getClass().getSimpleName().equals("VerboseOption")) {
+            }
+            if (options.getClass().getSimpleName().equals("VerboseOption")) {
                 if (options.isEnabled() && options.isRequired()) {
                     System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
                             "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
@@ -76,12 +75,7 @@ public class Parser implements IParser {
             }
 
             while (token != lexer.EOF) {
-                if (token != 1003) {
                     String s = keywordTable.poll().toString();
-                /*
-                    if (lexer.spellError(s))
-                    continue;
-                 */
                     lineStmt = parseLineStmt(s);
                     seq.add(lineStmt);
                     String[] inst = seq.pop().getInstruction().printInstruction();
@@ -101,15 +95,14 @@ public class Parser implements IParser {
                     address++;
                 }
                 nextToken();
-            }
             System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
             if (!options.isEnabled()) {
                 System.out.print(" ,to create a listing file or verbose use options : '-l' or '-v' respectively");
             }
             fr.flush();
             fr.close();
-        }
             return new TranslationUnit(seq);
+
     }
 
         //---------------------------------------------------------------------------------
@@ -148,7 +141,7 @@ public class Parser implements IParser {
 
          */
         private Instruction parseImmediate () {
-            // your code...
+
             return new Instruction();
         }
         //---------------------------------------------------------------------------------

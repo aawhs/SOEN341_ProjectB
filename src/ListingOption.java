@@ -7,6 +7,7 @@ class ListingOption extends Option {
 
     @Override
     public void process() {
+
         setReq(true);
        
     }

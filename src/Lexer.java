@@ -33,7 +33,7 @@ public class Lexer implements ILexer, Opcode {
         return (ch = reader.read());
     }
 
-    private int scanComment(){
+    private int scanComment() throws IOException {
         /*public String parseComment(String c){
             boolean cmt = false;
             String str = "";
@@ -168,11 +168,6 @@ public class Lexer implements ILexer, Opcode {
     public Queue getKeywordTable() {
         return keywordTable;
     }
-
-    private int linePos = 1;
-    private int colPos = 0;
-    private int curlinePos = linePos;
-    private int curcolPos = colPos;
     public boolean spellError(String line){
         for(int i = 0; i<inherentMnemonics.length; i++){
             if(inherentMnemonics[i].contains(line)){
