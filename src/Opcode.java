@@ -71,4 +71,6 @@ public interface Opcode {
       "br_i5", "brf_i5", "enter_u5", "ldc_i3", "addv_u3", "ldv_u3", "stv_u3"
     };
 
+  
+
 }

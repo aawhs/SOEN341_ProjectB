@@ -14,7 +14,16 @@ public class Lexer implements ILexer, Opcode {
         //Populate opcode ST
         for(int i = 0; i < inherentOpcodes.length ; i++){
             opCodes.put(inherentMnemonics[i], inherentOpcodes[i]);
+            keywordsTable.put(inherentMnemonics[i], Tokens.INHERENT);
         }
+
+        /*
+        for(int i = 0; i < immediateOpcodes.length; i++){
+            keywordsTable.put(immediateMnemonics[i], Tokens.IMMEDIATE);
+        }
+
+         */
+
 
         //Instantiate Position Variables
         linePos = 1;
@@ -72,8 +81,13 @@ public class Lexer implements ILexer, Opcode {
     private void scanNumber() {
 
     }
-    private int scanIdentifier() throws IOException {
+    private Tokens scanIdentifier() throws IOException {
 
+
+        temp += (char)ch;
+        while(((ch = read()) != '\n') && position.getColPos() == 1 ){
+            temp += (char)ch;
+        }
         mnemonic += (char)ch;
         while ((ch = read()) != '\n'){
             mnemonic += (char)ch;
@@ -82,20 +96,21 @@ public class Lexer implements ILexer, Opcode {
         position = new Position(curlinePos,curcolPos);
         keywordTable.add(mnemonic);
         linePos++;
-        return 1000;
-    }
-    private int scanDirective() {
+        return Tokens.INHERENT;
 
-        return 0;
     }
-    private int scanString() {
-        return 0;
+    private Tokens scanDirective() {
+
+        return Tokens.COMMA;
+    }
+    private Tokens scanString() {
+        return Tokens.ILLEGAL_CHAR;
     }
     /**
      * Scan the next token. Mark position on entry in case of error.
      * @return   the token.
      */
-    public int getToken() throws IOException {
+    public Tokens getToken() throws IOException {
         // skip whitespaces
         // "\n", "\r\n", "\n", or line comments are considered as EOL
 
@@ -109,7 +124,7 @@ public class Lexer implements ILexer, Opcode {
                 switch ( ch ) {
                     case -1:
                         tokenSwitch = false;
-                        return EOF;
+                        return Tokens.EOF;
 
                     case 'a': case 'b': case 'c': case 'd': case 'e':
                     case 'f': case 'g': case 'h': case 'i': case 'j':
@@ -133,22 +148,22 @@ public class Lexer implements ILexer, Opcode {
                     case '0': case '1': case '2': case '3': case '4':
                     case '5': case '6': case '7': case '8': case '9':
                         scanNumber();
-                        return NUMBER;
+                        return Tokens.NUMBER;
 
                     case '-':
-                        read(); return MINUS;
+                        read(); return Tokens.MINUS;
 
                     case ',':
-                        read(); return COMMA;
+                        read(); return Tokens.COMMA;
 
                     case '"':
                         return scanString();
 
                     default:
-                        read(); return ILLEGAL_CHAR;
+                        read(); return Tokens.ILLEGAL_CHAR;
                 }
             }
-            return 0;
+            return Tokens.EOF;
 
     }
 
@@ -163,8 +178,10 @@ public class Lexer implements ILexer, Opcode {
     private int curcolPos;
     private int ch;
     private String mnemonic;
+    private String temp;
     private IReader reader;
     private String commenString;
+    private Tokens token;
 
     public Queue getKeywordTable() {
         return keywordTable;
@@ -180,6 +197,7 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private Queue keywordTable;
+    private ISymbolTable keywordsTable;
 
     public ISymbolTable getOpCodes() {
         return opCodes;
