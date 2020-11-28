@@ -57,7 +57,7 @@ public class Parser implements IParser {
 
             if(options.isEnabled())
                 options.process();
-
+            /*
             if (options.isEnabled() &&
                     options.isRequired() &&
                     options.getClass().getSimpleName().equals("ListingOption")) {
@@ -73,6 +73,8 @@ public class Parser implements IParser {
                     options.printUsage();
                 }
             }
+
+             */
 
             while (token != lexer.EOF) {
                     String s = keywordTable.poll().toString();

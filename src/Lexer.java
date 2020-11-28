@@ -73,6 +73,7 @@ public class Lexer implements ILexer, Opcode {
 
     }
     private int scanIdentifier() throws IOException {
+
         mnemonic += (char)ch;
         while ((ch = read()) != '\n'){
             mnemonic += (char)ch;
