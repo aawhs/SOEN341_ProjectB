@@ -1,5 +1,5 @@
 public class LineStmtSeq{
-    private LinkedQueue sequence = new LinkedQueue();
+    private Linked sequence = new Linked();
     public void add(LineStmt item){
         Node node = new Node(item);
         sequence.add(node);

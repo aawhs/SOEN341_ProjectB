@@ -56,9 +56,9 @@ public class Parser implements IParser {
         FileWriter fr = new FileWriter(file);
 
         while ( token != lexer.EOF ) {
-            if (lexer.spellError(line))
+          /*  if (lexer.spellError(line))
                 continue;
-            seq.add( parseLineStmt(line) );
+            seq.add( parseLineStmt(line) );*/
         if(options.isEnabled() &&
                 options.isRequired() &&
                 options.getClass().getSimpleName() == "ListingOption"){
@@ -108,10 +108,11 @@ public class Parser implements IParser {
         }
         fr.flush();
         fr.close();
+    }
         return new TranslationUnit(seq);
     }
 
-    public String parseComment(String c){
+ /*   public String parseComment(String c){
         boolean cmt = false;
         String str = "";
         for(int i = 0; i < c.length(); i++){
@@ -126,7 +127,7 @@ public class Parser implements IParser {
             }
         }
         return str;
-    }
+    } */
     //---------------------------------------------------------------------------------
     private Instruction parseInherent(Instruction inst, String line) throws IOException {
         // your code...
