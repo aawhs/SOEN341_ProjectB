@@ -17,7 +17,6 @@ public class Lexer implements ILexer, Opcode {
         }
 
         //Instantiate Position Variables
-
         linePos = 1;
         colPos = 0;
         curlinePos = linePos;
@@ -25,7 +24,7 @@ public class Lexer implements ILexer, Opcode {
 
         tokenSwitch = true;
         mnemonic ="";
-        read();
+        read(); //prime
     }
 
     /* Read the next character. */
@@ -71,7 +70,7 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private void scanNumber() {
-        // your code...
+
     }
     private int scanIdentifier() throws IOException {
         mnemonic += (char)ch;

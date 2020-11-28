@@ -2,14 +2,14 @@ public class Instruction implements Opcode {
 
     public String mnemonic = "";
     public int opCode;
+    public Operand operand;
 
     public Instruction(String inst){getInstruction(inst);}
-/*
-    public Instruction(Opcode opcde, Operand oprnd){
-        this.mnemonic = opcde;
-        this.operand = oprnd;
+
+    public Instruction(Opcode opcode, Operand opernd){
+        this.operand = operand;
     }
-*/
+
     public Instruction(){}
 
     public void getInstruction(String inst){

@@ -57,6 +57,7 @@ public class SymbolTable implements ISymbolTable {
     }
 
 
+    //Helper Methods
     @Override
     public boolean isValid(Comparable key) {
         if(key == null){
