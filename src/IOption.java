@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public interface IOption {
     default void printUsage() {
         System.out.println("Usage: CommandLine = CommandName [Option] {SourceFile}\n" +
@@ -10,7 +12,7 @@ public interface IOption {
     boolean isOption();
     boolean isEnabled();
     boolean isRequired();
-    void process();
+    void process() throws IOException;
     void setEnable(boolean en);
     void setUsage(String usage);
     void setClassName(String className);

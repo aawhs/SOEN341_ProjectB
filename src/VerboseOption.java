@@ -8,6 +8,10 @@ class VerboseOption extends Option {
 
     @Override
     public void process() {
+        
+            System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
+                    "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+        
         setReq(true);
         
     }

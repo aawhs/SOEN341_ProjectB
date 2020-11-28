@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.io.File;
+
 
 abstract class Option implements IOption{
 
@@ -28,8 +30,10 @@ abstract class Option implements IOption{
     protected String[] opt;
     protected boolean en;
     protected boolean req;
+    protected File file;
 
     //Set & Get Functions
+    public void setFile(File fileName){this.file = fileName;}
     public void setOptShort(String[] opt){this.optShort  = opt;}
     public void setOptLong (String opt)  {this.optLong   = opt;}
     @Override public void setUsage(String usage)   {this.usage     = usage;}
@@ -37,6 +41,7 @@ abstract class Option implements IOption{
     public void setEnable(boolean en)     {this.en        = en;}
     public void setReq(boolean req)     {this.req        = req;}
 
+    public final File getFile() {return this.file;}
     public final String[] getOptShort() {return this.optShort;}
     public final String   getOptLong()  {return this.optLong;}
     public final String   getUsage()    {return this.usage;}

@@ -1,5 +1,7 @@
+import java.io.IOException;
+
 public class OptionFactory {
-    public Option getOption(String optionType){
+    public Option getOption(String optionType) throws IOException {
         if(optionType == null){
             return new noOption();
         }
