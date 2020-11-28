@@ -1,5 +1,7 @@
 import java.util.Iterator;
-public interface ISymbolTable <Key extends Comparable<Key>, Value>{
+import java.util.Map;
+
+public interface ISymbolTable<Key extends Comparable<Key>, Value>{
     //Symbol Table Main Function
     Value get(Key key);
     void put(Key key, Value val);

@@ -1,5 +1,6 @@
-public interface IParser
-{
-    Link parse();
+import java.io.IOException;
+
+public interface IParser {
+
 
 }

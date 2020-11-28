@@ -9,7 +9,7 @@ public interface IReader {
 	void openFile() throws FileNotFoundException, URISyntaxException;
     void readFile() throws IOException;
     void scanCharacters();
-    char read();
+    int read() throws IOException;
    /* public void parseLineStmt();
     public void parseInstruction(); // Parses all instructions from lineStatements
 */

@@ -17,6 +17,7 @@ public class Instruction implements Opcode {
           if(inherentMnemonics[i].contains(inst)){
               this.mnemonic = inherentMnemonics[i];
               this.opCode = inherentOpcodes[i];
+              break;
           }
       }
     }
@@ -30,8 +31,13 @@ public class Instruction implements Opcode {
         getInstruction(mnemonic_temp);
     }
 
-    public void printInstruction(){
-        System.out.print(String.format("\n0x%02X",opCode) + " " + mnemonic);
+
+    public String[] printInstruction(){
+        String[] inst = new String[2];
+        inst[0]= String.format("%#04X",opCode);
+        inst[1]=mnemonic;
+
+        return inst;
     }
 
     /**
