@@ -110,6 +110,23 @@ public class Parser implements IParser {
         fr.close();
         return new TranslationUnit(seq);
     }
+
+    public String parseComment(String c){
+        boolean cmt = false;
+        String str = "";
+        for(int i = 0; i < c.length(); i++){
+            if(cmt == true){
+                str = str + c.charAt(i);
+            }
+            if(c.charAt(i) == commentStart){
+                cmt = true;
+            }
+            if(c.charAt(i) == EOL){
+                return str;
+            }
+        }
+        return str;
+    }
     //---------------------------------------------------------------------------------
     private Instruction parseInherent(Instruction inst, String line) throws IOException {
         // your code...

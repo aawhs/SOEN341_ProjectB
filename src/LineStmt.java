@@ -1,5 +1,4 @@
 public class LineStmt {
-
     Label label;
     Instruction instruction;
     Comment comment;
