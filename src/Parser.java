@@ -55,9 +55,11 @@ public class Parser implements IParser {
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
 
-            if(options.isEnabled())
-                options.process();
             /*
+            if(options.isEnabled())
+                options.setFiles(file);
+                options.process();
+            */
             if (options.isEnabled() &&
                     options.isRequired() &&
                     options.getClass().getSimpleName().equals("ListingOption")) {
@@ -74,7 +76,7 @@ public class Parser implements IParser {
                 }
             }
 
-             */
+
 
             while (token != lexer.EOF) {
                     String s = keywordTable.poll().toString();
@@ -95,8 +97,9 @@ public class Parser implements IParser {
                     }
                     count++;
                     address++;
-                }
                 nextToken();
+                }
+
             System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
             if (!options.isEnabled()) {
                 System.out.print(" ,to create a listing file or verbose use options : '-l' or '-v' respectively");

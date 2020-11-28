@@ -1,3 +1,5 @@
+import java.io.File;
+
 import static java.lang.System.exit;
 
 public class BannerOption extends Option {
@@ -13,6 +15,11 @@ public class BannerOption extends Option {
                 "Written by Ahmed Ali\n");
 
         exit(1);
+    }
+
+    @Override
+    public void setFiles(File file) {
+
     }
 
 }

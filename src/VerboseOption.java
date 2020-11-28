@@ -1,3 +1,5 @@
+import java.io.File;
+
 class VerboseOption extends Option {
     public VerboseOption() {
         super(new String[]{"-v"}, "-verbose");
@@ -14,5 +16,10 @@ class VerboseOption extends Option {
         
         setReq(true);
         
+    }
+
+    @Override
+    public void setFiles(File file) {
+
     }
 }

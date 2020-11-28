@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 class ListingOption extends Option {
@@ -11,12 +12,19 @@ class ListingOption extends Option {
     public void process() throws IOException {
         
         file = super.getFile();
-        FileWriter fr = new FileWriter(file);
-        System.out.println("Listing File : " + file.getAbsolutePath());
+        //FileWriter fr = new FileWriter(file);
+        /*System.out.println("Listing File : " + file.getAbsolutePath());
                 fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
                         "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+
+         */
         setReq(true);
        
+    }
+
+    @Override
+    public void setFiles(File file) {
+
     }
 
 }

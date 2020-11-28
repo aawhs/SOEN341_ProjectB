@@ -1,3 +1,5 @@
+import java.io.File;
+
 import static java.lang.System.exit;
 
 class HelpOption extends Option {
@@ -30,5 +32,10 @@ class HelpOption extends Option {
         setUsage();
         printUsage();
         exit(1);
+    }
+
+    @Override
+    public void setFiles(File file) {
+
     }
 }

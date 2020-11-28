@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 
 public interface IOption {
@@ -14,6 +15,7 @@ public interface IOption {
     boolean isRequired();
     void process() throws IOException;
     void setEnable(boolean en);
+    void setFiles(File file);
     void setUsage(String usage);
     void setClassName(String className);
 

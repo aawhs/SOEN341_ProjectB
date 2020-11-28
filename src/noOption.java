@@ -1,3 +1,5 @@
+import java.io.File;
+
 class noOption extends Option {
 
     public noOption() {
@@ -7,6 +9,11 @@ class noOption extends Option {
 
     @Override
     public void process() {
+
+    }
+
+    @Override
+    public void setFiles(File file) {
 
     }
 }
