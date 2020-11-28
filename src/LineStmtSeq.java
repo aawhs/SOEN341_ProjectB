@@ -7,4 +7,8 @@ public class LineStmtSeq{
     public LineStmt pop(){
         return sequence.pop().getLineStmt();
     }
+
+    public LinkedQueue getSequence(){
+        return sequence;
+    }
 }

@@ -1,28 +1,28 @@
 Line   Address   Machine Code     Label       Assembly Code             Comment
 
-01	   0X00		 0X00						  halt
-02	   0X01		 0X01						  pop 
-03	   0X02		 0X02						  dup 
-04	   0X03		 0X03						  exit
-05	   0X04		 0X04						  ret 
-06	   0X05		 0X0C						  not 
-07	   0X06		 0X0D						  and 
-08	   0X07		 0X0E						  or  
-09	   0X08		 0X0F						  xor 
-10	   0X09		 0X10						  neg 
-11	   0X0A		 0X11						  inc 
-12	   0X0B		 0X12						  dec 
-13	   0X0C		 0X13						  add 
-14	   0X0D		 0X14						  sub 
-15	   0X0E		 0X15						  mul 
-16	   0X0F		 0X16						  div 
-17	   0X10		 0X17						  rem 
-18	   0X11		 0X18						  shl 
-19	   0X12		 0X19						  shr 
-20	   0X13		 0X1A						  teq 
-21	   0X14		 0X1B						  tne 
-22	   0X15		 0X1C						  tlt 
-23	   0X16		 0X1D						  tgt 
-24	   0X17		 0X1E						  tle 
-25	   0X18		 0X1F						  tge 
-26	   0X19		 0X00						  halt
+01	   0X00		   00						      
+02	   0X01		   00						      
+03	   0X02		   00						      
+04	   0X03		   00						      
+05	   0X04		   00						      
+06	   0X05		   00						      
+07	   0X06		   00						      
+08	   0X07		   00						      
+09	   0X08		   00						      
+10	   0X09		   00						      
+11	   0X0A		   00						      
+12	   0X0B		   00						      
+13	   0X0C		   00						      
+14	   0X0D		   00						      
+15	   0X0E		   00						      
+16	   0X0F		   00						      
+17	   0X10		   00						      
+18	   0X11		   00						      
+19	   0X12		   00						      
+20	   0X13		   00						      
+21	   0X14		   00						      
+22	   0X15		   00						      
+23	   0X16		   00						      
+24	   0X17		   00						      
+25	   0X18		   00						      
+26	   0X19		   00						      
