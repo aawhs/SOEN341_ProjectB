@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Queue;
 
 public class Lexer implements ILexer, Opcode {
@@ -14,16 +16,7 @@ public class Lexer implements ILexer, Opcode {
         //Populate opcode ST
         for(int i = 0; i < inherentOpcodes.length ; i++){
             opCodes.put(inherentMnemonics[i], inherentOpcodes[i]);
-            keywordsTable.put(inherentMnemonics[i], Tokens.INHERENT);
         }
-
-        /*
-        for(int i = 0; i < immediateOpcodes.length; i++){
-            keywordsTable.put(immediateMnemonics[i], Tokens.IMMEDIATE);
-        }
-
-         */
-
 
         //Instantiate Position Variables
         linePos = 1;
@@ -42,7 +35,7 @@ public class Lexer implements ILexer, Opcode {
         return (ch = reader.read());
     }
 
-    private int scanComment() throws IOException {
+    private int scanComment(){
         /*public String parseComment(String c){
             boolean cmt = false;
             String str = "";
@@ -79,15 +72,20 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private void scanNumber() {
-
-    }
-    private Tokens scanIdentifier() throws IOException {
-
-
-        temp += (char)ch;
-        while(((ch = read()) != '\n') && position.getColPos() == 1 ){
-            temp += (char)ch;
+        strnum += (char)ch;
+        char numoff;
+        while((ch = read()) != '\n'){
+            strnum += (char)ch;
         }
+        for(int i = 0; i < strnum.length(); i++){
+            if(Number.contains(strnum.charAt(i)) && ((strnum.charAt(i-1) == ' ' && strnum.charAt(i+1) == ' '))){
+                numoff = strnum.charAt(i);            }
+        }
+        position = new Position(curlinePos,curcolPos);
+        keywordTable.add(numoff);
+        linePos++;
+    }
+    private int scanIdentifier() throws IOException {
         mnemonic += (char)ch;
         while ((ch = read()) != '\n'){
             mnemonic += (char)ch;
@@ -96,21 +94,20 @@ public class Lexer implements ILexer, Opcode {
         position = new Position(curlinePos,curcolPos);
         keywordTable.add(mnemonic);
         linePos++;
-        return Tokens.INHERENT;
-
+        return 1000;
     }
-    private Tokens scanDirective() {
+    private int scanDirective() {
 
-        return Tokens.COMMA;
+        return 0;
     }
-    private Tokens scanString() {
-        return Tokens.ILLEGAL_CHAR;
+    private int scanString() {
+        return 0;
     }
     /**
      * Scan the next token. Mark position on entry in case of error.
      * @return   the token.
      */
-    public Tokens getToken() throws IOException {
+    public int getToken() throws IOException {
         // skip whitespaces
         // "\n", "\r\n", "\n", or line comments are considered as EOL
 
@@ -124,7 +121,7 @@ public class Lexer implements ILexer, Opcode {
                 switch ( ch ) {
                     case -1:
                         tokenSwitch = false;
-                        return Tokens.EOF;
+                        return EOF;
 
                     case 'a': case 'b': case 'c': case 'd': case 'e':
                     case 'f': case 'g': case 'h': case 'i': case 'j':
@@ -148,22 +145,24 @@ public class Lexer implements ILexer, Opcode {
                     case '0': case '1': case '2': case '3': case '4':
                     case '5': case '6': case '7': case '8': case '9':
                         scanNumber();
-                        return Tokens.NUMBER;
+                        return NUMBER; 
 
                     case '-':
-                        read(); return Tokens.MINUS;
+                        read(); 
+                        scanNumber();
+                        return MINUS;
 
                     case ',':
-                        read(); return Tokens.COMMA;
+                        read(); return COMMA;
 
                     case '"':
                         return scanString();
 
                     default:
-                        read(); return Tokens.ILLEGAL_CHAR;
+                        read(); return ILLEGAL_CHAR;
                 }
             }
-            return Tokens.EOF;
+            return 0;
 
     }
 
@@ -178,14 +177,20 @@ public class Lexer implements ILexer, Opcode {
     private int curcolPos;
     private int ch;
     private String mnemonic;
-    private String temp;
     private IReader reader;
     private String commenString;
-    private Tokens token;
+    private String strnum;
+    private ArrayList <Integer> Number = new ArrayList<Integer>(Arrays.asList(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9));
+
 
     public Queue getKeywordTable() {
         return keywordTable;
     }
+
+    private int linePos = 1;
+    private int colPos = 0;
+    private int curlinePos = linePos;
+    private int curcolPos = colPos;
     public boolean spellError(String line){
         for(int i = 0; i<inherentMnemonics.length; i++){
             if(inherentMnemonics[i].contains(line)){
@@ -197,7 +202,6 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private Queue keywordTable;
-    private ISymbolTable keywordsTable;
 
     public ISymbolTable getOpCodes() {
         return opCodes;
