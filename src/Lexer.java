@@ -5,10 +5,11 @@ import java.util.Queue;
 
 public class Lexer implements ILexer, Opcode {
     /** Create a lexer that scans the given character stream. */
-    public Lexer(IReader reader, Queue keywordTable) throws IOException {
+    public Lexer(IReader reader, Queue table) throws IOException {
         //Define Helpers
         this.reader = reader;
-        this.keywordTable = keywordTable;
+        this.table = table;
+        keywordsTable = new SymbolTable();
 
 
         opCodes = new SymbolTable();
@@ -16,6 +17,12 @@ public class Lexer implements ILexer, Opcode {
         //Populate opcode ST
         for(int i = 0; i < inherentOpcodes.length ; i++){
             opCodes.put(inherentMnemonics[i], inherentOpcodes[i]);
+        }
+
+
+        for(int i = 0; i < immediateOpcodes.length; i++){
+            opCodes.put(immediateMnemonics[i], immediateOpcodes[i]);
+            keywordsTable.put(immediateMnemonics[i], Tokens.IMMEDIATE);
         }
 
         //Instantiate Position Variables
@@ -61,7 +68,7 @@ public class Lexer implements ILexer, Opcode {
       }
       String commenString = str.substring(str.indexOf(";"), str.length());
       position = new Position(curcolPos,curcolPos);
-      keywordTable.add(commenString);
+      table.add(commenString);
       linePos++;
       return 1000;
     }
@@ -72,6 +79,7 @@ public class Lexer implements ILexer, Opcode {
     }
 
     private void scanNumber() {
+
         strnum += (char)ch;
         char numoff;
         while((ch = read()) != '\n'){
@@ -85,16 +93,27 @@ public class Lexer implements ILexer, Opcode {
         keywordTable.add(numoff);
         linePos++;
     }
-    private int scanIdentifier() throws IOException {
-        mnemonic += (char)ch;
-        while ((ch = read()) != '\n'){
-            mnemonic += (char)ch;
+   
+
+    }
+    private Tokens scanIdentifier() throws IOException {
+        temp += (char)ch;
+        while(((ch = read()) != '\n')){
+            temp += (char)ch;
         }
-        //System.out.println(mnemonic);
+        if(keywordsTable.contains(temp)){
+            position = new Position(curlinePos,curcolPos);
+            table.add(temp);
+            linePos++;
+            return (Tokens) keywordsTable.get(temp);
+
+        }
         position = new Position(curlinePos,curcolPos);
-        keywordTable.add(mnemonic);
+        table.add(temp);
         linePos++;
-        return 1000;
+
+        return Tokens.LABEL;
+
     }
     private int scanDirective() {
 
@@ -183,8 +202,8 @@ public class Lexer implements ILexer, Opcode {
     private ArrayList <Integer> Number = new ArrayList<Integer>(Arrays.asList(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9));
 
 
-    public Queue getKeywordTable() {
-        return keywordTable;
+    public Queue getTable() {
+        return table;
     }
 
     private int linePos = 1;
@@ -201,7 +220,10 @@ public class Lexer implements ILexer, Opcode {
         return false;
     }
 
-    private Queue keywordTable;
+
+    private Queue table;
+    private ISymbolTable keywordsTable;
+
 
     public ISymbolTable getOpCodes() {
         return opCodes;
