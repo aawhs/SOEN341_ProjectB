@@ -49,7 +49,10 @@ public class Parser implements IParser {
     public Link parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
 
+
+
         seq = new LineStmtSeq();
+        GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
         int count = 0;
         File file = new File("S1Test1.lst");
@@ -83,6 +86,7 @@ public class Parser implements IParser {
                     lineStmt = parseLineStmt(s);
                     seq.add(lineStmt);
                     String[] inst = seq.pop().getInstruction().printInstruction();
+                    binary.getInstructions().add(inst);
                     if (options.isEnabled() && options.isRequired() &&
                             options.getClass().getSimpleName() == "ListingOption") {
                         fr.write(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
@@ -106,6 +110,11 @@ public class Parser implements IParser {
             }
             fr.flush();
             fr.close();
+            binary.init();
+            binary.printBinary();
+            binary.writeBinary();
+            binary.printText();
+
             return new TranslationUnit(seq);
 
     }

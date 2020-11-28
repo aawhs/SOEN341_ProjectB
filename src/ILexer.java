@@ -4,7 +4,7 @@ import java.util.Queue;
 public interface ILexer {
     static int EOF = -1;
     static int EOL = '\n';
-    int  getToken() throws IOException;
+    Tokens getToken() throws IOException;
     String getTokenName(int t);
     Queue getKeywordTable();
     ISymbolTable getOpCodes();

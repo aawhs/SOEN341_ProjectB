@@ -1,5 +1,4 @@
-public class Tokens {
-enum Token{
+public enum Tokens{
     MINUS,
     COMMA,
     ILLEGAL_CHAR,
@@ -11,4 +10,3 @@ enum Token{
     EOF,
  };
 
-}

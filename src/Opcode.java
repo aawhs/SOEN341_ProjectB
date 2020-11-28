@@ -63,4 +63,5 @@ public interface Opcode {
        "shl",   "shr",    "teq",  "tne",   "tlt",   "tgt",   "tle",     "tge"
     };
 
+
 }
