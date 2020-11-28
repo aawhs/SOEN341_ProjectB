@@ -42,7 +42,7 @@ public class Lexer implements ILexer, Opcode {
         return (ch = reader.read());
     }
 
-    private int scanComment(){
+    private int scanComment() throws IOException {
         /*public String parseComment(String c){
             boolean cmt = false;
             String str = "";
@@ -78,10 +78,10 @@ public class Lexer implements ILexer, Opcode {
         //errorReporter.record(_Error.create(t, getPosition()));
     }
 
-    private void scanNumber() {
+    private Tokens scanNumber() throws IOException {
 
         strnum += (char)ch;
-        char numoff;
+        char numoff = 0;
         while((ch = read()) != '\n'){
             strnum += (char)ch;
         }
@@ -90,12 +90,11 @@ public class Lexer implements ILexer, Opcode {
                 numoff = strnum.charAt(i);            }
         }
         position = new Position(curlinePos,curcolPos);
-        keywordTable.add(numoff);
+        table.add(numoff);
         linePos++;
+        return  Tokens.NUMBER;
     }
-   
 
-    }
     private Tokens scanIdentifier() throws IOException {
         temp += (char)ch;
         while(((ch = read()) != '\n')){
@@ -115,18 +114,18 @@ public class Lexer implements ILexer, Opcode {
         return Tokens.LABEL;
 
     }
-    private int scanDirective() {
+    private Tokens scanDirective() {
 
-        return 0;
+        return Tokens.EOF;
     }
-    private int scanString() {
-        return 0;
+    private Tokens scanString() {
+        return Tokens.EOF;
     }
     /**
      * Scan the next token. Mark position on entry in case of error.
      * @return   the token.
      */
-    public int getToken() throws IOException {
+    public Tokens getToken() throws IOException {
         // skip whitespaces
         // "\n", "\r\n", "\n", or line comments are considered as EOL
 
@@ -140,7 +139,7 @@ public class Lexer implements ILexer, Opcode {
                 switch ( ch ) {
                     case -1:
                         tokenSwitch = false;
-                        return EOF;
+                        return Tokens.EOF;
 
                     case 'a': case 'b': case 'c': case 'd': case 'e':
                     case 'f': case 'g': case 'h': case 'i': case 'j':
@@ -164,24 +163,24 @@ public class Lexer implements ILexer, Opcode {
                     case '0': case '1': case '2': case '3': case '4':
                     case '5': case '6': case '7': case '8': case '9':
                         scanNumber();
-                        return NUMBER; 
+                        return Tokens.NUMBER;
 
                     case '-':
                         read(); 
                         scanNumber();
-                        return MINUS;
+                        return Tokens.MINUS;
 
                     case ',':
-                        read(); return COMMA;
+                        read(); return Tokens.COMMA;
 
                     case '"':
                         return scanString();
 
                     default:
-                        read(); return ILLEGAL_CHAR;
+                        read(); return Tokens.ILLEGAL_CHAR;
                 }
             }
-            return 0;
+            return Tokens.EOF;
 
     }
 
@@ -195,6 +194,7 @@ public class Lexer implements ILexer, Opcode {
     private int curlinePos;
     private int curcolPos;
     private int ch;
+    private String temp;
     private String mnemonic;
     private IReader reader;
     private String commenString;
@@ -206,10 +206,6 @@ public class Lexer implements ILexer, Opcode {
         return table;
     }
 
-    private int linePos = 1;
-    private int colPos = 0;
-    private int curlinePos = linePos;
-    private int curcolPos = colPos;
     public boolean spellError(String line){
         for(int i = 0; i<inherentMnemonics.length; i++){
             if(inherentMnemonics[i].contains(line)){
