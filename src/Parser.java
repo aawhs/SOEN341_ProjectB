@@ -110,6 +110,8 @@ public class Parser implements IParser {
 
         binary.init();
         binary.printBinary();
+        binary.writeBinary();
+        binary.printText();
         return new TranslationUnit(seq);
     }
     //---------------------------------------------------------------------------------

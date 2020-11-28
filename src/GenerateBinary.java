@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,7 +18,9 @@ public class GenerateBinary {
 
     String binary = "";
 
-    GenerateBinary(LineStmtSeq seq){
+    String text = "";
+
+    GenerateBinary(LineStmtSeq seq) throws IOException {
         this.rev = seq;
     }
 
@@ -60,6 +65,14 @@ public class GenerateBinary {
         System.out.println(binary);
     }
 
+    void writeBinary() throws IOException {
+        File file = new File("S1Test1.exe");
+        FileWriter fr = new FileWriter(file);
+        fr.write(binary);
+        fr.flush();
+        fr.close();
+    }
+
     ArrayList getInstructions(){
         return this.instructions;
     }
@@ -68,9 +81,6 @@ public class GenerateBinary {
         for(int i = 0; i < instructions.size(); i++){
             System.out.println(instructions.get(i)[0]);
         }
-    }
-    void setupDecodedText(){
-
     }
 
     String getStringOffset(){
@@ -83,4 +93,23 @@ public class GenerateBinary {
         setUpMachineCode();
         setUpBinary();
     }
+
+    void setupText() throws IOException {
+        File file = new File("S1Test2.exe");
+        FileWriter fr = new FileWriter(file);
+        for(int i = 0; i < instructions.size(); i++){
+            Integer a = Integer.valueOf(instructions.get(i)[0]);
+            //a += 19;
+            fr.write(a);
+        }
+        fr.flush();
+        fr.close();
+    }
+
+    void printText() throws IOException {
+        setupText();
+        System.out.println(text);
+    }
+
+
 }
