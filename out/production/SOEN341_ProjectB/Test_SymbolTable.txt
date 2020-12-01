@@ -1,3 +1,0 @@
-Test SymbolTable
-pop 0x01
-pop 0x01
