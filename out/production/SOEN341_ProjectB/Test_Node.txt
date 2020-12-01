@@ -1,3 +1,0 @@
-Test Node
-Hello, pop, This is a comment
-Hello, pop, This is a comment
