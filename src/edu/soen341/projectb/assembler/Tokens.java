@@ -11,5 +11,7 @@ public enum Tokens{
     LABEL,
     EOF,
     EOL,
+    DIRECTIVE,
+    STRING,
  };
 
