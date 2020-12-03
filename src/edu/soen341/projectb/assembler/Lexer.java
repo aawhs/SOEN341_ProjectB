@@ -147,16 +147,16 @@ public class Lexer implements ILexer, Opcode {
 	}
 	private Tokens scanDirective() throws IOException {
 		temp += (char)ch;
-		while(((ch = read()) != '\n')){
+		while(((ch = read()) != '\"')){
 			temp += (char)ch;
 		}
 		if(temp.equals(".cstring")){
 			position = new Position(curlinePos,curcolPos);
 			table.add(temp);
-			linePos++;
 			return Tokens.DIRECTIVE;
 
 		}
+		
 		return (Tokens) keywordsTable.get(temp);
 	}
 	private Tokens scanString() throws IOException{
@@ -164,7 +164,7 @@ public class Lexer implements ILexer, Opcode {
 		while(((ch = read()) != '\n')){
 			temp += (char)ch;
 		}
-		table.add("\"" + temp + "\"");
+		table.add(temp);
 		position = new Position(curlinePos,curcolPos);
 		linePos++;
 		return Tokens.STRING;
@@ -275,14 +275,6 @@ public class Lexer implements ILexer, Opcode {
 	public ISymbolTable getOpCodes() {
 		return opCodes;
 	}
-
-	private final Integer   MINUS = 1001,
-			COMMA= 1002 ,
-			ILLEGAL_CHAR = 1003,
-			NUMBER= 1004,
-			STRING=1005,
-			DIRECTIVE=1006;
-
 
 	private ISymbolTable opCodes;
 	private IReportable errorReporter;
