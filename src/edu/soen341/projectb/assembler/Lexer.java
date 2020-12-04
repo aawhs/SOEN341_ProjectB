@@ -106,7 +106,7 @@ public class Lexer implements ILexer, Opcode {
 		table.add(temp);
 		linePos++;
 		if(temp.equals("Msg") || temp.equals("Msg1") || temp.equals("Msg2") || temp.equals("Msg3") || temp.equals("Msg4") || temp.equals("Msg5") ||
-		temp.equals("Msg6") || temp.equals("Msg7") temp.equals("Msg8") ||temp.equals("Msg9")){
+		temp.equals("Msg6") || temp.equals("Msg7") || temp.equals("Msg8") ||temp.equals("Msg9")){
 			scanDirective();
 		}
 		
