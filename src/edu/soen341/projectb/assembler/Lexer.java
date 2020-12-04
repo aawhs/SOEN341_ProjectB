@@ -33,6 +33,11 @@ public class Lexer implements ILexer, Opcode {
 			keywordsTable.put(Opcode.immediateMnemonics[i], Tokens.IMMEDIATE);
 		}
 
+		for(int i = 0; i < Opcode.relativeOpcodes.length; i++){
+			opCodes.put(relativeMnemomnics[i], Opcode.relativeOpcodes[i]);
+			keywordsTable.put(Opcode.relativeMnemomnics[i], Tokens.RELATIVE);
+		};
+
 		//Instantiate Position Variables
 		linePos = 1;
 		colPos = 0;
@@ -50,35 +55,17 @@ public class Lexer implements ILexer, Opcode {
 		return (ch = reader.read());
 	}
 
-	private int scanComment() throws IOException {
-		/*public String parseComment(String c){
-            boolean cmt = false;
-            String str = "";
-            for(int i = 0; i < c.length(); i++){
-                if(cmt == true){
-                    str = str + c.charAt(i);
-                }
-                if(c.charAt(i) == commentStart){
-                    cmt = true;
-                }
-                if(c.charAt(i) == EOL){
-                    return str;
-                }
-            }
-            return str;
-        }
-		 */
+	private Tokens scanComment() throws IOException {
 		String str = "";
 		str += (char)ch;
-
 		while((ch = read()) != '\n'){
 			str += (char)ch;
 		}
 		String commentString = str.substring(str.indexOf(";"), str.length());
-		position = new Position(curcolPos,curcolPos);
+		position = new Position(curlinePos,curcolPos);
 		table.add(commentString);
 		linePos++;
-		return 1000;
+		return Tokens.COMMENT;
 	}
 
 	private void error(String t) {
@@ -102,31 +89,6 @@ public class Lexer implements ILexer, Opcode {
 		linePos++;
 		return  Tokens.NUMBER;
 	}
-	/*
-    private int scanIdentifier() throws IOException {
-		//Temporary "stringHolder" variable before lookup
-		stringHolder += (char)ch;
-		//Populate the stringHolder variable
-		while ((ch = read()) != '\n'){
-			stringHolder += (char)ch;
-		}
-		if(stringHolder.charAt(0)==';') {
-			Comment comment=new Comment(stringHolder);
-		}
-		//lookup in symbol table
-		if(opCodes.contains(stringHolder) || position.getColPos()!=1) {
-			keywordTable.add(stringHolder);
-			position = new Position(curlinePos,curcolPos);
-			linePos++;
-			return 1000;
-		}
-		else {
-			position = new Position(curlinePos,curcolPos);
-			linePos++;
-			return 1001;
-		}
-	}
-	 */
 
 	private Tokens scanIdentifier() throws IOException {
 		temp += (char)ch;
@@ -143,22 +105,31 @@ public class Lexer implements ILexer, Opcode {
 		position = new Position(curlinePos,curcolPos);
 		table.add(temp);
 		linePos++;
+		if(temp.equals("Msg") || temp.equals("Msg1") || temp.equals("Msg2") || temp.equals("Msg3") || temp.equals("Msg4") || temp.equals("Msg5") ||
+		temp.equals("Msg6") || temp.equals("Msg7") temp.equals("Msg8") ||temp.equals("Msg9")){
+			scanDirective();
+		}
+		
 		return Tokens.LABEL;
 	}
+
 	private Tokens scanDirective() throws IOException {
 		temp += (char)ch;
 		while(((ch = read()) != '\"')){
 			temp += (char)ch;
 		}
-		if(temp.equals(".cstring")){
-			position = new Position(curlinePos,curcolPos);
-			table.add(temp);
-			return Tokens.DIRECTIVE;
-
+		if(temp.contains(".cstring")){
+			if(temp.contains("")){
+				String sub = temp.substring(temp.indexOf("\"") + 1, temp.indexOf("\"") + 3);
+				sub = sub + " " + "NUL";
+				position = new Position(curlinePos,curcolPos);
+				table.add(sub);
+				return Tokens.DIRECTIVE;
+			}
 		}
-		
 		return (Tokens) keywordsTable.get(temp);
 	}
+
 	private Tokens scanString() throws IOException{
 		temp += (char)ch;
 		while(((ch = read()) != '\n')){
@@ -169,10 +140,7 @@ public class Lexer implements ILexer, Opcode {
 		linePos++;
 		return Tokens.STRING;
 	}
-	/**
-	 * Scan the next token. Mark position on entry in case of error.
-	 * @return   the token.
-	 */
+
 	public Tokens getToken() throws IOException {
 		// skip whitespaces
 		// "\n", "\r\n", "\n", or line comments are considered as EOL
