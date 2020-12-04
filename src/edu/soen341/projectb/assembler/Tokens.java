@@ -13,5 +13,6 @@ public enum Tokens{
     EOL,
     DIRECTIVE,
     STRING,
+    COMMENT,
  };
 
