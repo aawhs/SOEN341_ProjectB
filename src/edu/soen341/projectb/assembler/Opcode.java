@@ -67,7 +67,7 @@ public interface Opcode {
       addv_u8, ldv_u8, stv_u8, incv, decv,
       enter_u8, lda_i16, ldc_i8, ldc_i16, ldc_i32, 
       br_i8, br_i16, brf_i8
-    }
+    };
 
     public static final String relativeMnemomnics[] = 
     { "addv_u8", "ldv_u8", "stv_u8", "incv", "decv",
