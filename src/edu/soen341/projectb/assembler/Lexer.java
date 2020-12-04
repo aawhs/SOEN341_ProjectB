@@ -5,6 +5,7 @@ import edu.soen341.projectb.helper.Position;
 import edu.soen341.projectb.nodes.ISymbolTable;
 import edu.soen341.projectb.nodes.SymbolTable;
 import edu.soen341.projectb.reportable.IReportable;
+import edu.soen341.projectb.reportable._Error;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class Lexer implements ILexer, Opcode {
 
 	private void error(String t) {
 
-		//errorReporter.record(_Error.create(t, getPosition()));
+		errorReporter.record(_Error.create(t, getPosition()));
 	}
 
 	private Tokens scanNumber() throws IOException {
@@ -196,7 +197,7 @@ public class Lexer implements ILexer, Opcode {
 				return scanString();
 
 			default:
-				read(); return Tokens.ILLEGAL_CHAR;
+				read(); error("Illegal char"); return Tokens.ILLEGAL_CHAR;
 			}
 		}
 		return Tokens.EOF;
@@ -204,8 +205,8 @@ public class Lexer implements ILexer, Opcode {
 	}
 
 	@Override
-	public String getTokenName(int t) {
-		return null;
+	public String getTokenName(Tokens t) {
+		return t.name();
 	}
 
 
