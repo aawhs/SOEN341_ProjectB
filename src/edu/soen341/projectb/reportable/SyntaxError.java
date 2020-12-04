@@ -1,8 +1,11 @@
 package edu.soen341.projectb.reportable;
 
 public class SyntaxError extends Exception{
+    
     private String msg;
     private Throwable cause;
+
+
     public SyntaxError(){
         msg = "Syntax error";
     }

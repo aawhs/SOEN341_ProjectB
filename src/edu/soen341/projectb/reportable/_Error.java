@@ -14,7 +14,7 @@ public class _Error {
         addError(e);
         return e;
     }
-    static ArrayList<_Error> list_of_errors = new ArrayList<>();
+    
 
     public static void addError(_Error error){
         list_of_errors.add(error);
@@ -38,6 +38,8 @@ public class _Error {
     }
     */
 
+    //_Error attributes
     private String text;
     private Position pos;
+    static ArrayList<_Error> list_of_errors = new ArrayList<>();
 }

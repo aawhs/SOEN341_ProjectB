@@ -1,6 +1,10 @@
 package edu.soen341.projectb.assembler;
 
 public abstract class Mnemonic {
+    public String mnemonic;
+    public int opcode;
+
+
     public void setMnemonic(String mnemonic) {
         this.mnemonic = mnemonic;
     }
@@ -12,9 +16,6 @@ public abstract class Mnemonic {
     public void setOpcode(int opcode) {
         this.opcode = opcode;
     }
-
-    public String mnemonic;
-    public int opcode;
-
+    
     abstract void getMnemonic();
 }

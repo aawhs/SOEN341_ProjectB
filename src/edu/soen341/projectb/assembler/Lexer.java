@@ -240,17 +240,6 @@ public class Lexer implements ILexer, Opcode {
 		return null;
 	}
 
-	private int linePos;
-	private int colPos;
-	private int curlinePos;
-	private int curcolPos;
-	private int ch;
-	private String temp;
-	private String mnemonic;
-	private IReader reader;
-	private String commenString;
-	private String strnum;
-	private ArrayList <Integer> Number = new ArrayList<Integer>(Arrays.asList(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9));
 
 
 	public Queue getTable() {
@@ -285,5 +274,16 @@ public class Lexer implements ILexer, Opcode {
 
 	private Position position;
 	private boolean tokenSwitch;
-
+	
+	private int linePos;
+	private int colPos;
+	private int curlinePos;
+	private int curcolPos;
+	private int ch;
+	private String temp;
+	private String mnemonic;
+	private IReader reader;
+	private String commenString;
+	private String strnum;
+	private ArrayList <Integer> Number = new ArrayList<Integer>(Arrays.asList(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9));
 }

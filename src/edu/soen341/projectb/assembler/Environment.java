@@ -92,19 +92,13 @@ public class Environment {
     }
 
 
-    private ILexer lexer;
-    private ISourceFile sourceFile;
-    private IReportable errorReporter;
-    private ISymbolTable table;
-    private Queue keywordTable;
-    private IReader reader;
+
 
     public IOption getOptions() {
         return options;
     }
 
-    private IOption options;
-    private OptionFactory optionFactory;
+    
 
     public LineStmtSeq getSeq() {
         return seq;
@@ -113,7 +107,14 @@ public class Environment {
     public void setSeq(LineStmtSeq seq) {
         this.seq = seq;
     }
-
+    private ILexer lexer;
+    private ISourceFile sourceFile;
+    private IReportable errorReporter;
+    private ISymbolTable table;
+    private Queue keywordTable;
+    private IReader reader;
     private LineStmtSeq seq;
+    private IOption options;
+    private OptionFactory optionFactory;
     
 }
