@@ -34,10 +34,10 @@ public class Parser implements IParser {
 
 
     // Record the error: <t> expected, found <token> at <token>.position
-    /*
-    protected void expect(int t) throws IOException {
+    
+    protected void expect(Tokens t) throws IOException {
         if (t != token) {
-            String expected = "INHERENT IDENTIFIER";
+            String expected = lexer.getTokenName(t);
             errorReporter.record( _Error.create( expected+" expected", lexer.getPosition()));
             errorReporter.getException();
             System.out.println(expected);
@@ -45,7 +45,7 @@ public class Parser implements IParser {
         }
     }
 
-     */
+     
     /*protected void expect(String t) {
         errorReporter.record( _Error.create(t+" expected", lexer.getPosition()) );
     }
