@@ -64,7 +64,6 @@ public class Lexer implements ILexer, Opcode {
 		String commentString = str.substring(str.indexOf(";"), str.length());
 		position = new Position(curlinePos,curcolPos);
 		table.add(commentString);
-		linePos++;
 		return Tokens.COMMENT;
 	}
 
@@ -75,50 +74,51 @@ public class Lexer implements ILexer, Opcode {
 
 	private Tokens scanNumber() throws IOException {
 
+		strnum = "";
 		strnum += (char)ch;
 		char numoff = 0;
-		while((ch = read()) != '\n'){
+		while((ch = read()) != '\n' && (ch != 32)){
 			strnum += (char)ch;
 		}
+		/*
 		for(int i = 0; i < strnum.length(); i++){
 			if(Number.contains(strnum.charAt(i)) && ((strnum.charAt(i-1) == ' ' && strnum.charAt(i+1) == ' '))){
 				numoff = strnum.charAt(i);            }
 		}
+
+		 */
 		position = new Position(curlinePos,curcolPos);
-		table.add(numoff);
-		linePos++;
+		table.add(strnum);
 		return  Tokens.NUMBER;
 	}
 
 	private Tokens scanIdentifier() throws IOException {
+		temp = "";
 		temp += (char)ch;
-		while(((ch = read()) != '\n')){
+		while((ch = read()) != '\n' && (ch != 32)){
 			temp += (char)ch;
-		}
-		if(keywordsTable.contains(temp)){
-			position = new Position(curlinePos,curcolPos);
-			table.add(temp);
-			linePos++;
-			return (Tokens) keywordsTable.get(temp);
-
+			if(keywordsTable.contains(temp)){
+				position = new Position(curlinePos,curcolPos);
+				table.add(temp);
+				read();
+				return (Tokens) keywordsTable.get(temp);
+			}
 		}
 		position = new Position(curlinePos,curcolPos);
 		table.add(temp);
-		linePos++;
-		if(temp.equals("Msg") || temp.equals("Msg1") || temp.equals("Msg2") || temp.equals("Msg3") || temp.equals("Msg4") || temp.equals("Msg5") ||
-		temp.equals("Msg6") || temp.equals("Msg7") || temp.equals("Msg8") ||temp.equals("Msg9")){
-			scanDirective();
-		}
-		
+		read();
 		return Tokens.LABEL;
 	}
 
 	private Tokens scanDirective() throws IOException {
+		temp = "";
 		temp += (char)ch;
-		while(((ch = read()) != '\"')){
+		while(((ch = read()) != 32)){
 			temp += (char)ch;
 		}
+
 		if(temp.contains(".cstring")){
+			/*
 			if(temp.contains("")){
 				String sub = temp.substring(temp.indexOf("\"") + 1, temp.indexOf("\"") + 3);
 				sub = sub + " " + "NUL";
@@ -126,18 +126,24 @@ public class Lexer implements ILexer, Opcode {
 				table.add(sub);
 				return Tokens.DIRECTIVE;
 			}
+			*/
+
+			position = new Position(curlinePos,curcolPos);
+			table.add(temp);
+			read();
+			return Tokens.DIRECTIVE;
 		}
-		return (Tokens) keywordsTable.get(temp);
+		return Tokens.ILLEGAL_CHAR;
 	}
 
 	private Tokens scanString() throws IOException{
+		temp = "";
 		temp += (char)ch;
-		while(((ch = read()) != '\n')){
+		while(((ch = read()) != '\n' && (ch != 32))){
 			temp += (char)ch;
 		}
 		table.add(temp);
 		position = new Position(curlinePos,curcolPos);
-		linePos++;
 		return Tokens.STRING;
 	}
 
@@ -145,58 +151,64 @@ public class Lexer implements ILexer, Opcode {
 		// skip whitespaces
 		// "\n", "\r\n", "\n", or line comments are considered as EOL
 		while(ch == 32){
-			ch = read();
-		}
-
-		while(ch == '\n' || ch == '\r' || ch == ';'){
-			return Tokens.EOL;
+			read();
 		}
 
 		curlinePos = linePos;
 		curcolPos = colPos;
 		while (tokenSwitch) {
 			switch ( ch ) {
-			case -1:
-				tokenSwitch = false;
-				return Tokens.EOF;
+				case '\n': case '\r':
+					colPos = 0;
+					linePos++;
+					read();
+					return Tokens.EOL;
+				case -1:
+					tokenSwitch = false;
+					return Tokens.EOF;
 
-			case 'a': case 'b': case 'c': case 'd': case 'e':
-			case 'f': case 'g': case 'h': case 'i': case 'j':
-			case 'k': case 'l': case 'm': case 'n': case 'o':
-			case 'p': case 'q': case 'r': case 's': case 't':
-			case 'u': case 'v': case 'w': case 'x': case 'y':
-			case 'z':
-			case 'A': case 'B': case 'C': case 'D': case 'E':
-			case 'F': case 'G': case 'H': case 'I': case 'J':
-			case 'K': case 'L': case 'M': case 'N': case 'O':
-			case 'P': case 'Q': case 'R': case 'S': case 'T':
-			case 'U': case 'V': case 'W': case 'X': case 'Y':
-			case '_':
-			case 'Z':
-				return scanIdentifier();
+				case ';':
+					return scanComment();
 
-			case '.':  /* dot for directives as a first character */
-				return scanDirective();
+				case 'a': case 'b': case 'c': case 'd': case 'e':
+				case 'f': case 'g': case 'h': case 'i': case 'j':
+				case 'k': case 'l': case 'm': case 'n': case 'o':
+				case 'p': case 'q': case 'r': case 's': case 't':
+				case 'u': case 'v': case 'w': case 'x': case 'y':
+				case 'z':
+				case 'A': case 'B': case 'C': case 'D': case 'E':
+				case 'F': case 'G': case 'H': case 'I': case 'J':
+				case 'K': case 'L': case 'M': case 'N': case 'O':
+				case 'P': case 'Q': case 'R': case 'S': case 'T':
+				case 'U': case 'V': case 'W': case 'X': case 'Y':
+				case '_':
+				case 'Z':
+					return scanIdentifier();
+
+				case '.':  /* dot for directives as a first character */
+					return scanDirective();
 
 
-			case '0': case '1': case '2': case '3': case '4':
-			case '5': case '6': case '7': case '8': case '9':
-				scanNumber();
-				return Tokens.NUMBER;
 
-			case '-':
-				read(); 
-				scanNumber();
-				return Tokens.MINUS;
+				case '0': case '1': case '2': case '3': case '4':
+				case '5': case '6': case '7': case '8': case '9':
+					scanNumber();
+					return Tokens.NUMBER;
 
-			case ',':
-				read(); return Tokens.COMMA;
+				case '-':
+					read();
+					scanNumber();
+					return Tokens.MINUS;
 
-			case '"':
-				return scanString();
+				case ',':
+					read(); return Tokens.COMMA;
 
-			default:
-				read(); error("Illegal char"); return Tokens.ILLEGAL_CHAR;
+				case '"':
+					return scanString();
+
+
+				default:
+					read(); error("Illegal char"); return Tokens.ILLEGAL_CHAR;
 			}
 		}
 		return Tokens.EOF;
@@ -252,6 +264,6 @@ public class Lexer implements ILexer, Opcode {
 	private String mnemonic;
 	private IReader reader;
 	private String commenString;
-	private String strnum;
+	private String strnum ="";
 	private ArrayList <Integer> Number = new ArrayList<Integer>(Arrays.asList(-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9));
 }
