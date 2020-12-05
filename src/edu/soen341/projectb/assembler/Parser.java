@@ -116,12 +116,6 @@ public class Parser implements IParser {
 
    printLabel(fr,file);
             while (!token.equals(Tokens.EOF) ) {
-
-        
-          
-           
-       
-
                     if(!keywordTable.isEmpty()){
                         String s = keywordTable.poll().toString();
 
@@ -166,8 +160,7 @@ public class Parser implements IParser {
             return new TranslationUnit(seq);
 
     }
-
-        //---------------------------------------------------------------------------------
+    
         private Instruction parseInherent (Instruction inst, String line) throws IOException {
             inst.parseMnemonic(line);
             return inst;

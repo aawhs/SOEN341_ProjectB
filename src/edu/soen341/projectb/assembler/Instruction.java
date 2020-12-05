@@ -8,8 +8,8 @@ public class Instruction implements Opcode {
     public String mnemonic = "";
     public int opCode;
     public Operand operand;
-    public String mnemonicType = "";
-    public String operands = "";
+    //public String mnemonicType = "";
+    //public String operands = "";
 
     public Instruction(String inst){setInstruction(inst);}
 
@@ -24,22 +24,17 @@ public class Instruction implements Opcode {
           if(Opcode.inherentMnemonics[i].contains(inst)){
               this.mnemonic = Opcode.inherentMnemonics[i];
               this.opCode = Opcode.inherentOpcodes[i];
-              if(this.operand.equals(immediateOpcodes[i])){
-
-              }
-             /* 
-              for(int j = 0; j < Ioperands.length; j++){
-                    if(this.mnemonic.equals(Ioperands[j])){
-                        mnemonicType = Ioperands[j];
-                    }    
-              }
-              for(int k = 0; k < Roperands.length; k++){
-                if(this.mnemonic.equals(Roperands[k])){
-                    mnemonicType = Roperands[k];
-                }    
-            }*/
-
               break;
+          }
+          if(Opcode.immediateMnemonics[i].contains(inst)){
+              this.mnemonic = Opcode.immediateMnemonics[i];
+              this.opCode = Opcode.immediateOpcodes[i];
+              break;
+          }
+          if(Opcode.relativeMnemomnics[i].contains(inst)){
+              this.mnemonic = Opcode.relativeMnemomnics[i];
+              this.opCode = Opcode.relativeOpcodes[i];
+              break; 
           }
       }
     }
