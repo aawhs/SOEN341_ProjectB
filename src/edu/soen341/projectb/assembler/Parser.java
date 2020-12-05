@@ -76,24 +76,18 @@ public class Parser implements IParser {
     } else {
         options.printUsage();
     }
-
-
     };
 
     public LinkedQueue parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
 
-
-
         seq = new LineStmtSeq();
         GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
 
-
         int count = 0;
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
-
 
          /*
             if (options.isEnabled() &&
@@ -112,7 +106,6 @@ public class Parser implements IParser {
                 }
             }
         */
-
             printLabel(fr,file);
             while (!token.equals(Tokens.EOF) ) {
                 if(!token.equals(Tokens.EOL)){
@@ -137,8 +130,6 @@ public class Parser implements IParser {
                                 options.printUsage();
                             }
                         }
-
-
                         count++;
                         address++;
                         nextToken();
@@ -177,6 +168,29 @@ public class Parser implements IParser {
             inst.parseMnemonic(line);
             return inst;
         }
+
+        private String parseDirective (String line) throws IOException{
+            cstring = line.substring(line.indexOf("\""), line.indexOf("\""));
+            if(cstring.length() > 2){
+                String s =  "Directive out of bounds";
+                return s;
+            }
+            if(line.contains(".cstring")){
+                char [] cs = new char[2];
+                cs = cstring.toCharArray();
+                for(int i = 0; i < cs.length; i++){
+                    cstring += Integer.toHexString(cs[i]) + " ";
+                }
+                cstring = cstring + "00";
+                return cstring;
+            }
+            else{
+                String s =  "This directive does not compute";
+                errorReporter.record( _Error.create( "cstring is limited to 8 bits", lexer.getPosition()));
+                return s;
+            }
+        }
+
         // -------------------------------------------------------------------
         // A line statement:
         //   - could be empty (only a EOL);
@@ -218,9 +232,7 @@ public class Parser implements IParser {
 
         public LineStmtSeq getSeq () {
         return seq;
-    }
-
-
+        }   
         private Tokens token;
         private int address;
         private ILexer lexer;
@@ -231,6 +243,7 @@ public class Parser implements IParser {
         private ISymbolTable opCodes;
         private IOption options;
         private LineStmtSeq seq;
+        private String cstring = "";
 
 }
 
