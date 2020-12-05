@@ -89,40 +89,67 @@ public class Parser implements IParser {
         seq = new LineStmtSeq();
         GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
+
+
         int count = 0;
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
-        
-            /*
-            if(options.isEnabled())
-                options.setFiles(file);
-                options.process();
-            */
-           
-        printLabel(fr,file);
 
 
+         /*
+            if (options.isEnabled() &&
+                    options.isRequired() &&
+                    options.getClass().getSimpleName().equals("ListingOption")) {
+                System.out.println("Listing File : " + file.getAbsolutePath());
+                fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
+                        "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+            }
+            if (options.getClass().getSimpleName().equals("VerboseOption")) {
+                if (options.isEnabled() && options.isRequired()) {
+                    System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
+                            "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+                } else {
+                    options.printUsage();
+                }
+            }
+        */
+
+   printLabel(fr,file);
             while (!token.equals(Tokens.EOF) ) {
-                    String s = keywordTable.poll().toString();
-                    lineStmt = parseLineStmt(s);
-                    seq.add(lineStmt);
-                    String[] inst = seq.pop().getInstruction().printInstruction();
-                    binary.getInstructions().add(inst);
-                    if (options.isEnabled() && options.isRequired() &&
-                            options.getClass().getSimpleName() == "ListingOption") {
-                        fr.write(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
-                                lexer.getPosition().getLinePos(), address, inst[0], inst[1]) + "\n");
-                    } else if (options.getClass().getSimpleName() == "VerboseOption") {
-                        if (options.isEnabled() && options.isRequired()) {
-                            System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
+
+        
+          
+           
+       
+
+                    if(!keywordTable.isEmpty()){
+                        String s = keywordTable.poll().toString();
+
+                        lineStmt = parseLineStmt(s);
+                        seq.add(lineStmt);
+                        String[] inst = seq.pop().getInstruction().printInstruction();
+                        binary.getInstructions().add(inst);
+
+                        /*
+                        if (options.isEnabled() && options.isRequired() &&
+                                options.getClass().getSimpleName() == "ListingOption") {
+                            fr.write(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
                                     lexer.getPosition().getLinePos(), address, inst[0], inst[1]) + "\n");
-                        } else {
-                            options.printUsage();
+                        } else if (options.getClass().getSimpleName() == "VerboseOption") {
+                            if (options.isEnabled() && options.isRequired()) {
+                                System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
+                                        lexer.getPosition().getLinePos(), address, inst[0], inst[1]) + "\n");
+                            } else {
+                                options.printUsage();
+                            }
                         }
+                        */
+
+                        count++;
+                        address++;
+                        nextToken();
                     }
-                    count++;
-                    address++;
-                nextToken();
+
                 }
 
             System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
@@ -215,6 +242,11 @@ public class Parser implements IParser {
             token = lexer.getToken();
         }
 
+        public LineStmtSeq getSeq () {
+        return seq;
+    }
+
+
         private Tokens token;
         private int address;
         private ILexer lexer;
@@ -224,11 +256,6 @@ public class Parser implements IParser {
         private Queue keywordTable;
         private ISymbolTable opCodes;
         private IOption options;
-
-        public LineStmtSeq getSeq () {
-            return seq;
-        }
-
         private LineStmtSeq seq;
 
 }
