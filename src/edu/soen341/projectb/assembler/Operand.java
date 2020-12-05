@@ -10,4 +10,32 @@ public class Operand {
         this.address = a;
         this.offset = o;
     }
+
+    public void setLabel(Label l){
+        this.label = l;
+    }
+
+    public void setAddress(int i){
+        this.address = i;
+    }
+
+    public void setOffset(int i){
+        this.offset = i;
+    }
+
+    public Label getLabel(){
+        return label;
+    }
+
+    public int getAddress(){
+        return address;
+    }
+
+    public int getOffset(){
+        return offset;
+    }
+
+
 }
+
+

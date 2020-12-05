@@ -169,47 +169,18 @@ public class Parser implements IParser {
 
         //---------------------------------------------------------------------------------
         private Instruction parseInherent (Instruction inst, String line) throws IOException {
-            // your code...
-            /**
-             * Input: String
-             * Output: Saves mnemonic and opcode in inst object
-             */
-            //expect(1000);
             inst.parseMnemonic(line);
             return inst;
         }
-        //---------------------------------------------------------------------------------
-
-        /*
-        TestImmediate.asm - Test assembly file for Immediate instructions.
-            ldc.i3  -4       ; OK, number <i3> [-4..3].
-            ldc.i3  3        ; OK, number <i3> [-4..3].
-            ldc.i3  4        ; Error, number not in range <i3> [-4..3].
-            ldv.u3  0        ; OK, number <u3> [0..7].
-            ldv.u3  7        ; OK, number <u3> [0..7].
-            ldv.u3  -1       ; Error, number not in range <u3> [0..7].
-
-            stv.u3  0        ; OK, number <u3> [0..7].
-            stv.u3  7        ; OK, number <u3> [0..7].
-            stv.u3  -1       ; Error, number not in range <u3> [0..7].
-
-           addv.u3  0        ; OK, number <u3> [0..7].
-           addv.u3  7        ; OK, number <u3> [0..7].
-           addv.u3  -1       ; Error, number not in range <u3> [0..7].
-
-          enter.u5  0        ; OK, number <u5> [0..31].
-          enter.u5  31       ; OK, number <u5> [0..31].
-          enter.u5  -1       ; Error, number not in range <u5> [0..15].
-
-         */
-        private Instruction parseImmediate () {
-
-            return new Instruction();
+  
+        private Instruction parseImmediate (Instruction inst, String line) throws IOException{
+            inst.parseMnemonic(line);
+            return inst;
         }
-        //---------------------------------------------------------------------------------
-        private Instruction parseRelative () {
-            // your code...
-            return new Instruction();
+        
+        private Instruction parseRelative (Instruction inst, String line) throws IOException{
+            inst.parseMnemonic(line);
+            return inst;
         }
         // -------------------------------------------------------------------
         // A line statement:
@@ -233,7 +204,15 @@ public class Parser implements IParser {
              * Inputs: Instruction, String
              * Output: void, saves mnemonic and respective opcode in object variables
              */
-            inst = parseInherent(inst, line);
+            if(token == Tokens.INHERENT){
+                inst = parseInherent(inst, line);
+            }
+            else if(token == Tokens.IMMEDIATE){
+                inst = parseImmediate(inst, line);
+            }
+            else if(token == Tokens.RELATIVE){
+                inst = parseRelative(inst, line);
+            }
 
             return new LineStmt(label, inst, comment);
         }
