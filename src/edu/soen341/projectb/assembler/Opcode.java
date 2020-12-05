@@ -62,7 +62,15 @@ public interface Opcode {
        "neg",   "inc",    "dec",  "add",   "sub",   "mul",   "div",     "rem",
        "shl",   "shr",    "teq",  "tne",   "tlt",   "tgt",   "tle",     "tge"
     };
+    
+    public static final int immediateOpcodes[] = {
+      br_i5, brf_i5, enter_u5, ldc_i3, addv_u3, ldv_u3, stv_u3
+    };
 
+    public static final String immediateMnemonics[] = {
+      "br_i5", "brf_i5", "enter_u5", "ldc_i3", "addv_u3", "ldv_u3", "stv_u3"
+    };
+    
     public static final int relativeOpcodes[] = {
       addv_u8, ldv_u8, stv_u8, incv, decv,
       enter_u8, lda_i16, ldc_i8, ldc_i16, ldc_i32, 
@@ -74,15 +82,4 @@ public interface Opcode {
       "enter_u8", "lda_i16", "ldc_i8", "ldc_i16", "ldc_i32", 
       "br_i8", "br_i16", "brf_i8"
     };
-
-    public static final int immediateOpcodes[] = {
-      br_i5, brf_i5, enter_u5, ldc_i3, addv_u3, ldv_u3, stv_u3
-    };
-
-    public static final String immediateMnemonics[] = {
-      "br_i5", "brf_i5", "enter_u5", "ldc_i3", "addv_u3", "ldv_u3", "stv_u3"
-    };
-
-  
-
 }
