@@ -25,6 +25,11 @@ public class Parser implements IParser {
         this.keywordTable = env.getKeywordTable();
         this.opCodes = lexer.getOpCodes();
         this.options = env.getOptions();
+        for(int i = 0; i<line.length ; i++){
+            line[i]="";
+            linetokens[i]=Tokens.ILLEGAL_CHAR;
+        }
+
         nextToken(); // prime
         parse();
 
@@ -76,42 +81,70 @@ public class Parser implements IParser {
     } else {
         options.printUsage();
     }
+
+
     };
 
     public LinkedQueue parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
 
+
+
         seq = new LineStmtSeq();
         GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
+
 
         int count = 0;
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
 
-         /*
-            if (options.isEnabled() &&
-                    options.isRequired() &&
-                    options.getClass().getSimpleName().equals("ListingOption")) {
-                System.out.println("Listing File : " + file.getAbsolutePath());
-                fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
-                        "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
-            }
-            if (options.getClass().getSimpleName().equals("VerboseOption")) {
-                if (options.isEnabled() && options.isRequired()) {
-                    System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
-                            "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
-                } else {
-                    options.printUsage();
-                }
-            }
-        */
             printLabel(fr,file);
-            while (!token.equals(Tokens.EOF) ) {
+        System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
+                "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+            while (!token.equals(Tokens.EOF)) {
                 if(!token.equals(Tokens.EOL)){
                     if(!keywordTable.isEmpty()){
-                        String s = keywordTable.poll().toString();
 
+                        String s = keywordTable.poll().toString();
+                        if(curlinepos == lexer.getPosition().getLinePos()){
+                            if(token.equals(Tokens.LABEL)){
+                                line [0] = s;
+                                linetokens[0]= token;
+
+                            }else if(token.equals(Tokens.INHERENT) ||
+                                     token.equals(Tokens.RELATIVE) ||
+                                     token.equals(Tokens.IMMEDIATE)||
+                                     token.equals(Tokens.DIRECTIVE)){
+                                line[1] = s;
+                                linetokens[1]= token;
+
+                            }else if(token.equals(Tokens.NUMBER)){
+
+                                line[2] = s;
+                                linetokens[2]= token;
+
+                            }else if(token.equals(Tokens.COMMENT)){
+
+                                line[3] = s;
+                                linetokens[3]= token;
+                            }
+                        }else{
+                            lineStmt = parseLineStmt();
+                            seq.add(lineStmt);
+                            String[] inst = seq.pop().getInstruction().printInstruction();
+
+                            System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
+                                    lexer.getPosition().getLinePos(), address, inst[0], inst[1]) + "\n");
+                            for(int i = 0; i<line.length ; i++){
+                                line[i]="";
+                                linetokens[i]=Tokens.ILLEGAL_CHAR;
+                            }
+                            curlinepos++;
+
+
+                        }
+                        /*
                         lineStmt = parseLineStmt(s);
                         seq.add(lineStmt);
                         String[] inst = seq.pop().getInstruction().printInstruction();
@@ -130,6 +163,10 @@ public class Parser implements IParser {
                                 options.printUsage();
                             }
                         }
+
+                         */
+
+
                         count++;
                         address++;
                         nextToken();
@@ -168,29 +205,6 @@ public class Parser implements IParser {
             inst.parseMnemonic(line);
             return inst;
         }
-
-        private String parseDirective (String line) throws IOException{
-            cstring = line.substring(line.indexOf("\""), line.indexOf("\""));
-            if(cstring.length() > 2){
-                String s =  "Directive out of bounds";
-                return s;
-            }
-            if(line.contains(".cstring")){
-                char [] cs = new char[2];
-                cs = cstring.toCharArray();
-                for(int i = 0; i < cs.length; i++){
-                    cstring += Integer.toHexString(cs[i]) + " ";
-                }
-                cstring = cstring + "00";
-                return cstring;
-            }
-            else{
-                String s =  "This directive does not compute";
-                errorReporter.record( _Error.create( "cstring is limited to 8 bits", lexer.getPosition()));
-                return s;
-            }
-        }
-
         // -------------------------------------------------------------------
         // A line statement:
         //   - could be empty (only a EOL);
@@ -199,12 +213,12 @@ public class Parser implements IParser {
         //
         // LineStatement = [Label] [Instruction | Directive ] [Comment] EOL .
         //
-        public LineStmt parseLineStmt (String line) throws IOException {
+        public LineStmt parseLineStmt () throws IOException {
             Label label = null;
             Instruction inst = new Instruction();
+            Directive directive = null;
             Comment comment = null;
 
-            //System.out.println("Parsing a Line Statement...");
 
             //parseLabel(); TODO: parse the label in a line statement - create a function to translate label
             //parseComment(); TODO: parse the comment in a line statement - create a function to translate the comment
@@ -213,27 +227,48 @@ public class Parser implements IParser {
              * Inputs: Instruction, String
              * Output: void, saves mnemonic and respective opcode in object variables
              */
-            if(token == Tokens.INHERENT){
-                inst = parseInherent(inst, line);
+            if(linetokens[0].equals(Tokens.LABEL)){
+                label = new Label(line[0]);
             }
-            else if(token == Tokens.IMMEDIATE){
-                inst = parseImmediate(inst, line);
+            if(linetokens[1].equals(Tokens.INHERENT)){
+                inst = parseInherent(inst, line[1]);
             }
-            else if(token == Tokens.RELATIVE){
-                inst = parseRelative(inst, line);
+            if(linetokens[1].equals(Tokens.IMMEDIATE)){
+                inst = parseImmediate(inst, line[1]);
+            }
+            if(linetokens[1].equals(Tokens.RELATIVE)){
+                inst = parseRelative(inst, line[1]);
+            }
+            if (linetokens[1].equals(Tokens.DIRECTIVE)){
+                directive = parseDirective(line[1]);
+            }
+            if(linetokens[2].equals(Tokens.NUMBER)){
+                if(!inst.mnemonic.isEmpty()) {
+                    //inst.operand.address = Integer.parseInt(line[2]);
+                }
+            }
+            if(linetokens[3].equals(Tokens.COMMENT)){
+                comment = new Comment(line[3]);
             }
 
             return new LineStmt(label, inst, comment);
         }
 
-        protected void nextToken () throws IOException {
+    private Directive parseDirective(String line) {
+        return new Directive();
+    }
+
+    protected void nextToken () throws IOException {
             token = lexer.getToken();
         }
 
         public LineStmtSeq getSeq () {
         return seq;
-        }   
+    }
+
+
         private Tokens token;
+        private int curlinepos = 1;
         private int address;
         private ILexer lexer;
         private ISourceFile sourceFile;
@@ -243,7 +278,8 @@ public class Parser implements IParser {
         private ISymbolTable opCodes;
         private IOption options;
         private LineStmtSeq seq;
-        private String cstring = "";
+        String [] line = new String[4]; //Label,instruction or directive ,operand,comment
+        Tokens[] linetokens = new Tokens[4];
 
 }
 
