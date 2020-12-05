@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 public class CmAssembler {
     public static void main(String[] args) throws IOException, URISyntaxException {
         args = new String[]{"-l"};
-        Environment env = new Environment("S1Test1.asm",args[0]);
+        Environment env = new Environment("TS3.asm",args[0]);
         Parser parser = new Parser(env);
     }
 }
