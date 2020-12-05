@@ -68,18 +68,19 @@ public interface Opcode {
     };
 
     public static final String immediateMnemonics[] = {
-      "br_i5", "brf_i5", "enter_u5", "ldc_i3", "addv_u3", "ldv_u3", "stv_u3"
+      "br.i5", "brf.i5", "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3"
     };
     
     public static final int relativeOpcodes[] = {
       addv_u8, ldv_u8, stv_u8, incv, decv,
       enter_u8, lda_i16, ldc_i8, ldc_i16, ldc_i32, 
-      br_i8, br_i16, brf_i8
+      br_i8, br_i16, brf_i8, calls_i8, calls_i16, br, brf, trap
     };
 
     public static final String relativeMnemomnics[] = 
-    { "addv_u8", "ldv_u8", "stv_u8", "incv", "decv",
-      "enter_u8", "lda_i16", "ldc_i8", "ldc_i16", "ldc_i32", 
-      "br_i8", "br_i16", "brf_i8"
+    { "addv.u8", "ldv.u8", "stv.u8", "incv", "decv",
+      "enter.u8", "lda.i16", "ldc.i8", "ldc.i16", "ldc.i32",
+      "br.i8", "br.i16", "brf.i8", "calls.i8", "calls.i16","br",
+            "brf", "trap"
     };
 }

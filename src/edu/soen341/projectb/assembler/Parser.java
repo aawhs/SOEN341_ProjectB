@@ -69,8 +69,7 @@ public class Parser implements IParser {
     System.out.println("Listing File : " + file.getAbsolutePath());
     fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
             "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
-        }
-    if (options.getClass().getSimpleName().equals("VerboseOption")&&options.isEnabled() && options.isRequired()) {
+        }else if (options.getClass().getSimpleName().equals("VerboseOption")&&options.isEnabled() && options.isRequired()) {
     
         System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
                 "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
@@ -114,8 +113,9 @@ public class Parser implements IParser {
             }
         */
 
-   printLabel(fr,file);
+            printLabel(fr,file);
             while (!token.equals(Tokens.EOF) ) {
+                if(!token.equals(Tokens.EOL)){
                     if(!keywordTable.isEmpty()){
                         String s = keywordTable.poll().toString();
 
@@ -124,7 +124,7 @@ public class Parser implements IParser {
                         String[] inst = seq.pop().getInstruction().printInstruction();
                         binary.getInstructions().add(inst);
 
-                        /*
+
                         if (options.isEnabled() && options.isRequired() &&
                                 options.getClass().getSimpleName() == "ListingOption") {
                             fr.write(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
@@ -137,14 +137,16 @@ public class Parser implements IParser {
                                 options.printUsage();
                             }
                         }
-                        */
+
 
                         count++;
                         address++;
                         nextToken();
                     }
-
+                } else{
+                    nextToken();
                 }
+            }
 
             System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
             if (!options.isEnabled()) {
@@ -160,7 +162,7 @@ public class Parser implements IParser {
             return new TranslationUnit(seq);
 
     }
-    
+
         private Instruction parseInherent (Instruction inst, String line) throws IOException {
             inst.parseMnemonic(line);
             return inst;
