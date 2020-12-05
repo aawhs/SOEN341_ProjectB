@@ -18,13 +18,12 @@ public class Lexer implements ILexer, Opcode {
 		this.reader = reader;
 		this.table = table;
 		keywordsTable = new SymbolTable();
-
-
 		opCodes = new SymbolTable();
 
 		//Populate opcode ST
 		for(int i = 0; i < Opcode.inherentOpcodes.length ; i++){
 			opCodes.put(Opcode.inherentMnemonics[i], Opcode.inherentOpcodes[i]);
+			keywordsTable.put(Opcode.inherentMnemonics[i], Tokens.INHERENT);
 		}
 
 
@@ -144,7 +143,7 @@ public class Lexer implements ILexer, Opcode {
 	public Tokens getToken() throws IOException {
 		// skip whitespaces
 		// "\n", "\r\n", "\n", or line comments are considered as EOL
-		if(ch == ' '){
+		while(ch == 32){
 			ch = read();
 		}
 
@@ -242,13 +241,13 @@ public class Lexer implements ILexer, Opcode {
 
 	private Position position;
 	private boolean tokenSwitch;
-	
+
 	private int linePos;
 	private int colPos;
 	private int curlinePos;
 	private int curcolPos;
 	private int ch;
-	private String temp;
+	private String temp="";
 	private String mnemonic;
 	private IReader reader;
 	private String commenString;
