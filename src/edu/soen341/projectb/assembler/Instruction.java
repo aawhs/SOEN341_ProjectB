@@ -20,23 +20,25 @@ public class Instruction implements Opcode {
     public Instruction(){}
 
     public void setInstruction(String inst){
-      for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
-          if(Opcode.inherentMnemonics[i].contains(inst)){
-              this.mnemonic = Opcode.inherentMnemonics[i];
-              this.opCode = Opcode.inherentOpcodes[i];
-              break;
-          }
-          if(Opcode.immediateMnemonics[i].contains(inst)){
-              this.mnemonic = Opcode.immediateMnemonics[i];
-              this.opCode = Opcode.immediateOpcodes[i];
-              break;
-          }
-          if(Opcode.relativeMnemomnics[i].contains(inst)){
-              this.mnemonic = Opcode.relativeMnemomnics[i];
-              this.opCode = Opcode.relativeOpcodes[i];
-              break; 
-          }
-      }
+        for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
+            if(Opcode.inherentMnemonics[i].contains(inst)){
+                this.mnemonic = Opcode.inherentMnemonics[i];
+                this.opCode = Opcode.inherentOpcodes[i];
+            }
+        }
+        for(int i = 0; i< Opcode.immediateMnemonics.length; i++) {
+            if (Opcode.immediateMnemonics[i].contains(inst)) {
+                this.mnemonic = Opcode.immediateMnemonics[i];
+                this.opCode = Opcode.immediateOpcodes[i];
+            }
+        }
+        for(int i = 0; i< Opcode.relativeMnemomnics.length; i++) {
+            if (Opcode.relativeMnemomnics[i].contains(inst)) {
+                this.mnemonic = Opcode.relativeMnemomnics[i];
+                this.opCode = Opcode.relativeOpcodes[i];
+                break;
+            }
+        }
     }
 
     public void parseMnemonic(String inst){
