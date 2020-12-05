@@ -34,10 +34,10 @@ public class Parser implements IParser {
 
 
     // Record the error: <t> expected, found <token> at <token>.position
-    /*
-    protected void expect(int t) throws IOException {
+    
+    protected void expect(Tokens t) throws IOException {
         if (t != token) {
-            String expected = "INHERENT IDENTIFIER";
+            String expected = lexer.getTokenName(t);
             errorReporter.record( _Error.create( expected+" expected", lexer.getPosition()));
             errorReporter.getException();
             System.out.println(expected);
@@ -45,7 +45,7 @@ public class Parser implements IParser {
         }
     }
 
-     */
+     
     /*protected void expect(String t) {
         errorReporter.record( _Error.create(t+" expected", lexer.getPosition()) );
     }
@@ -62,6 +62,25 @@ public class Parser implements IParser {
     //
     // AssemblyUnit = { LineStmt } EOF .
     // -------------------------------------------------------------------
+    private void printLabel(FileWriter fr, File file) throws IOException{
+        if (options.isEnabled() &&
+        options.isRequired() &&
+        options.getClass().getSimpleName().equals("ListingOption")) {
+    System.out.println("Listing File : " + file.getAbsolutePath());
+    fr.write(String.format("%1s%10s%15s%10s%20s%20s\n",
+            "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+        }
+    if (options.getClass().getSimpleName().equals("VerboseOption")&&options.isEnabled() && options.isRequired()) {
+    
+        System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
+                "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
+    } else {
+        options.printUsage();
+    }
+
+
+    };
+
     public LinkedQueue parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
 
@@ -75,6 +94,7 @@ public class Parser implements IParser {
         int count = 0;
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
+
 
          /*
             if (options.isEnabled() &&
@@ -94,7 +114,13 @@ public class Parser implements IParser {
             }
         */
 
+   printLabel(fr,file);
             while (!token.equals(Tokens.EOF) ) {
+
+        
+          
+           
+       
 
                     if(!keywordTable.isEmpty()){
                         String s = keywordTable.poll().toString();
