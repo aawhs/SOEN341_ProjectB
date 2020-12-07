@@ -20,13 +20,14 @@ public class Test_Node {
         Instruction instruction = new Instruction("pop");
         Comment comment = new Comment("sdsds ;This is a comment");
         LineStmt lineStmt = new LineStmt(label, instruction, comment);
-        Node node = new Node(lineStmt);
+        //Node node = new Node(lineStmt);
 
         /**
          * Print the Node's label, instruction and comment
          */
-        System.out.println( '\n' + node.getLineStmt().getLabel().getIdentifier() + ", " +
+       /* System.out.println( '\n' + node.getLineStmt().getLabel().getIdentifier() + ", " +
                             node.getLineStmt().getInstruction().getMnemonic() + ", " +
                             node.getLineStmt().getComment().getComment());
+         */
     }
 }

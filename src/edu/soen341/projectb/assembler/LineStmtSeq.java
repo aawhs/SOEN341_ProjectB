@@ -10,6 +10,6 @@ public class LineStmtSeq{
         sequence.add(node);
     }
     public LineStmt pop(){
-        return sequence.pop().getLineStmt();
+        return (LineStmt) sequence.pop().getObject();
     }
 }
