@@ -1,10 +1,11 @@
+//Interface which contains used in the implementation of SymbolTable
 package edu.soen341.projectb.nodes;
 
 import java.util.Iterator;
 import java.util.Map;
 
 public interface ISymbolTable<Key extends Comparable<Key>, Value>{
-    //Symbol Table Main Function
+    //Symbol Table Main Functions
     Value get(Key key);
     void put(Key key, Value val);
     void remove(Key key);

@@ -1,17 +1,11 @@
+// SymbolTable class which implements a TreeMap and is used for the keywordTable
 package edu.soen341.projectb.nodes;
 
 import java.util.Iterator;
 import java.util.TreeMap;
 
 public class SymbolTable implements ISymbolTable {
-
-    public TreeMap<Comparable, Object> getSymbolTable() {
-        return symbolTable;
-    }
-
-    private TreeMap<Comparable, Object> symbolTable;
-
-
+    //Initialize SymbolTable to its TreeMap implementation
     public SymbolTable() {
         symbolTable = new TreeMap<>();
     }
@@ -29,6 +23,10 @@ public class SymbolTable implements ISymbolTable {
     public Object get(Comparable key) {
         if(!isValid(key)) throw new IllegalArgumentException("cannot get null key");
         return symbolTable.get(key);
+    }
+    //Getter for table
+    public TreeMap<Comparable, Object> getSymbolTable() {
+        return symbolTable;
     }
 
 
@@ -67,7 +65,7 @@ public class SymbolTable implements ISymbolTable {
         }
         return true;
     }
-
+    //**Overridden iterators for keys**
     @Override
     public Iterable keys() {
         return symbolTable.keySet();
@@ -83,7 +81,10 @@ public class SymbolTable implements ISymbolTable {
      * @param i the value of the .get value from SymbolTable.get()
      * @return Hexadecimal formatted string for the value of the input argument
      */
+    //Convert to Hex
     public String toHex(int i){
         return String.format("0x%02X",i);
     }
+    //Definition
+    private TreeMap<Comparable, Object> symbolTable;
 }

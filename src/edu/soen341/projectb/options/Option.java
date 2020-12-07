@@ -1,3 +1,4 @@
+// Option parent class which implements the option interfaces and defines all the functions used in option objects
 package edu.soen341.projectb.options;
 
 import edu.soen341.projectb.options.IOption;
@@ -51,7 +52,7 @@ abstract class Option implements IOption {
     public final String   getUsage()    {return this.usage;}
     public final String   getClassName(){return this.className;}
 
-
+    // Boolean methods for validation
     @Override
     public boolean isOption(){
         return Arrays.toString(optShort).contains("-");
