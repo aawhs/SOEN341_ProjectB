@@ -244,6 +244,15 @@ public class Parser implements IParser {
             }
             if(linetokens[2].equals(Tokens.NUMBER)){
                 if(!inst.mnemonic.isEmpty()) {
+                    if(inst.mnemonic.contains("lda")){
+                        if (lexer.getToken() == Tokens.MINUS){
+                            errorReporter.record( _Error.create("error: address can not be signed", lexer.getPosition()));
+                        }
+                        else {inst.operand.address = Integer.parseInt(line[2]);}
+                    }
+                    else if(inst.mnemonic.contains("ldc") && inst.mnemonic.contains("ldv")){
+                        inst.operand.offset = Integer.parseInt(line[2]);
+                    }
                     //inst.operand.address = Integer.parseInt(line[2]);
                 }
             }
