@@ -58,7 +58,7 @@ public class LineStmt {
          */
 
         if(directive != null){
-            System.out.print(String.format("%02X %4s %4s %4S %4S",
+            System.out.print(String.format("           %02X              %4s         %4s%4S                 %4S",
                     directive.getOpcode(), label.getLabel(), directive.getDirective(),
                     directive.getStringOperand(), comment.getComment()) + "\n");
         }else{
