@@ -1,49 +1,36 @@
 package edu.soen341.projectb.assembler;
-
 import edu.soen341.projectb.assembler.Operand;
-
+    //The Instruction Class is designed to hold Instruction objects and then separate and parse them as needed
 public class Instruction implements Opcode {
-    public void setMnemonic(String mnemonic) {
-        this.mnemonic = mnemonic;
+    //Paramaterized Contructor for the Instruction Object
+    public Instruction(String inst){
+        setInstruction(inst);
     }
-
-    public int getOpCode() {
-        return opCode;
-    }
-
-    public void setOpCode(int opCode) {
-        this.opCode = opCode;
-    }
-
-    public String getOperand() {
-        if(operand.address != 0){
-            return String.valueOf(operand.getAddress());
-        }else if(operand.offset != 0){
-            return String.valueOf(operand.getOffset());
-        }
-        return operand.label.getLabel();
-    }
-
-    public void setOperand(Operand operand) {
-        this.operand = operand;
-    }
-
-    //public String [] Ioperands = new String [] {"i3","u3","i4","u4","i5","u5"};
-    //public String [] Roperands = new String [] {"i8","u8","i16","u16","i32","u32"};
-    public String mnemonic = "";
-    public int opCode;
-    public Operand operand = new Operand();
-    //public String mnemonicType = "";
-    //public String operands = "";
-
-    public Instruction(String inst){setInstruction(inst);}
-
+    //Paramaterized Contructor for the Instruction Object
     public Instruction(Opcode opcode, Operand operand){
         this.operand = operand;
     }
-
-    public Instruction(){}
-
+    //Basic Contructor for the Instruction Object
+    public Instruction(){
+        this.operand = new Operand();
+    }
+    //Custom Method used by the parser in relation to the Instruction Class
+    public void parseMnemonic(String inst){
+        String mnemonic_temp = "";
+        for (int i = 0; i < inst.length(); i++){
+            if(inst.charAt(i) == ' ' || inst.charAt(i) == '.'){break;}
+            mnemonic_temp += inst.charAt(i);
+        }
+        setInstruction(mnemonic_temp);
+    }
+    /*public String[] printInstruction(){
+        String[] inst = new String[2];
+        inst[0]= String.format("%02d",opCode);
+        inst[1]=mnemonic;
+        return inst;
+    }
+    */    
+     //Custom Method used by the Instruction Class to verify the instructions value in relation to Opcodes and Mnemonics
     public void setInstruction(String inst){
         for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
             if(Opcode.inherentMnemonics[i].contains(inst)){
@@ -65,27 +52,38 @@ public class Instruction implements Opcode {
             }
         }
     }
-
-    public void parseMnemonic(String inst){
-        String mnemonic_temp = "";
-        for (int i = 0; i < inst.length(); i++){
-            if(inst.charAt(i) == ' ' || inst.charAt(i) == '.'){break;}
-            mnemonic_temp += inst.charAt(i);
+    //Basic Setter method in relation to Instruction Object
+    public void setMnemonic(String mnemonic) {
+        this.mnemonic = mnemonic;
+    }
+    //Basic Setter method in relation to Instruction Object
+    public void setOperand(Operand operand) {
+        this.operand = operand;
+    }
+     //Basic Setter method in relation to Instruction Object
+     public void setOpCode(int opCode) {
+        this.opCode = opCode;
+    }
+    //Basic Getter method in relation to Instruction Object
+    public int getOpCode() {
+        return opCode;
+    }
+    //Basic Getter method in relation to Instruction Object
+    public String getOperand() {
+        if(operand.address != 0){
+            return String.valueOf(operand.getAddress());
+        }else if(operand.offset != 0){
+            return String.valueOf(operand.getOffset());
         }
-        setInstruction(mnemonic_temp);
+        return operand.label.getLabel();
     }
-
-    public String[] printInstruction(){
-        String[] inst = new String[2];
-        inst[0]= String.format("%02d",opCode);
-        inst[1]=mnemonic;
-        return inst;
+    //Basic Getter method in relation to Instruction Object
+    public String getMnemonic() {
+        return mnemonic;
     }
-
-    /**
-     * Used in AUnit testing
-     * @return mnemonic
-     */
-    public String getMnemonic() {return mnemonic;}
+    //Necessary Data Members for the Instruction Class
+    public String mnemonic = "";
+    public int opCode;
+    public Operand operand = new Operand();
 }
 

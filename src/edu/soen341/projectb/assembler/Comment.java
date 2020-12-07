@@ -1,20 +1,11 @@
 package edu.soen341.projectb.assembler;
-
+    //The Comment class is intended to create and hold Comment Objects based on the Tokens Acquired by the Lexer
 public class Comment {
-
-    private static char commentStart = ';';
-    private static char EOL = '\n';
-    String comment;
-
+    //Standard paramaterized constructor
     public Comment(String c){
         this.comment = parseComment(c);
     }
-    /**
-     * Used in AUnit testing
-     * @return comment
-     */
-
-
+    //Parse method in relation to Parser Class for handling Comment Objects being parsed
     public String parseComment(String c){
         boolean cmt = false;
         String str = "";
@@ -31,6 +22,12 @@ public class Comment {
         }
         return str;
     }
-    public String getComment() {return comment;}
-
+    //Basic Getter method in relation to Comments Object
+    public String getComment() {
+        return comment;
+    }
+    //Necessary Data Members needed in relation to comments
+    private static char commentStart = ';';
+    private static char EOL = '\n';
+    String comment;
 }

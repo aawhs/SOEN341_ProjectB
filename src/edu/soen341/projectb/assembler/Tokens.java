@@ -1,5 +1,5 @@
 package edu.soen341.projectb.assembler;
-
+    //Enum Object that contains the representations of the Tokens
 public enum Tokens{
     MINUS,
     COMMA,
