@@ -2,8 +2,10 @@ package edu.soen341.projectb.reportable;
 
 import java.util.ArrayList;
 public class ErrorReporter implements IReportable {
-    ArrayList<_Error> errors = new ArrayList<>();
+    
 
+
+    //Methods
     @Override
     public void record(_Error e) {
         //TODO ADD ERROR TO LIST
@@ -13,4 +15,7 @@ public class ErrorReporter implements IReportable {
     public void getException(){
         errors.get(0);
     }
+
+    //Attribute
+    ArrayList<_Error> errors = new ArrayList<>();
 }

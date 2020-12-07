@@ -245,7 +245,7 @@ public class Parser implements IParser {
         public LineStmt parseLineStmt () throws IOException {
             Label label = new Label("");
             Instruction inst = new Instruction();
-            Directive directive = new Directive("");
+            Directive directive = new Directive();
             Comment comment = new Comment("");
 
 
@@ -341,7 +341,7 @@ public class Parser implements IParser {
 
              */
 
-            if(directive.getDirective() == "")
+            if(directive.getDirective() == ".cstring")
                 return new LineStmt(label,directive,comment);
             else
                 return new LineStmt(label, inst, comment);
