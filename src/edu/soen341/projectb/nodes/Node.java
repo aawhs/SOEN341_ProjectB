@@ -1,35 +1,52 @@
 package edu.soen341.projectb.nodes;
 
-import edu.soen341.projectb.assembler.LineStmt;
+
+import edu.soen341.projectb.assembler.Tokens;
 
 public class Node{
-	private LineStmt lineStatement;
+	private Tokens token;
+	private String keyword;
 	private Node next;
+	private Object obj;
 
-	public Node(LineStmt lineStatement){
-		this.lineStatement = lineStatement;
-		this.next = null;
+	public Node(Object o){
+		this.obj = o;
+		//this.token = t;
+		//this.keyword = s;
 	}
 
 	public void setNext(Node node){
 		this.next = node;
 	}
 
-	public void setLineStmt(LineStmt line){
-		this.lineStatement = line;
+	public void setToken(Tokens t){
+		this.token = t;
 	}
 
-	public LineStmt getLineStmt(){
-		return this.lineStatement;
+	public void setKeyword(String s){
+		this.keyword = s;
+	}
+
+	/**
+		 * Used in AUnit testing
+		 * @return Object
+		 */
+	public Tokens getToken(){
+		
+		return this.token;
+	}
+
+	public String getKeyword(){
+		return this.keyword;
 	}
 
 	public Node getNext(){
 		return this.next;
 	}
 
-	/**
-	 * Used in AUnit testing
-	 * @return lineStatement
-	 */
-	public LineStmt getLineStatement(){return lineStatement;}
+	public Object getObject(){
+		return this.obj;
+	}
+
+
 }
