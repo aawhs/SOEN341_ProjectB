@@ -94,7 +94,6 @@ public class Parser implements IParser {
         LineStmt lineStmt ;
 
 
-        int count = 0;
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
 
@@ -110,20 +109,21 @@ public class Parser implements IParser {
                             lineSeq.add(new Node(scanned));
                             nextToken();
                         }else{
-                            seq.add(parseLineStmt());
-                            tempLineStmt = seq.pop();
-                            /*
-                            System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %4s    %4s   %4s",
-                                    lexer.getPosition().getLinePos(), address, tempLineStmt.getInstruction().getOpCode(),
-                                    tempLineStmt.getLabel().getLabel(), tempLineStmt.getInstruction().getMnemonic()
-                                    , tempLineStmt.getComment().getComment()) + "\n");
+                            tempLineStmt = parseLineStmt();
+                            seq.add(tempLineStmt);
 
-                             */
-                            tempLineStmt.print();
+                            tempLineStmt = seq.pop();
+
                             lineSeq.clear();
                             scanned = new ScannedObject(keywordTable.poll().toString(), token);
                             lineSeq.add(new Node(scanned));
+
+                            System.out.print(String.format("%02d %#02X",
+                                    curlinepos, address));
+                            tempLineStmt.print();
+
                             curlinepos++;
+                            address++;
                             nextToken();
                         }
 
@@ -198,8 +198,6 @@ public class Parser implements IParser {
 
                          */
 
-
-                        count++;
                         address++;
                     }
                 } else{
@@ -259,10 +257,16 @@ public class Parser implements IParser {
              * Output: void, saves mnemonic and respective opcode in object variables
              */
 
-            for(int i = 0; i <lineSeq.size() ; i++){
+            int size = lineSeq.size();
+
+            for(int i = 0; i <size ;i++){
                 tempNode = (ScannedObject) lineSeq.pop().getObject();
                 if(tempNode.getToken().equals(Tokens.LABEL)){
-                    label = new Label(tempNode.getKeyword());
+                    if(inst.getMnemonic() != ""){
+                        inst.operand.label = new Label(tempNode.getKeyword());
+                    }else{
+                        label = new Label(tempNode.getKeyword());
+                    }
                 }
                 if(tempNode.getToken().equals(Tokens.INHERENT)){
                     inst = parseInherent(inst, tempNode.getKeyword());
@@ -273,7 +277,7 @@ public class Parser implements IParser {
                 if(tempNode.getToken().equals(Tokens.RELATIVE)){
                     inst = parseRelative(inst, tempNode.getKeyword());
                 }
-                if(tempNode.getToken().equals(Tokens.DIRECTIVE)){
+                if(tempNode.getToken().equals(Tokens.STRING)){
                     directive = parseDirective(tempNode.getKeyword());
                 }
                 if(tempNode.getToken().equals(Tokens.NUMBER)){
@@ -282,12 +286,16 @@ public class Parser implements IParser {
                             if (lexer.getToken() == Tokens.MINUS){
                                 errorReporter.record( _Error.create("error: address can not be signed", lexer.getPosition()));
                             }
-                            else {inst.operand.address = Integer.parseInt(tempNode.getKeyword());}
+                            else {
+                                inst.operand.address = Integer.parseInt(tempNode.getKeyword());
+                            }
+                        }else{
+                            if(inst.mnemonic.contains("ldc") || inst.mnemonic.contains("ldv")){
+                                inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
+                            }
+                            inst.operand.address = Integer.parseInt(tempNode.getKeyword());
                         }
-                        else if(inst.mnemonic.contains("ldc") && inst.mnemonic.contains("ldv")){
-                            inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
-                        }
-                        //inst.operand.address = Integer.parseInt(line[2]);
+
                     }
                 }
                 if(tempNode.getToken().equals(Tokens.COMMENT)){
@@ -333,11 +341,15 @@ public class Parser implements IParser {
 
              */
 
-            return new LineStmt(label, inst, comment);
+            if(directive.getDirective() == "")
+                return new LineStmt(label,directive,comment);
+            else
+                return new LineStmt(label, inst, comment);
+
         }
 
     private Directive parseDirective(String line) {
-        return new Directive();
+        return new Directive(line);
     }
 
     protected void nextToken () throws IOException {

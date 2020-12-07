@@ -28,13 +28,9 @@ public class Instruction implements Opcode {
         this.operand = operand;
     }
 
-    //public String [] Ioperands = new String [] {"i3","u3","i4","u4","i5","u5"};
-    //public String [] Roperands = new String [] {"i8","u8","i16","u16","i32","u32"};
     public String mnemonic = "";
     public int opCode;
     public Operand operand = new Operand();
-    //public String mnemonicType = "";
-    //public String operands = "";
 
     public Instruction(String inst){setInstruction(inst);}
 
@@ -46,19 +42,21 @@ public class Instruction implements Opcode {
 
     public void setInstruction(String inst){
         for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
-            if(Opcode.inherentMnemonics[i].contains(inst)){
+            if(Opcode.inherentMnemonics[i].contains(inst) && mnemonic == ""){
                 this.mnemonic = Opcode.inherentMnemonics[i];
                 this.opCode = Opcode.inherentOpcodes[i];
+                break;
             }
         }
         for(int i = 0; i< Opcode.immediateMnemonics.length; i++) {
-            if (Opcode.immediateMnemonics[i].contains(inst)) {
+            if (Opcode.immediateMnemonics[i].contains(inst) && mnemonic == "") {
                 this.mnemonic = Opcode.immediateMnemonics[i];
                 this.opCode = Opcode.immediateOpcodes[i];
+                break;
             }
         }
         for(int i = 0; i< Opcode.relativeMnemomnics.length; i++) {
-            if (Opcode.relativeMnemomnics[i].contains(inst)) {
+            if (Opcode.relativeMnemomnics[i].contains(inst) && mnemonic == "") {
                 this.mnemonic = Opcode.relativeMnemomnics[i];
                 this.opCode = Opcode.relativeOpcodes[i];
                 break;
@@ -67,12 +65,7 @@ public class Instruction implements Opcode {
     }
 
     public void parseMnemonic(String inst){
-        String mnemonic_temp = "";
-        for (int i = 0; i < inst.length(); i++){
-            if(inst.charAt(i) == ' ' || inst.charAt(i) == '.'){break;}
-            mnemonic_temp += inst.charAt(i);
-        }
-        setInstruction(mnemonic_temp);
+        setInstruction(inst);
     }
 
     public String[] printInstruction(){
