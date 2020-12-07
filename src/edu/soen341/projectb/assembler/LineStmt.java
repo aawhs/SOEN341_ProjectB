@@ -7,6 +7,9 @@ public class LineStmt {
     Comment comment;
     private char EOL = '\n';
 
+    public LineStmt() {
+    }
+
     public Directive getDirective() {
         return directive;
     }

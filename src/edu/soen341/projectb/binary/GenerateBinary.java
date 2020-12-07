@@ -1,5 +1,6 @@
 package edu.soen341.projectb.binary;
 
+import edu.soen341.projectb.assembler.LineStmt;
 import edu.soen341.projectb.assembler.LineStmtSeq;
 
 import java.io.File;
@@ -114,5 +115,7 @@ public class GenerateBinary {
         System.out.println(text);
     }
 
-
+    public void addToRev(LineStmt l){
+        rev.add(l);
+    }
 }
