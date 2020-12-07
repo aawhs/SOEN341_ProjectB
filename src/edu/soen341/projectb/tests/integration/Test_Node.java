@@ -1,4 +1,4 @@
-package edu.soen341.projectb.tests;
+package edu.soen341.projectb.tests.integration;
 
 import edu.soen341.projectb.assembler.Comment;
 import edu.soen341.projectb.assembler.Instruction;
@@ -8,6 +8,9 @@ import edu.soen341.projectb.nodes.Node;
 
 import javax.sound.sampled.Line;
 
+/**
+ * Integration testing Label, Instruction, Comment, LineStmt and Node classes
+ */
 public class Test_Node {
     public static void main(String[] args){
         System.out.print("Test Node\n");
