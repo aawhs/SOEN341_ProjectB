@@ -8,7 +8,8 @@ public class Test_Instruction {
         System.out.print("Test Instruction\n");
         System.out.print(String.format("0x01 pop"));
 
-        instruction.parseMnemonic("pop ssss");
-        instruction.printInstruction();
+        instruction.setInstruction("pop");
+        System.out.println("\n0x" + instruction.printInstruction()[0] + " " +
+                instruction.printInstruction()[1]);
     }
 }
