@@ -1,4 +1,4 @@
-package edu.soen341.projectb.tests;
+package edu.soen341.projectb.tests.unit;
 
 import edu.soen341.projectb.assembler.Instruction;
 
