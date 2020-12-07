@@ -14,7 +14,8 @@ public class Directive implements Opcode { //extends Node?
     private String stringOperand;
 
     public Directive(){
-        stringOperand = "";
+        this.directive = "";
+        this.stringOperand = "";
     }
 
     public Directive(String so){
