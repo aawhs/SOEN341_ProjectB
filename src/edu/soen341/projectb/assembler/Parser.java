@@ -1,12 +1,11 @@
 package edu.soen341.projectb.assembler;
 
+import com.sun.source.tree.LambdaExpressionTree;
 import edu.soen341.projectb.binary.*;
 import edu.soen341.projectb.nodes.*;
 import edu.soen341.projectb.options.*;
 import edu.soen341.projectb.file.ISourceFile;
-import edu.soen341.projectb.file.SourceFile;
 import edu.soen341.projectb.reportable._Error;
-import edu.soen341.projectb.reportable.ErrorReporter;
 import edu.soen341.projectb.reportable.IReportable;
 
 
@@ -104,10 +103,37 @@ public class Parser implements IParser {
                 "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
             while (!token.equals(Tokens.EOF)) {
                 if(!token.equals(Tokens.EOL)){
+                    lexerpos = lexer.getPosition().getLinePos();
                     if(!keywordTable.isEmpty()){
+                        if(curlinepos == lexerpos){
+                            scanned = new ScannedObject(keywordTable.poll().toString(), token);
+                            lineSeq.add(new Node(scanned));
+                            nextToken();
+                        }else{
+                            seq.add(parseLineStmt());
+                            tempLineStmt = seq.pop();
+                            /*
+                            System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %4s    %4s   %4s",
+                                    lexer.getPosition().getLinePos(), address, tempLineStmt.getInstruction().getOpCode(),
+                                    tempLineStmt.getLabel().getLabel(), tempLineStmt.getInstruction().getMnemonic()
+                                    , tempLineStmt.getComment().getComment()) + "\n");
 
-                        String s = keywordTable.poll().toString();
-                        if(curlinepos == lexer.getPosition().getLinePos()){
+                             */
+                            tempLineStmt.print();
+                            lineSeq.clear();
+                            scanned = new ScannedObject(keywordTable.poll().toString(), token);
+                            lineSeq.add(new Node(scanned));
+                            curlinepos++;
+                            nextToken();
+                        }
+
+
+
+
+                        /*
+                        lexerpos = lexer.getPosition().getLinePos();
+                        if(curlinepos == lexerpos){
+                            String s = keywordTable.poll().toString();
                             if(token.equals(Tokens.LABEL)){
                                 line [0] = s;
                                 linetokens[0]= token;
@@ -136,14 +162,20 @@ public class Parser implements IParser {
 
                             System.out.print(String.format("%02d\t   %#04X\t\t %4s\t\t\t\t\t\t  %-4s",
                                     lexer.getPosition().getLinePos(), address, inst[0], inst[1]) + "\n");
-                            for(int i = 0; i<line.length ; i++){
+
+                            /*for(int i = 0; i<line.length ; i++){
                                 line[i]="";
                                 linetokens[i]=Tokens.ILLEGAL_CHAR;
                             }
+
+
                             curlinepos++;
-
-
                         }
+
+                         */
+
+
+
                         /*
                         lineStmt = parseLineStmt(s);
                         seq.add(lineStmt);
@@ -169,7 +201,6 @@ public class Parser implements IParser {
 
                         count++;
                         address++;
-                        nextToken();
                     }
                 } else{
                     nextToken();
@@ -214,10 +245,10 @@ public class Parser implements IParser {
         // LineStatement = [Label] [Instruction | Directive ] [Comment] EOL .
         //
         public LineStmt parseLineStmt () throws IOException {
-            Label label = null;
+            Label label = new Label("");
             Instruction inst = new Instruction();
-            Directive directive = null;
-            Comment comment = null;
+            Directive directive = new Directive("");
+            Comment comment = new Comment("");
 
 
             //parseLabel(); TODO: parse the label in a line statement - create a function to translate label
@@ -227,6 +258,46 @@ public class Parser implements IParser {
              * Inputs: Instruction, String
              * Output: void, saves mnemonic and respective opcode in object variables
              */
+
+            for(int i = 0; i <lineSeq.size() ; i++){
+                tempNode = (ScannedObject) lineSeq.pop().getObject();
+                if(tempNode.getToken().equals(Tokens.LABEL)){
+                    label = new Label(tempNode.getKeyword());
+                }
+                if(tempNode.getToken().equals(Tokens.INHERENT)){
+                    inst = parseInherent(inst, tempNode.getKeyword());
+                }
+                if(tempNode.getToken().equals(Tokens.IMMEDIATE)){
+                    inst = parseImmediate(inst, tempNode.getKeyword());
+                }
+                if(tempNode.getToken().equals(Tokens.RELATIVE)){
+                    inst = parseRelative(inst, tempNode.getKeyword());
+                }
+                if(tempNode.getToken().equals(Tokens.DIRECTIVE)){
+                    directive = parseDirective(tempNode.getKeyword());
+                }
+                if(tempNode.getToken().equals(Tokens.NUMBER)){
+                    if(!inst.mnemonic.isEmpty()) {
+                        if(inst.mnemonic.contains("lda")){
+                            if (lexer.getToken() == Tokens.MINUS){
+                                errorReporter.record( _Error.create("error: address can not be signed", lexer.getPosition()));
+                            }
+                            else {inst.operand.address = Integer.parseInt(tempNode.getKeyword());}
+                        }
+                        else if(inst.mnemonic.contains("ldc") && inst.mnemonic.contains("ldv")){
+                            inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
+                        }
+                        //inst.operand.address = Integer.parseInt(line[2]);
+                    }
+                }
+                if(tempNode.getToken().equals(Tokens.COMMENT)){
+                    comment = new Comment(tempNode.getKeyword());
+                }
+            }
+
+
+
+            /*
             if(linetokens[0].equals(Tokens.LABEL)){
                 label = new Label(line[0]);
             }
@@ -260,6 +331,8 @@ public class Parser implements IParser {
                 comment = new Comment(line[3]);
             }
 
+             */
+
             return new LineStmt(label, inst, comment);
         }
 
@@ -278,6 +351,7 @@ public class Parser implements IParser {
 
         private Tokens token;
         private int curlinepos = 1;
+        private int lexerpos = 0;
         private int address;
         private ILexer lexer;
         private ISourceFile sourceFile;
@@ -287,6 +361,11 @@ public class Parser implements IParser {
         private ISymbolTable opCodes;
         private IOption options;
         private LineStmtSeq seq;
+        private LinkedQueue lineSeq = new LinkedQueue();
+        private ScannedObject scanned;
+        private ScannedObject tempNode;
+        private LineStmt tempLineStmt;
+
         String [] line = new String[4]; //Label,instruction or directive ,operand,comment
         Tokens[] linetokens = new Tokens[4];
 

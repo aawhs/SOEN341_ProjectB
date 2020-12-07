@@ -20,6 +20,14 @@ public class LinkedQueue implements Iterable<Node> {
         // return first;
     }
 
+    public int size(){
+        return queue.size();
+    }
+
+    public void clear(){
+        queue.clear();
+    }
+
 
     public void remove(Node node) {
         queue.remove(node);

@@ -5,6 +5,12 @@ public class Operand {
     int address;
     int offset;
 
+    public Operand() {
+        this.label = new Label ("");
+        this.address = 0;
+        this.offset = 0;
+    }
+
     public Operand(Label l, int a, int o){
         this.label = l;
         this.address = a;

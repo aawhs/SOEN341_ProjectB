@@ -30,4 +30,9 @@ public class LineStmt {
                 (instruction == null) &&
                 (comment == null);
     }
+
+    public void print(){
+        System.out.println(label.getLabel() + " " + instruction.getOpCode() + " " +
+                instruction.getMnemonic() + " " + instruction.getOperand() + " " + comment.getComment());
+    }
 }

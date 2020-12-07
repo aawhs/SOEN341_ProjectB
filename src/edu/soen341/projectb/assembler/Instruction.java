@@ -3,11 +3,36 @@ package edu.soen341.projectb.assembler;
 import edu.soen341.projectb.assembler.Operand;
 
 public class Instruction implements Opcode {
+    public void setMnemonic(String mnemonic) {
+        this.mnemonic = mnemonic;
+    }
+
+    public int getOpCode() {
+        return opCode;
+    }
+
+    public void setOpCode(int opCode) {
+        this.opCode = opCode;
+    }
+
+    public String getOperand() {
+        if(operand.address != 0){
+            return String.valueOf(operand.getAddress());
+        }else if(operand.offset != 0){
+            return String.valueOf(operand.getOffset());
+        }
+        return operand.label.getLabel();
+    }
+
+    public void setOperand(Operand operand) {
+        this.operand = operand;
+    }
+
     //public String [] Ioperands = new String [] {"i3","u3","i4","u4","i5","u5"};
     //public String [] Roperands = new String [] {"i8","u8","i16","u16","i32","u32"};
     public String mnemonic = "";
     public int opCode;
-    public Operand operand;
+    public Operand operand = new Operand();
     //public String mnemonicType = "";
     //public String operands = "";
 
