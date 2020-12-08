@@ -1,28 +1,33 @@
 package edu.soen341.projectb.assembler;
+
 import edu.soen341.projectb.file.IReader;
 import edu.soen341.projectb.helper.Position;
 import edu.soen341.projectb.nodes.ISymbolTable;
 import edu.soen341.projectb.nodes.SymbolTable;
 import edu.soen341.projectb.reportable.IReportable;
 import edu.soen341.projectb.reportable._Error;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
-	//The Lexer is the driving class that uses file readers to Scan the Lines and Derives Tokens for the Parser
+
 public class Lexer implements ILexer, Opcode {
-	//Create a lexer that scans the given character stream.
+	/** Create a lexer that scans the given character stream. */
 	public Lexer(IReader reader, Queue table) throws IOException {
 		//Define Helpers
 		this.reader = reader;
 		this.table = table;
 		keywordsTable = new SymbolTable();
 		opCodes = new SymbolTable();
+
 		//Populate opcode ST
 		for(int i = 0; i < Opcode.inherentOpcodes.length ; i++){
 			opCodes.put(Opcode.inherentMnemonics[i], Opcode.inherentOpcodes[i]);
 			keywordsTable.put(Opcode.inherentMnemonics[i], Tokens.INHERENT);
 		}
+
+
 		for(int i = 0; i < Opcode.immediateOpcodes.length; i++){
 			opCodes.put(Opcode.immediateMnemonics[i], Opcode.immediateOpcodes[i]);
 			keywordsTable.put(Opcode.immediateMnemonics[i], Tokens.IMMEDIATE);
@@ -32,21 +37,24 @@ public class Lexer implements ILexer, Opcode {
 			opCodes.put(relativeMnemomnics[i], Opcode.relativeOpcodes[i]);
 			keywordsTable.put(Opcode.relativeMnemomnics[i], Tokens.RELATIVE);
 		};
+
 		//Instantiate Position Variables
 		linePos = 1;
 		colPos = 0;
 		curlinePos = linePos;
 		curcolPos = colPos;
+
 		tokenSwitch = true;
 		mnemonic ="";
-		read(); //prime Token
+		read(); //prime
 	}
-	//Simple read method used to Read the next Character in the File
+
+	/* Read the next character. */
 	private int read() throws IOException {
 		colPos++;
 		return (ch = reader.read());
 	}
-	//Custom Method using the Tokens Objected Needed for Scanning of a Comment
+
 	private Tokens scanComment() throws IOException {
 		String str = "";
 		str += (char)ch;
@@ -58,8 +66,14 @@ public class Lexer implements ILexer, Opcode {
 		table.add(commentString);
 		return Tokens.COMMENT;
 	}
-	//Custom Method using the Tokens Objected Needed for Scanning of a Number
+
+	private void error(String t) {
+
+		errorReporter.record(_Error.create(t, getPosition()));
+	}
+
 	private Tokens scanNumber() throws IOException {
+
 		strnum = "";
 		strnum += (char)ch;
 		char numoff = 0;
@@ -77,7 +91,7 @@ public class Lexer implements ILexer, Opcode {
 		table.add(strnum);
 		return  Tokens.NUMBER;
 	}
-	//Custom Method using the Tokens Objected Needed for Scanning of a Identifiers
+
 	private Tokens scanIdentifier() throws IOException {
 		temp = "";
 		temp += (char)ch;
@@ -94,13 +108,14 @@ public class Lexer implements ILexer, Opcode {
 		table.add(temp);
 		return Tokens.LABEL;
 	}
-	//Custom Method using the Tokens Objected Needed for Scanning of a Directive
+
 	private Tokens scanDirective() throws IOException {
 		temp = "";
 		temp += (char)ch;
 		while(((ch = read()) != 32)){
 			temp += (char)ch;
 		}
+
 		if(temp.contains(".cstring")){
 			/*
 			if(temp.contains("")){
@@ -111,6 +126,7 @@ public class Lexer implements ILexer, Opcode {
 				return Tokens.DIRECTIVE;
 			}
 			*/
+
 			position = new Position(curlinePos,curcolPos);
 			table.add(temp);
 			read();
@@ -118,7 +134,7 @@ public class Lexer implements ILexer, Opcode {
 		}
 		return Tokens.ILLEGAL_CHAR;
 	}
-	//Custom Method using the Tokens Objected Needed for Scanning of a String
+
 	private Tokens scanString() throws IOException{
 		temp = "";
 		temp += (char)ch;
@@ -129,27 +145,14 @@ public class Lexer implements ILexer, Opcode {
 		position = new Position(curlinePos,curcolPos);
 		return Tokens.STRING;
 	}
-	//Error Generating Method for the Lexer
-	private void error(String t) {
-		errorReporter.record(_Error.create(t, getPosition()));
-	}
-	//Error Method for Verifying Spelling Mistakes
-	public boolean spellError(String line){
-		for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
-			if(Opcode.inherentMnemonics[i].contains(line)){
-				this.error("Spelling error");
-				return true;
-			}
-		}
-		return false;
-	}
-	//Custom Getter Method Provided By the Professor and Adjusted for use
+
 	public Tokens getToken() throws IOException {
 		// skip whitespaces
 		// "\n", "\r\n", "\n", or line comments are considered as EOL
 		while(ch == 32){
 			read();
 		}
+
 		curlinePos = linePos;
 		curcolPos = colPos;
 		while (tokenSwitch) {
@@ -210,29 +213,47 @@ public class Lexer implements ILexer, Opcode {
 		return Tokens.EOF;
 
 	}
-	//Basic Getter method in relation to Lexer Class
+
+	@Override
 	public String getTokenName(Tokens t) {
 		return t.name();
 	}
-	//Basic Getter method in relation to Lexer Class
+
+
+
 	public Queue getTable() {
 		return table;
 	}
-	//Basic Getter method in relation to Lexer Class
+
+	public boolean spellError(String line){
+		for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
+			if(Opcode.inherentMnemonics[i].contains(line)){
+				this.error("Spelling error");
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	private Queue table;
+	private ISymbolTable keywordsTable;
+
+
 	public ISymbolTable getOpCodes() {
 		return opCodes;
 	}
-	//Basic Getter method in relation to Lexer Class
+
+	private ISymbolTable opCodes;
+	private IReportable errorReporter;
+
 	public Position getPosition() {
 		return position;
 	}
-	//Necessary Data Members for the Lexer Class
-	private Queue table;
-	private ISymbolTable keywordsTable;
-	private ISymbolTable opCodes;
-	private IReportable errorReporter;
+
 	private Position position;
 	private boolean tokenSwitch;
+
 	private int linePos;
 	private int colPos;
 	private int curlinePos;
