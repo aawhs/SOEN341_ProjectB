@@ -86,18 +86,12 @@ public class Parser implements IParser {
 
     public LinkedQueue parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
-
-
-
         seq = new LineStmtSeq();
         GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
-
-
         File file = new File("S1Test1.lst");
         FileWriter fr = new FileWriter(file);
-
-            printLabel(fr,file);
+        printLabel(fr,file);
         System.out.print(String.format("%1s%10s%15s%10s%20s%20s\n",
                 "Line", "Address", "Machine Code", "Label", "Assembly Code", "Comment") + "\n");
             while (!token.equals(Tokens.EOF)) {
@@ -118,7 +112,7 @@ public class Parser implements IParser {
                             scanned = new ScannedObject(keywordTable.poll().toString(), token);
                             lineSeq.add(new Node(scanned));
 
-                            System.out.print(String.format("%02d %#02X",
+                            System.out.print(String.format("%02d     %#02X",
                                     curlinepos, address));
                             tempLineStmt.print();
 
@@ -197,7 +191,6 @@ public class Parser implements IParser {
                         }
 
                          */
-
                         address++;
                     }
                 } else{
@@ -271,9 +264,26 @@ public class Parser implements IParser {
                 tempNode = (ScannedObject) lineSeq.pop().getObject();
                 if(tempNode.getToken().equals(Tokens.LABEL)){
                     if(inst.getMnemonic() != ""){
-                        inst.operand.label = new Label(tempNode.getKeyword());
+                        String temp_new = "";
+                        String temp = tempNode.getKeyword();
+                        for(int k = 0; k < temp.length(); k++ ){
+                            if(temp.charAt(k) != '\r'){
+                                temp_new += temp.charAt(k);
+                            }
+                        }
+                        if((temp_new.equals("Msg") || temp_new.equals("Msg2")) && inst.mnemonic.contains("lda")){
+                            inst.operand.label = new Label(temp_new);
+                        } 
+                        label = new Label(temp_new);
                     }else{
-                        label = new Label(tempNode.getKeyword());
+                        String temp_new = "";
+                        String temp = tempNode.getKeyword();
+                        for(int k = 0; k < temp.length(); k++ ){
+                            if(temp.charAt(k) != '\r'){
+                                temp_new += temp.charAt(k);
+                            }
+                        }
+                        label = new Label(temp_new);
                     }
                 }
                 if(tempNode.getToken().equals(Tokens.INHERENT)){
@@ -295,15 +305,29 @@ public class Parser implements IParser {
                                 errorReporter.record( _Error.create("error: address can not be signed", lexer.getPosition()));
                             }
                             else {
-                                inst.operand.address = Integer.parseInt(tempNode.getKeyword());
+                                    String temp_new = "";
+                                    String temp = tempNode.getKeyword();
+                                    for(int j = 0; j < temp.length(); j++){
+                                        if(Character.isDigit(temp.charAt(j))){
+                                            temp_new += temp.charAt(j);
+                                        }
+                                    }
+                                inst.operand.address = Integer.parseInt(temp_new);
                             }
-                        }else{
-                            if(inst.mnemonic.contains("ldc") || inst.mnemonic.contains("ldv")){
-                                inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
-                            }
-                            inst.operand.address = Integer.parseInt(tempNode.getKeyword());
                         }
-
+                        else
+                        {
+                            if(inst.mnemonic.contains("ldc") || inst.mnemonic.contains("ldv") || inst.mnemonic.contains("trap") || inst.mnemonic.contains("calls")){
+                                String temp_new = "";
+                                String temp = tempNode.getKeyword();
+                                for(int j = 0; j < temp.length(); j++){
+                                    if(Character.isDigit(temp.charAt(j)) ||Character.isLetter(temp.charAt(j))){
+                                        temp_new += temp.charAt(j);
+                                    }
+                                }
+                                inst.operand.offset = Integer.parseInt(temp_new);
+                            }
+                        }
                     }
                 }
                 if(tempNode.getToken().equals(Tokens.COMMENT)){

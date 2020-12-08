@@ -10,6 +10,9 @@ public class Operand {
         this.address = 0;
         this.offset = 0;
     }
+    public Operand(Label l){
+        this.label = l;
+    }
 
     public Operand(Label l, int a, int o){
         this.label = l;
