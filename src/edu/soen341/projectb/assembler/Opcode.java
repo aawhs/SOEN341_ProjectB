@@ -13,7 +13,7 @@ public interface Opcode {
     neg  =0x10, inc   =0x11, dec =0x12, add =0x13, sub  =0x14, mul  =0x15, div    =0x16, rem  =0x17,
     shl  =0x18, shr   =0x19, teq =0x1A, tne =0x1B, tlt  =0x1C, tgt  =0x1D, tle    =0x1E, tge  =0x1F,
     INHERENT_END = 0x1F,
-
+    // immidate opcodes:
     IMMEDIATE_BEGIN = 0x30,
        br_i5 =0x30,
       brf_i5 =0x50,
@@ -23,7 +23,7 @@ public interface Opcode {
       ldv_u3 =0xA0,
       stv_u3 =0xA8,
     IMMEDIATE_END = 0xAF,
-
+    // relative opcodes: 
     RELATIVE_BEGIN = 0xB0,
      addv_u8 = 0xB0, ldv_u8 = 0xB1, stv_u8 = 0xB2, incv  = 0xB3, decv  = 0xB4,
     enter_u8 = 0xBF,
@@ -49,34 +49,35 @@ public interface Opcode {
     _CSTRING = 0x100,
 
     _INVALID_TOKEN = 0x200;
-
+    //Insantiation of inherentOpcodes in int form
     public static final int inherentOpcodes[] = {
        halt,  pop,    dup,  exit,  ret,   RFU1,  RFU2,    RFU3,
        RFU4,  RFU5,   RFU6, RFU7,  not,   and,   or,      xor,
        neg,   inc,    dec,  add,   sub,   mul,   div,     rem,
        shl,   shr,    teq,  tne,   tlt,   tgt,   tle,     tge
     };
+    //Insantiation of inherentMnemomics in String form
     public static final String inherentMnemonics[] = {
        "halt",  "pop",    "dup",  "exit",  "ret",   "rfu1",  "rfu2",    "rfu3",
        "rfu4",  "rfu5",   "rfu6", "rfu7",  "not",   "and",   "or",      "xor",
        "neg",   "inc",    "dec",  "add",   "sub",   "mul",   "div",     "rem",
        "shl",   "shr",    "teq",  "tne",   "tlt",   "tgt",   "tle",     "tge"
     };
-    
+    //Insantiation of immediateOpcodes in int form
     public static final int immediateOpcodes[] = {
       br_i5, brf_i5, enter_u5, ldc_i3, addv_u3, ldv_u3, stv_u3
     };
-
+    //Insantiation of immediateMnemomics in String form
     public static final String immediateMnemonics[] = {
       "br.i5", "brf.i5", "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3"
     };
-    
+    //Insantiation of relativeOpcodes in int form
     public static final int relativeOpcodes[] = {
       addv_u8, ldv_u8, stv_u8, incv, decv,
       enter_u8, lda_i16, ldc_i8, ldc_i16, ldc_i32, 
       br_i8, br_i16, brf_i8, calls_i8, calls_i16, br, brf, trap
     };
-
+    //Insantiation of relativeMnemomics in String form
     public static final String relativeMnemomnics[] = 
     { "addv.u8", "ldv.u8", "stv.u8", "incv", "decv",
       "enter.u8", "lda.i16", "ldc.i8", "ldc.i16", "ldc.i32",
