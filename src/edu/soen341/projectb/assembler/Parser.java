@@ -274,7 +274,9 @@ public class Parser implements IParser {
                         if((temp_new.equals("Msg") || temp_new.equals("Msg2")) && inst.mnemonic.contains("lda")){
                             inst.operand.label = new Label(temp_new);
                         } 
-                        label = new Label(temp_new);
+                        else{
+                            label = new Label(temp_new);
+                        }
                     }else{
                         String temp_new = "";
                         String temp = tempNode.getKeyword();
