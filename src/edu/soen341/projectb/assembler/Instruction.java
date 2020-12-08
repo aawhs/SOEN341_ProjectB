@@ -15,37 +15,44 @@ public class Instruction implements Opcode {
         this.operand = new Operand();
     }
     //Custom Method used by the parser in relation to the Instruction Class
-    public void parseMnemonic(String inst){
-        String mnemonic_temp = "";
-        for (int i = 0; i < inst.length(); i++){
-            if(inst.charAt(i) == ' ' || inst.charAt(i) == '.'){break;}
-            mnemonic_temp += inst.charAt(i);
-        }
-        setInstruction(mnemonic_temp);
-    }
+   
+
     /*public String[] printInstruction(){
         String[] inst = new String[2];
         inst[0]= String.format("%02d",opCode);
         inst[1]=mnemonic;
         return inst;
+
+
+    public String mnemonic = "";
+    public int opCode;
+    public Operand operand = new Operand();
+
+    public Instruction(String inst){setInstruction(inst);}
+
+    public Instruction(Opcode opcode, Operand operand){
+        this.operand = operand;
+
     }
     */    
      //Custom Method used by the Instruction Class to verify the instructions value in relation to Opcodes and Mnemonics
     public void setInstruction(String inst){
         for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
-            if(Opcode.inherentMnemonics[i].contains(inst)){
+            if(Opcode.inherentMnemonics[i].contains(inst) && mnemonic == ""){
                 this.mnemonic = Opcode.inherentMnemonics[i];
                 this.opCode = Opcode.inherentOpcodes[i];
+                break;
             }
         }
         for(int i = 0; i< Opcode.immediateMnemonics.length; i++) {
-            if (Opcode.immediateMnemonics[i].contains(inst)) {
+            if (Opcode.immediateMnemonics[i].contains(inst) && mnemonic == "") {
                 this.mnemonic = Opcode.immediateMnemonics[i];
                 this.opCode = Opcode.immediateOpcodes[i];
+                break;
             }
         }
         for(int i = 0; i< Opcode.relativeMnemomnics.length; i++) {
-            if (Opcode.relativeMnemomnics[i].contains(inst)) {
+            if (Opcode.relativeMnemomnics[i].contains(inst) && mnemonic == "") {
                 this.mnemonic = Opcode.relativeMnemomnics[i];
                 this.opCode = Opcode.relativeOpcodes[i];
                 break;
@@ -76,6 +83,11 @@ public class Instruction implements Opcode {
             return String.valueOf(operand.getOffset());
         }
         return operand.label.getLabel();
+
+
+    public void parseMnemonic(String inst){
+        setInstruction(inst);
+
     }
     //Basic Getter method in relation to Instruction Object
     public String getMnemonic() {

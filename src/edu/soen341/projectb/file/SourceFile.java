@@ -1,3 +1,4 @@
+//SourceFile class that deals with the handling of the source (input) files
 package edu.soen341.projectb.file;
 
 import java.io.*;
@@ -8,25 +9,11 @@ import java.nio.file.Paths;
 
 //Managing file with open, close and input/output stream initializing
 public class SourceFile implements ISourceFile {
-
-    Path srcPath;
-    private URL filePathSystem;
-    private String fileName;
-    private File srcFile;
-    private File dstFile;
-    private FileInputStream srcStream;
-    private FileOutputStream dstStream;
-    private BufferedReader reader;
-
+    //Constructor that sets source file to the argument in the main function
     public SourceFile(String args) {
         this.fileName = args;
     }
 
-    //Initializes the filepath of the file
-    public void setFilePath() {
-        srcPath = Paths.get(fileName);
-        filePathSystem = ClassLoader.getSystemResource(srcPath.toString());
-    }
 
     //Creates File object for the input file
     public void openFile() throws URISyntaxException {
@@ -64,6 +51,45 @@ public class SourceFile implements ISourceFile {
         openInputStream();
     }
 
+    //Overriden method to check if file is readable
+    @Override
+    public boolean canReadFile() {
+        if (!srcFile.canRead()) {
+            System.out.println("\nSource File");
+            System.out.println("Cannot open srcFile '" + srcFile.getName() + "'");
+            return false;
+        }
+        System.out.println("\nSource File");
+        System.out.println("[OK] srcFilePath = '" + getAbsolutePath() +"'\n"+
+                "[OK] srcFileName = '" + srcFile.getName() + "'");
+        return true;
+
+    }
+    //Overriden method to check if file is open
+    @Override
+    public boolean isOpen() {
+        if (srcStream != null) {
+            return true;
+        }
+        System.out.println("\nCannot open srcFile '" + fileName + "'");
+        return false;
+    }
+    //returns destination file path
+    public void dstFilePath(){
+        System.out.println("\nDestination File");
+        System.out.println("[OK] dstFilePath = '" + getAbsolutePath() +"'\n"+
+                "[OK] dstFileName = '" + dstFile.getName() + "'");
+    }
+    //Initializes the filepath of the file
+    public void setFilePath() {
+        srcPath = Paths.get(fileName);
+        filePathSystem = ClassLoader.getSystemResource(srcPath.toString());
+    }
+    //Setter for bufferedReader object
+    public void setBufferedReader() throws FileNotFoundException {
+        reader = new BufferedReader(new FileReader(getFile()));
+    }
+    //Getter methods for file and streams
     public File getFile(){
         return this.srcFile;
     }
@@ -90,43 +116,20 @@ public class SourceFile implements ISourceFile {
     public String getFileName(){
         return this.fileName;
     }
-
-    public void setBufferedReader() throws FileNotFoundException {
-        reader = new BufferedReader(new FileReader(getFile()));
-    }
+    //Return bufferedReader object
     public BufferedReader getBufferedReader(){
         return reader;
     }
 
 
-    @Override
-    public boolean canReadFile() {
-        if (!srcFile.canRead()) {
-            System.out.println("\nSource File");
-            System.out.println("Cannot open srcFile '" + srcFile.getName() + "'");
-            return false;
-        }
-        System.out.println("\nSource File");
-        System.out.println("[OK] srcFilePath = '" + getAbsolutePath() +"'\n"+
-                "[OK] srcFileName = '" + srcFile.getName() + "'");
-        return true;
 
-    }
-
-    public void dstFilePath(){
-        System.out.println("\nDestination File");
-        System.out.println("[OK] dstFilePath = '" + getAbsolutePath() +"'\n"+
-                "[OK] dstFileName = '" + dstFile.getName() + "'");
-    }
-
-    @Override
-    public boolean isOpen() {
-        if (srcStream != null) {
-            return true;
-        }
-        System.out.println("\nCannot open srcFile '" + fileName + "'");
-        return false;
-    }
-
-
+    //Variables for files,streams and readers
+    Path srcPath;
+    private URL filePathSystem;
+    private String fileName;
+    private File srcFile;
+    private File dstFile;
+    private FileInputStream srcStream;
+    private FileOutputStream dstStream;
+    private BufferedReader reader;
 }

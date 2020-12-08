@@ -1,3 +1,4 @@
+// Factory design pattern implementation for option objects
 package edu.soen341.projectb.options;
 
 import edu.soen341.projectb.options.*;
@@ -5,6 +6,7 @@ import edu.soen341.projectb.options.*;
 import java.io.IOException;
 
 public class OptionFactory {
+    // Retrieve option, if null, select no option, else, create objects based on input
     public Option getOption(String optionType) throws IOException {
         if(optionType == null){
             return new noOption();

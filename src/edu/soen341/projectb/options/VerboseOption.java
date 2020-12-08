@@ -1,15 +1,17 @@
+//Verbose option implementation
 package edu.soen341.projectb.options;
 
 import java.io.File;
 
 class VerboseOption extends Option {
+    //Set verbose option and enable it
     public VerboseOption() {
         super(new String[]{"-v"}, "-verbose");
         setEnable(true);
         process();
     }
 
-
+    // Return verbose option statement with right format
     @Override
     public void process() {
         
@@ -19,7 +21,7 @@ class VerboseOption extends Option {
         setReq(true);
         
     }
-
+    //**
     @Override
     public void setFiles(File file) {
 
