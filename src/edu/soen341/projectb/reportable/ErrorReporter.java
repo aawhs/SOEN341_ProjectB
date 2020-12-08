@@ -5,6 +5,9 @@ public class ErrorReporter implements IReportable {
     
 
 
+    public ErrorReporter(){
+        errors = new ArrayList<_Error>();
+    }
     //Methods
     @Override
     public void record(_Error e) {
@@ -16,6 +19,13 @@ public class ErrorReporter implements IReportable {
         errors.get(0);
     }
 
+    public void printErrors() {
+        for(int i = 0; i < errors.size(); i++){
+            System.out.println(errors.get(i).getText() + " " + errors.get(i).getPosition().toString());
+
+        }
+    }
+
     //Attribute
-    ArrayList<_Error> errors = new ArrayList<>();
+    static ArrayList<_Error> errors = new ArrayList<>();
 }
