@@ -1,28 +1,32 @@
 package edu.soen341.projectb.assembler;
+
 import edu.soen341.projectb.assembler.Operand;
-    //The Instruction Class is designed to hold Instruction objects and then separate and parse them as needed
+
 public class Instruction implements Opcode {
-    //Paramaterized Contructor for the Instruction Object
-    public Instruction(String inst){
-        setInstruction(inst);
+    public void setMnemonic(String mnemonic) {
+        this.mnemonic = mnemonic;
     }
-    //Paramaterized Contructor for the Instruction Object
-    public Instruction(Opcode opcode, Operand operand){
+
+    public int getOpCode() {
+        return opCode;
+    }
+
+    public void setOpCode(int opCode) {
+        this.opCode = opCode;
+    }
+
+    public String getOperand() {
+        if(operand.address != 0){
+            return String.valueOf(operand.getAddress());
+        }else if(operand.offset != 0){
+            return String.valueOf(operand.getOffset());
+        }
+        return operand.label.getLabel();
+    }
+
+    public void setOperand(Operand operand) {
         this.operand = operand;
     }
-    //Basic Contructor for the Instruction Object
-    public Instruction(){
-        this.operand = new Operand();
-    }
-    //Custom Method used by the parser in relation to the Instruction Class
-   
-
-    /*public String[] printInstruction(){
-        String[] inst = new String[2];
-        inst[0]= String.format("%02d",opCode);
-        inst[1]=mnemonic;
-        return inst;
-
 
     public String mnemonic = "";
     public int opCode;
@@ -32,10 +36,10 @@ public class Instruction implements Opcode {
 
     public Instruction(Opcode opcode, Operand operand){
         this.operand = operand;
-
     }
-    */    
-     //Custom Method used by the Instruction Class to verify the instructions value in relation to Opcodes and Mnemonics
+
+    public Instruction(){}
+
     public void setInstruction(String inst){
         for(int i = 0; i< Opcode.inherentMnemonics.length; i++){
             if(Opcode.inherentMnemonics[i].contains(inst) && mnemonic == ""){
@@ -59,43 +63,22 @@ public class Instruction implements Opcode {
             }
         }
     }
-    //Basic Setter method in relation to Instruction Object
-    public void setMnemonic(String mnemonic) {
-        this.mnemonic = mnemonic;
-    }
-    //Basic Setter method in relation to Instruction Object
-    public void setOperand(Operand operand) {
-        this.operand = operand;
-    }
-     //Basic Setter method in relation to Instruction Object
-     public void setOpCode(int opCode) {
-        this.opCode = opCode;
-    }
-    //Basic Getter method in relation to Instruction Object
-    public int getOpCode() {
-        return opCode;
-    }
-    //Basic Getter method in relation to Instruction Object
-    public String getOperand() {
-        if(operand.address != 0){
-            return String.valueOf(operand.getAddress());
-        }else if(operand.offset != 0){
-            return String.valueOf(operand.getOffset());
-        }
-        return operand.label.getLabel();
-
 
     public void parseMnemonic(String inst){
         setInstruction(inst);
+    }
 
+    public String[] printInstruction(){
+        String[] inst = new String[2];
+        inst[0]= String.format("%02d",opCode);
+        inst[1]=mnemonic;
+        return inst;
     }
-    //Basic Getter method in relation to Instruction Object
-    public String getMnemonic() {
-        return mnemonic;
-    }
-    //Necessary Data Members for the Instruction Class
-    public String mnemonic = "";
-    public int opCode;
-    public Operand operand = new Operand();
+
+    /**
+     * Used in AUnit testing
+     * @return mnemonic
+     */
+    public String getMnemonic() {return mnemonic;}
 }
 
