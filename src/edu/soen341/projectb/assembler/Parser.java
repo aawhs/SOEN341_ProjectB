@@ -87,6 +87,8 @@ public class Parser implements IParser {
     public LinkedQueue parse() throws IOException {
         System.out.println("Parsing an AssemblyUnit...");
 
+
+
         seq = new LineStmtSeq();
         GenerateBinary binary = new GenerateBinary(seq);
         LineStmt lineStmt ;
@@ -118,7 +120,6 @@ public class Parser implements IParser {
 
                             System.out.print(String.format("%02d %#02X",
                                     curlinepos, address));
-                            binary.addToRev(tempLineStmt);
                             tempLineStmt.print();
 
                             curlinepos++;
@@ -204,13 +205,23 @@ public class Parser implements IParser {
                 }
             }
 
-            System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
+            tempLineStmt = parseLineStmt();
+
+            System.out.print(String.format("%02d %#02X",
+                    curlinepos, address));
+            tempLineStmt.print();
+
+
+
+        System.out.print("Assembly Unit (Mnemonics) processed and stored in Nodes");
             if (!options.isEnabled()) {
                 System.out.print(" ,to create a listing file or verbose use options : '-l' or '-v' respectively");
             }
             fr.flush();
             fr.close();
             binary.init();
+            binary.printBinary();
+            binary.writeBinary();
             binary.printText();
 
             return new TranslationUnit(seq);
@@ -283,12 +294,16 @@ public class Parser implements IParser {
                             if (lexer.getToken() == Tokens.MINUS){
                                 errorReporter.record( _Error.create("error: address can not be signed", lexer.getPosition()));
                             }
-                            else {inst.operand.address = Integer.parseInt(tempNode.getKeyword());}
+                            else {
+                                inst.operand.address = Integer.parseInt(tempNode.getKeyword());
+                            }
+                        }else{
+                            if(inst.mnemonic.contains("ldc") || inst.mnemonic.contains("ldv")){
+                                inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
+                            }
+                            inst.operand.address = Integer.parseInt(tempNode.getKeyword());
                         }
-                        else if(inst.mnemonic.contains("ldc") && inst.mnemonic.contains("ldv")){
-                            inst.operand.offset = Integer.parseInt(tempNode.getKeyword());
-                        }
-                            //inst.operand.address = Integer.parseInt(tempNode.getKeyword());
+
                     }
                 }
                 if(tempNode.getToken().equals(Tokens.COMMENT)){
@@ -369,7 +384,7 @@ public class Parser implements IParser {
         private LinkedQueue lineSeq = new LinkedQueue();
         private ScannedObject scanned;
         private ScannedObject tempNode;
-        private LineStmt tempLineStmt = new LineStmt();
+        private LineStmt tempLineStmt;
 
         String [] line = new String[4]; //Label,instruction or directive ,operand,comment
         Tokens[] linetokens = new Tokens[4];
