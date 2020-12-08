@@ -6,6 +6,14 @@ import edu.soen341.projectb.assembler.Tokens;
 
 public class Node{
 	//Constructor that sets the node to its object argument
+
+	//private Tokens token;
+	//private String keyword;
+	private Object obj;
+	private Node next;
+
+
+
 	public Node(Object o){
 		this.obj = o;
 		//this.token = t;
@@ -16,6 +24,7 @@ public class Node{
 		this.next = node;
 	}
 
+	/*
 	public void setToken(Tokens t){
 		this.token = t;
 	}
@@ -24,11 +33,18 @@ public class Node{
 		this.keyword = s;
 	}
 
+
+	 */
 	/**
 		 * Used in AUnit testing
 		 * @return Object
 		 */
+
 	//Getters for node fields
+
+
+	/*
+
 	public Tokens getToken(){
 		
 		return this.token;
@@ -38,6 +54,8 @@ public class Node{
 		return this.keyword;
 	}
 
+
+	 */
 	public Node getNext(){
 		return this.next;
 	}

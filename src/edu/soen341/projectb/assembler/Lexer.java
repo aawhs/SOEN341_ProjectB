@@ -106,7 +106,6 @@ public class Lexer implements ILexer, Opcode {
 		}
 		position = new Position(curlinePos,curcolPos);
 		table.add(temp);
-		read();
 		return Tokens.LABEL;
 	}
 

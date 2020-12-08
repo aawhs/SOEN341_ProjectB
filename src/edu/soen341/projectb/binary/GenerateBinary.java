@@ -1,6 +1,7 @@
 //GenerateBinary class which takes care binary executable file generation
 package edu.soen341.projectb.binary;
 
+import edu.soen341.projectb.assembler.LineStmt;
 import edu.soen341.projectb.assembler.LineStmtSeq;
 
 import java.io.File;
@@ -120,5 +121,7 @@ public class GenerateBinary {
     String binary = "";
     String text = "";
 
-
+    public void addToRev(LineStmt l){
+        rev.add(l);
+    }
 }
