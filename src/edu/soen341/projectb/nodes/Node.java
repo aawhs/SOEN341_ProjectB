@@ -1,13 +1,17 @@
+//Node class which represents a basic node structure with fields and behaviour
 package edu.soen341.projectb.nodes;
 
 
 import edu.soen341.projectb.assembler.Tokens;
 
 public class Node{
+	//Constructor that sets the node to its object argument
+
 	//private Tokens token;
 	//private String keyword;
 	private Object obj;
 	private Node next;
+
 
 
 	public Node(Object o){
@@ -15,7 +19,7 @@ public class Node{
 		//this.token = t;
 		//this.keyword = s;
 	}
-
+	//Setters for node fields
 	public void setNext(Node node){
 		this.next = node;
 	}
@@ -36,7 +40,11 @@ public class Node{
 		 * @return Object
 		 */
 
+	//Getters for node fields
+
+
 	/*
+
 	public Tokens getToken(){
 		
 		return this.token;
@@ -55,6 +63,10 @@ public class Node{
 	public Object getObject(){
 		return this.obj;
 	}
-
+	//Node attributes
+	private Tokens token;
+	private String keyword;
+	private Node next;
+	private Object obj;
 
 }

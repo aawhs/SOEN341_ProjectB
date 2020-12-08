@@ -1,9 +1,11 @@
+//Option interface which contains all methods used for option objects
 package edu.soen341.projectb.options;
 
 import java.io.File;
 import java.io.IOException;
 
 public interface IOption {
+    // returns the usage statement
     default void printUsage() {
         System.out.println("Usage: CommandLine = CommandName [Option] {SourceFile}\n" +
                 "Options Available\n"+
@@ -11,7 +13,7 @@ public interface IOption {
                 "VerboseOption = \"-v\" | \"-verbose\"\n" +
                 "ListingOption  = \"-l\" | \"-listing\"\n");
     }
-
+    // Methods for validation, enabling and processing
     boolean isOption();
     boolean isEnabled();
     boolean isRequired();

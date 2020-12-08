@@ -1,15 +1,17 @@
+//Listing option implementation
 package edu.soen341.projectb.options;
 
 import java.io.File;
 import java.io.IOException;
 
 class ListingOption extends Option {
+    // Set listing option and enable it
     public ListingOption() throws IOException {
         super(new String[]{"-l"},"-listing");
         setEnable(true);
         process();
     }
-
+    //Retrieve file
     @Override
     public void process() throws IOException {
         
@@ -23,7 +25,7 @@ class ListingOption extends Option {
         setReq(true);
        
     }
-
+    //**
     @Override
     public void setFiles(File file) {
 
