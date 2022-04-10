@@ -10,3 +10,5 @@ AUnit testing:
   3. java aunit FileName.txt
   
   If output is " . OK", it worked.
+
+### NOTE : JUnit Testing not included in the source code on git
