@@ -1,5 +1,5 @@
-# SOEN341_ProjectB
-SOEN341 Group ProjectB
+# JAVA CROSS-ASSEMBLER
+Lexical Analayzer and Parser to generate .bin and .lst files from assembly machine instructions.
 
 
 AUnit testing:
